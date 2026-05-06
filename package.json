@@ -1,0 +1,14 @@
+{
+  "name": "phd-supervisor-agent",
+  "version": "1.0.0",
+  "description": "AI PhD Research Supervisor powered by Claude",
+  "type": "module",
+  "main": "agent.js",
+  "scripts": {
+    "start": "node agent.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
+    "docx": "^9.6.1"
+  }
+}
