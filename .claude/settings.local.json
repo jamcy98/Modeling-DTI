@@ -19,7 +19,11 @@
       "PowerShell(npm install *)",
       "PowerShell(node -e \"const {Document} = await import\\('docx'\\); console.log\\('docx OK'\\)\" 2>&1)",
       "PowerShell(node -e \"import\\('docx'\\).then\\(m => console.log\\(Object.keys\\(m\\).join\\(', '\\)\\)\\)\")",
-      "PowerShell(node -e \"import\\('docx'\\).then\\(m => { const {Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, HeadingLevel} = m; const doc = new Document\\({sections:[{children:[new Paragraph\\({children:[new TextRun\\({text:'Test',bold:true}\\)]}\\)]}]}\\); Packer.toBuffer\\(doc\\).then\\(b => { require\\('fs'\\).writeFileSync\\('test.docx', b\\); console.log\\('OK', b.length\\); }\\) }\\)\" 2>&1)"
+      "PowerShell(node -e \"import\\('docx'\\).then\\(m => { const {Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, HeadingLevel} = m; const doc = new Document\\({sections:[{children:[new Paragraph\\({children:[new TextRun\\({text:'Test',bold:true}\\)]}\\)]}]}\\); Packer.toBuffer\\(doc\\).then\\(b => { require\\('fs'\\).writeFileSync\\('test.docx', b\\); console.log\\('OK', b.length\\); }\\) }\\)\" 2>&1)",
+      "Bash(mkdir -p \"/c/Users/Jamila/Modeling-DTI/paper/extracted_imgs\")",
+      "Bash(cp \"/c/Users/Jamila/Modeling-DTI/paper/Sample Diagrams.docx\" \"/c/Users/Jamila/Modeling-DTI/paper/extracted_imgs/sample.zip\")",
+      "Bash(unzip -o sample.zip -d extracted/)",
+      "PowerShell(node -e \"import\\('pptxgenjs'\\).then\\(m=>console.log\\('pptxgenjs OK, exports:', Object.keys\\(m\\).join\\(', '\\)\\)\\)\")"
     ]
   }
 }
