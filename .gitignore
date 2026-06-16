@@ -1,0 +1,14 @@
+# Large dataset files
+Dataset/raw/
+Dataset/processed/
+Dataset/__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+
+# Temporary Word/Office files
+paper/~$*
+~$*
+
+# Node
+node_modules/
