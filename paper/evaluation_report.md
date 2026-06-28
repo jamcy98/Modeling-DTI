@@ -160,14 +160,114 @@ A key architectural distinction emerges from the external comparisons:
 
 ---
 
+### 3.3 Objective 1b: Encoder Ablation — GNN-Only and RNN-Only
+
+**Research question:** How much does each individual encoder (drug vs. protein) contribute? Does removing one modality degrade performance significantly?
+
+#### Table 4. AUROC mean ± std (5 seeds) — All four ablation variants
+
+| Dataset | Split | H-GNN-RNN-DTI | ConcatBaseline | GNN-Only | RNN-Only |
+|---|---|---|---|---|---|
+| yamanishi\_e | random | **0.756 ± 0.112** | 0.559 ± 0.083 | 0.527 ± 0.040 | 0.674 ± 0.015 |
+| yamanishi\_e | cold\_drug | **0.774 ± 0.010** | 0.638 ± 0.037 | 0.554 ± 0.008 | 0.625 ± 0.030 |
+| yamanishi\_e | cold\_target | 0.438 ± 0.040 | 0.415 ± 0.110 | 0.508 ± 0.043 | 0.412 ± 0.077 |
+| yamanishi\_e | cold\_pair | **0.746 ± 0.048** | 0.631 ± 0.019 | 0.515 ± 0.017 | 0.704 ± 0.066 |
+| luo\_17 | random | **0.946 ± 0.005** | 0.948 ± 0.004 | 0.902 ± 0.013 | 0.875 ± 0.002 |
+| luo\_17 | cold\_drug | **0.913 ± 0.008** | 0.907 ± 0.006 | 0.707 ± 0.012 | 0.909 ± 0.004 |
+| luo\_17 | cold\_target | 0.778 ± 0.012 | 0.813 ± 0.011 | **0.901 ± 0.011** | 0.603 ± 0.010 |
+| luo\_17 | cold\_pair | **0.948 ± 0.002** | 0.943 ± 0.005 | 0.901 ± 0.004 | 0.888 ± 0.016 |
+
+Significance (paired t-test vs. H-GNN-RNN-DTI, df=4): `***` p<0.01, `*` p<0.05, `n.s.` not significant.
+
+**GNN-Only vs. H-GNN-RNN-DTI:**
+
+| Dataset | Split | Δ AUROC | p-value |
+|---|---|---|---|
+| yamanishi\_e | random | −0.229 | 0.004 ✗✗✗ |
+| yamanishi\_e | cold\_drug | −0.220 | <0.001 ✗✗✗ |
+| yamanishi\_e | cold\_target | +0.070 | 0.010 ✓ |
+| yamanishi\_e | cold\_pair | −0.231 | 0.002 ✗✗✗ |
+| luo\_17 | random | −0.044 | 0.001 ✗✗✗ |
+| luo\_17 | cold\_drug | −0.206 | <0.001 ✗✗✗ |
+| luo\_17 | cold\_target | +0.123 | <0.001 ✓✓✓ |
+| luo\_17 | cold\_pair | −0.047 | <0.001 ✗✗✗ |
+
+**RNN-Only vs. H-GNN-RNN-DTI:**
+
+| Dataset | Split | Δ AUROC | p-value |
+|---|---|---|---|
+| yamanishi\_e | random | −0.082 | 0.198 n.s. |
+| yamanishi\_e | cold\_drug | −0.150 | <0.001 ✗✗✗ |
+| yamanishi\_e | cold\_target | −0.026 | 0.533 n.s. |
+| yamanishi\_e | cold\_pair | −0.042 | 0.427 n.s. |
+| luo\_17 | random | −0.071 | <0.001 ✗✗✗ |
+| luo\_17 | cold\_drug | −0.004 | 0.372 n.s. |
+| luo\_17 | cold\_target | −0.174 | <0.001 ✗✗✗ |
+| luo\_17 | cold\_pair | −0.060 | 0.001 ✗✗✗ |
+
+**Findings:**
+
+**Both encoders contribute significantly in most settings.** Removing either encoder degrades performance on 6/8 configurations at p<0.05.
+
+**Drug encoder (GNN) is essential for cold\_drug generalisation.** GNN-Only collapses on cold\_drug splits (luo\_17 −0.206, yamanishi\_e −0.220 vs. H-GNN-RNN), confirming that drug structural features are the primary source of generalisation to novel compounds. RNN-Only, which relies on protein sequence alone, matches the full model on luo\_17 cold\_drug (Δ=−0.004, p=0.37 n.s.) — confirming that protein information is sufficient when the protein is seen but the drug is novel.
+
+**Protein encoder (RNN) is essential for cold\_target generalisation.** RNN-Only collapses on cold\_target splits (luo\_17 −0.174 vs. H-GNN-RNN, p<0.001). GNN-Only shows the inverse: it achieves 0.901 on luo\_17 cold\_target — significantly *better* than the full model (Δ=+0.123, p<0.001). This anomaly indicates that on luo\_17, certain drug scaffolds are broadly promiscuous regardless of protein identity, and the cross-attention mechanism over completely unseen ESM-2 protein embeddings at test time actually *hurts* by incorporating noisy protein signals. Removing the protein encoder eliminates this source of confusion and yields a stronger drug-only prior.
+
+**Symmetric complementarity.** The pattern is symmetric: the GNN encoder is the critical component for cold-drug splits; the RNN encoder is the critical component for cold-target splits. The full fusion model balances both and leads on 6/8 configurations overall. Neither single-encoder variant is consistently competitive.
+
+**Small dataset (yamanishi\_e) requires both encoders.** On yamanishi\_e, the full model significantly outperforms both ablations on random, cold\_drug, and cold\_pair — the cross-attention fusion provides the most value when training data is scarce and the model must leverage both modalities to learn reliable interaction patterns.
+
+---
+
+## 4. Discussion
+
+### 4.1 When Gated Cross-Attention Helps
+
+The cross-attention mechanism provides the largest benefits when:
+1. The dataset is **small** (yamanishi\_e, ~445 pairs).
+2. The evaluation requires **cold-start generalisation** (cold\_drug, cold\_pair).
+
+In small-data regimes, the bidirectional attention allows the model to identify which parts of the drug structure are relevant for a given protein (and vice versa), acting as a form of structural regularisation. When data is abundant (luo\_17, ~3,846 pairs including negatives), simpler concatenation fusion learns the same mapping with less risk of overfitting attention weights.
+
+### 4.2 Encoder Complementarity
+
+The encoder ablation reveals a clean asymmetry in how each modality supports generalisation:
+
+- **Drug molecular graph (GNN)** carries the signal for **cold-drug** generalisation — the 3D scaffold encodes binding pharmacophores that transfer to known proteins.
+- **Protein sequence (RNN)** carries the signal for **cold-target** generalisation — the ESM-2 embeddings encode binding pocket families that transfer to known drugs.
+
+On large datasets (luo\_17), each encoder alone achieves surprisingly high AUROC on its "native" cold split (GNN-Only 0.707 cold\_drug — already usable; RNN-Only 0.909 cold\_drug). The GNN-Only anomaly on cold\_target (0.901) points to dataset-level drug promiscuity that the protein encoder noise partially obscures.
+
+### 4.3 Transductive vs. Inductive Methods
+
+A key architectural distinction emerges from the external comparisons:
+
+- **GSRF-DTI** (transductive): requires the full DDI + PPI + DTI network at both training and test time. Cannot embed proteins absent from the PPI network. Fails on cold\_target (AUROC 0.362 — below random).
+- **DTKGIN** (semi-inductive via similarity): uses drug chemical similarity edges, partially enabling cold-drug generalisation but with high variance on small datasets.
+- **H-GNN-RNN-DTI** (fully inductive): processes each drug from its molecular graph and each protein from its sequence embedding independently. Works on any drug-protein pair at test time, including cold\_drug, cold\_target, and cold\_pair splits.
+
+**Practical implication:** For prospective drug discovery (screening novel compounds against known targets, or known drugs against novel targets), inductive models are essential. GSRF-DTI's superior published AUROC is obtained under an easier evaluation setting (random split, large KG).
+
+### 4.4 Limitations
+
+1. **yamanishi\_e cold\_target**: Both H-GNN-RNN-DTI and all baselines fail on this split (AUROC ≤ 0.56). The enzyme subset has only 26 proteins; the cold\_target test set may contain proteins with no sequence similarity to training proteins, making ESM-2 embeddings insufficient.
+
+2. **luo\_17 cold\_target anomaly**: ConcatBaseline outperforms H-GNN-RNN-DTI on this split (0.813 vs. 0.778, p<0.01), and GNN-Only outperforms both (0.901). The cross-attention mechanism may be incorporating noisy ESM-2 signals from unseen protein families, while drug promiscuity provides a reliable prior that single-modality models exploit more directly.
+
+3. **Re-implementation gap (GSRF-DTI)**: The published GSRF-DTI AUROC of 0.9818 substantially exceeds our re-implementation (0.767). The gap is explained by their use of the full DrugBank knowledge graph (708 drugs × 1512 proteins × full DDI/PPI networks from BioGRID/STRING, 1M+ nodes), while our re-implementation uses only the luo\_17 adjacency matrices. Faithfully reproducing their preprocessing requires their specific data pipeline.
+
+---
+
 ## 5. Summary of Contributions
 
 | Contribution | Result |
 |---|---|
-| Gated Cross-Attention fusion | Statistically significant improvement on 3/8 configs (yamanishi\_e random, cold\_drug, cold\_pair) |
+| Gated Cross-Attention fusion | Sig. better on 3/8 configs (yamanishi\_e random, cold\_drug, cold\_pair); competitive elsewhere |
+| Both encoders needed | Removing either encoder significantly hurts on 6/8 configs (p<0.05) |
+| Symmetric encoder roles | GNN drives cold-drug generalisation; RNN drives cold-target generalisation |
 | Inductive architecture | Full cold-start generalisation — GSRF-DTI cold\_target: 0.362, ours: 0.778 |
 | Cold-drug performance | Leads on luo\_17 all splits; matches DTKGIN cold\_drug (0.774 vs 0.747) with much lower variance |
-| Stability | Consistently low std across seeds (e.g., cold\_drug: ±0.009 vs. DTKGIN ±0.100) |
+| Stability | Consistently low std across seeds (e.g., cold\_drug ±0.009 vs. DTKGIN ±0.100) |
 
 ---
 

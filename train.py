@@ -14,7 +14,7 @@ import torch.optim as optim
 from torch.optim.lr_scheduler import CosineAnnealingLR
 
 from config       import MODEL, TRAIN, FOCAL, CKPT_DIR, LOG_DIR, DATA_DIR
-from model        import HGNN_RNN_DTI, ConcatGNN_RNN_DTI, FocalLoss, DTALoss
+from model        import HGNN_RNN_DTI, ConcatGNN_RNN_DTI, GNN_Only, RNN_Only, FocalLoss, DTALoss
 from data         import build_dataset, get_dataloader
 from data.utils   import precompute_protein_cache
 
@@ -140,7 +140,7 @@ def main():
     parser.add_argument('--split',      default='random',
                         choices=['random','cold_drug','cold_target','cold_pair'])
     parser.add_argument('--model',      default='hgnn_rnn_dti',
-                        choices=['hgnn_rnn_dti', 'concat_baseline'])
+                        choices=['hgnn_rnn_dti', 'concat_baseline', 'gnn_only', 'rnn_only'])
     parser.add_argument('--seed',       type=int, default=42)
     parser.add_argument('--ratio',      default='1to1')
     parser.add_argument('--fold',       type=int, default=0)
@@ -187,7 +187,12 @@ def main():
     print(f"  Protein ESM dim: {esm_dim}")
 
     # Model
-    model_cls = ConcatGNN_RNN_DTI if args.model == 'concat_baseline' else HGNN_RNN_DTI
+    model_cls = {
+        'hgnn_rnn_dti':   HGNN_RNN_DTI,
+        'concat_baseline': ConcatGNN_RNN_DTI,
+        'gnn_only':        GNN_Only,
+        'rnn_only':        RNN_Only,
+    }[args.model]
     model = model_cls(
         task=args.task,
         esm_dim=esm_dim,
@@ -200,7 +205,8 @@ def main():
     print(f"  Parameters: {n_params:,}\n")
 
     # Pre-cache all unique protein representations (runs BiGRU once per protein)
-    if emb.ndim == 3:   # full residue embeddings — precompute to avoid per-batch BiGRU
+    # Skip for gnn_only — model has no protein encoder and ignores protein_emb.
+    if emb.ndim == 3 and args.model != 'gnn_only':   # full residue embeddings — precompute to avoid per-batch BiGRU
         import json as _json
         with open(os.path.join(DATA_DIR, "protein_embeddings",
                                f"{args.dataset}_protein_ids.json")) as f:
