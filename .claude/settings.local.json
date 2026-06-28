@@ -62,7 +62,24 @@
       "PowerShell(Invoke-RestMethod -Uri \"https://api.github.com\" -Method Get | Select-Object -First 3)",
       "PowerShell(& \"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" auth status)",
       "PowerShell(& \"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" repo list --limit 5)",
-      "PowerShell(git add *)"
+      "PowerShell(git add *)",
+      "PowerShell(Get-Item \"C:\\\\Users\\\\Jamila\\\\Modeling-DTI\\\\Dataset\\\\raw\\\\bindingdb\\\\BindingDB_All.tsv\" | Select-Object Name, @{N='SizeMB';E={[math]::Round\\($_.Length/1MB,1\\)}})",
+      "PowerShell(Test-Path *)",
+      "PowerShell(git rm *)",
+      "PowerShell(git push *)",
+      "Bash(/c/Users/Jamila/anaconda3/python.exe 12_preprocess_labels.py)",
+      "Bash(/c/Users/Jamila/anaconda3/python.exe 13_preprocess_splits.py)",
+      "Bash(/c/Users/Jamila/anaconda3/python.exe *)",
+      "PowerShell(\\(Get-Command python\\).Source)",
+      "PowerShell(& \"C:\\\\Users\\\\Jamila\\\\anaconda3\\\\python.exe\" -c \"import torch; print\\('PyTorch:', torch.__version__\\); print\\('CUDA:', torch.cuda.is_available\\(\\)\\)\")",
+      "PowerShell(Set-Location *)",
+      "PowerShell(Set-Location \"C:\\\\Users\\\\Jamila\\\\Modeling-DTI\"; & powershell -File \"run_phase5.ps1\")",
+      "PowerShell(Set-Location \"C:\\\\Users\\\\Jamila\\\\Modeling-DTI\"; & powershell -File \"run_statistical.ps1\")",
+      "WebSearch",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(git add *)",
+      "Bash(git rm *)"
     ]
   }
 }
