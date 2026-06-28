@@ -130,6 +130,47 @@ Secondary: **AUPRC** (area under precision-recall curve), **F1-score**.
 
 ---
 
+### 3.4 Cross-Dataset Generalisation: luo\_17 → yamanishi\_e
+
+**Research question:** Can H-GNN-RNN-DTI trained on one DTI benchmark transfer its predictions to a completely different benchmark without fine-tuning?
+
+**Setup:**
+- **Train / Val:** luo\_17 random split, fold 0 (train = 2,769 pairs, val = 308 pairs; 708 DrugBank drugs, 1,512 UniProt proteins)
+- **Test:** ALL of yamanishi\_e (896 pairs; 68 drugs, 26 enzymes — zero overlap with luo\_17 drugs or proteins)
+- Protein embeddings: luo\_17 uses ESM-2 650M (1,280-dim, projected to 320 inside model); yamanishi\_e uses ESM-2 8M (320-dim, bypasses projection at test time)
+- 5 random seeds, same training hyperparameters
+
+#### Table 5. Cross-dataset AUROC — luo\_17 → yamanishi\_e (5 seeds)
+
+| Seed | AUROC | AUPRC | F1 | Best epoch |
+|---|---|---|---|---|
+| 1 | 0.5005 | 0.4957 | 0.659 | 40 |
+| 2 | 0.4992 | 0.4896 | 0.074 | 29 |
+| 3 | 0.5420 | 0.5482 | 0.596 | 32 |
+| 4 | 0.5137 | 0.5249 | 0.459 | 42 |
+| 5 | 0.4828 | 0.4927 | 0.106 | 86 |
+| **Mean ± std** | **0.508 ± 0.020** | **0.510 ± 0.023** | **0.379 ± 0.245** | — |
+
+**Findings:**
+
+Cross-dataset AUROC of **0.508 ± 0.020** is indistinguishable from random (0.5). The model does not transfer DTI predictions from luo\_17 to yamanishi\_e.
+
+This is the expected and interpretable result. H-GNN-RNN-DTI is a **discriminative model**: it learns which specific drug molecular graphs and protein ESM-2 embeddings correspond to interactions in the training distribution. There is zero drug–protein overlap between luo\_17 (DrugBank small molecules + UniProt human proteins) and yamanishi\_e (enzyme substrate inhibitors + 26 specific enzyme targets). Without any shared molecular scaffolds or protein families to anchor a representation, the model has no basis for cross-dataset transfer.
+
+**Notable:** F1 variance across seeds is extreme (±0.245) — some seeds collapse to biased constant-positive/negative predictors. The AUROC (rank-based) correctly reflects near-chance performance regardless of threshold.
+
+**Comparison to in-domain performance:**
+
+| Setting | AUROC |
+|---|---|
+| luo\_17 random (in-domain) | **0.946 ± 0.005** |
+| yamanishi\_e random (in-domain) | **0.756 ± 0.112** |
+| luo\_17 → yamanishi\_e (cross-dataset) | 0.508 ± 0.020 |
+
+The gap quantifies how much predictive power is dataset-specific. This motivates **dataset-specific pre-training or transfer learning** as a future direction to bridge DTI benchmarks.
+
+---
+
 ## 4. Discussion
 
 ### 4.1 When Gated Cross-Attention Helps
@@ -268,6 +309,7 @@ A key architectural distinction emerges from the external comparisons:
 | Inductive architecture | Full cold-start generalisation — GSRF-DTI cold\_target: 0.362, ours: 0.778 |
 | Cold-drug performance | Leads on luo\_17 all splits; matches DTKGIN cold\_drug (0.774 vs 0.747) with much lower variance |
 | Stability | Consistently low std across seeds (e.g., cold\_drug ±0.009 vs. DTKGIN ±0.100) |
+| Cross-dataset transfer | 0.508 ± 0.020 AUROC (≈ random) — confirms model is discriminative, not generative; motivates future pre-training work |
 
 ---
 
