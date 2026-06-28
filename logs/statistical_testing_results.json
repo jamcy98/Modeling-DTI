@@ -1,0 +1,111 @@
+﻿{
+    "date":  "2026-06-28",
+    "conclusion":  "hgnn_rnn_dti significantly outperforms concat_baseline on 3/8 configs (yamanishi_e random/cold_drug/cold_pair). concat_baseline significantly better on luo_17 cold_target. No significant difference on luo_17 random/cold_drug/cold_pair. Cross-attention advantage clearest on small datasets.",
+    "description":  "Phase 5.4 Statistical Testing: hgnn_rnn_dti vs concat_baseline, 5 seeds, paired t-test (df=4)",
+    "seeds":  [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+              ],
+    "results":  [
+                    {
+                        "dataset":  "yamanishi_e",
+                        "concat_auroc_std":  0.0932,
+                        "p":  "\u003c 0.05",
+                        "t_stat":  3.47,
+                        "concat_auroc_mean":  0.5592,
+                        "sig":  true,
+                        "split":  "random",
+                        "hgnn_auroc_mean":  0.756,
+                        "delta":  0.1968,
+                        "hgnn_auroc_std":  0.1251
+                    },
+                    {
+                        "dataset":  "yamanishi_e",
+                        "concat_auroc_std":  0.0414,
+                        "p":  "\u003c 0.01",
+                        "t_stat":  6.55,
+                        "concat_auroc_mean":  0.638,
+                        "sig":  true,
+                        "split":  "cold_drug",
+                        "hgnn_auroc_mean":  0.7744,
+                        "delta":  0.1364,
+                        "hgnn_auroc_std":  0.0113
+                    },
+                    {
+                        "dataset":  "yamanishi_e",
+                        "concat_auroc_std":  0.1233,
+                        "p":  "n.s.",
+                        "t_stat":  0.54,
+                        "concat_auroc_mean":  0.4153,
+                        "sig":  false,
+                        "split":  "cold_target",
+                        "hgnn_auroc_mean":  0.438,
+                        "delta":  0.0228,
+                        "hgnn_auroc_std":  0.0445
+                    },
+                    {
+                        "dataset":  "yamanishi_e",
+                        "concat_auroc_std":  0.0213,
+                        "p":  "\u003c 0.05",
+                        "t_stat":  3.82,
+                        "concat_auroc_mean":  0.6308,
+                        "sig":  true,
+                        "split":  "cold_pair",
+                        "hgnn_auroc_mean":  0.7458,
+                        "delta":  0.115,
+                        "hgnn_auroc_std":  0.054
+                    },
+                    {
+                        "dataset":  "luo_17",
+                        "concat_auroc_std":  0.0044,
+                        "p":  "n.s.",
+                        "t_stat":  -1.25,
+                        "concat_auroc_mean":  0.9478,
+                        "sig":  false,
+                        "split":  "random",
+                        "hgnn_auroc_mean":  0.9462,
+                        "delta":  -0.0016,
+                        "hgnn_auroc_std":  0.0052
+                    },
+                    {
+                        "dataset":  "luo_17",
+                        "concat_auroc_std":  0.0062,
+                        "p":  "n.s.",
+                        "t_stat":  1.18,
+                        "concat_auroc_mean":  0.907,
+                        "sig":  false,
+                        "split":  "cold_drug",
+                        "hgnn_auroc_mean":  0.9131,
+                        "delta":  0.0061,
+                        "hgnn_auroc_std":  0.0087
+                    },
+                    {
+                        "dataset":  "luo_17",
+                        "concat_auroc_std":  0.0126,
+                        "p":  "\u003c 0.01",
+                        "t_stat":  -4.79,
+                        "concat_auroc_mean":  0.8125,
+                        "sig":  true,
+                        "hgnn_worse":  true,
+                        "split":  "cold_target",
+                        "hgnn_auroc_mean":  0.7777,
+                        "delta":  -0.0348,
+                        "hgnn_auroc_std":  0.0135
+                    },
+                    {
+                        "dataset":  "luo_17",
+                        "concat_auroc_std":  0.0054,
+                        "p":  "n.s.",
+                        "t_stat":  1.64,
+                        "concat_auroc_mean":  0.9433,
+                        "sig":  false,
+                        "split":  "cold_pair",
+                        "hgnn_auroc_mean":  0.9478,
+                        "delta":  0.0045,
+                        "hgnn_auroc_std":  0.0022
+                    }
+                ]
+}

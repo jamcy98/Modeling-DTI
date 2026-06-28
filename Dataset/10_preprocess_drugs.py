@@ -154,6 +154,17 @@ class ChemBERTaEncoder:
         return results
 
 
+# ── PubChem helper ───────────────────────────────────────────────────────────
+
+def _smiles_from_props(props):
+    """Extract SMILES from PubChem PropertyTable Properties dict.
+    PubChem returns varying key names depending on the compound type."""
+    for key in ("CanonicalSMILES", "IsomericSMILES", "SMILES", "ConnectivitySMILES"):
+        if key in props:
+            return props[key]
+    return None
+
+
 # ── Dataset-specific SMILES loaders ──────────────────────────────────────────
 
 def load_davis_smiles():
@@ -170,59 +181,248 @@ def load_kiba_smiles():
     return data
 
 
-def load_bindingdb_smiles():
-    dti_path = os.path.join(RAW_DIR, "bindingdb", "BindingDB_DTI.csv")
-    df = pd.read_csv(dti_path)
-    return {row["smiles"]: row["smiles"] for _, row in df.iterrows()}
+def load_yamanishi_smiles(subclass):
+    """Load unique drug SMILES from Yamanishi pairs.csv."""
+    path = os.path.join(RAW_DIR, "yamanishi_08", subclass, "pairs.csv")
+    df   = pd.read_csv(path, usecols=["drug_id", "smiles"]).dropna().drop_duplicates("drug_id")
+    return dict(zip(df["drug_id"], df["smiles"]))
 
 
-def load_chembl_smiles():
-    path = os.path.join(RAW_DIR, "chembl", "chembl_DTI.csv")
-    df   = pd.read_csv(path)
-    return {row["smiles"]: row["smiles"] for _, row in df.iterrows()}
+def load_luo17_smiles():
+    """
+    DrugBank IDs (e.g. DB00001:Lepirudin) -> SMILES via PubChem name search.
+    Results are cached in raw/luo_17/drug_smiles_cache.json to avoid re-fetching.
+    Biologics without SMILES (antibodies, proteins) are skipped automatically.
+    """
+    import requests, time
+    map_path   = os.path.join(RAW_DIR, "luo_17", "drug_dict_map.txt")
+    cache_path = os.path.join(RAW_DIR, "luo_17", "drug_smiles_cache.json")
+
+    # Load cache
+    cache = {}
+    if os.path.exists(cache_path):
+        with open(cache_path) as f:
+            cache = json.load(f)
+
+    # Parse drug IDs and names
+    drugs = {}
+    with open(map_path) as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            drug_id, *name_parts = line.split(":")
+            drugs[drug_id.strip()] = ":".join(name_parts).strip()
+
+    smiles_map = {}
+    to_fetch   = [did for did in drugs if did not in cache]
+    print(f"  Luo_17: {len(drugs)} drugs, {len(to_fetch)} need PubChem lookup, "
+          f"{len(drugs) - len(to_fetch)} cached.")
+
+    for i, drug_id in enumerate(tqdm(to_fetch, desc="  PubChem (luo_17)")):
+        name = drugs[drug_id]
+        smi  = None
+        # Search PubChem by drug name; use _smiles_from_props to handle all key variants
+        for query in [name, drug_id]:
+            try:
+                r = requests.get(
+                    f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/"
+                    f"{requests.utils.quote(query)}"
+                    f"/property/CanonicalSMILES,IsomericSMILES/JSON",
+                    timeout=10)
+                if r.status_code == 200:
+                    props = r.json()["PropertyTable"]["Properties"][0]
+                    smi   = _smiles_from_props(props)
+                    if smi:
+                        break
+            except Exception:
+                pass
+            time.sleep(0.1)
+
+        cache[drug_id] = smi
+        if (i + 1) % 200 == 0:
+            with open(cache_path, "w") as f:
+                json.dump(cache, f)
+
+    with open(cache_path, "w") as f:
+        json.dump(cache, f)
+
+    smiles_map = {did: smi for did, smi in cache.items() if smi}
+    print(f"  Luo_17: {len(smiles_map)}/{len(drugs)} drugs resolved to SMILES "
+          f"({len(drugs)-len(smiles_map)} biologics/unfound skipped).")
+    return smiles_map
 
 
 DATASET_LOADERS = {
-    # DAVIS and KIBA: small, fast on CPU — run now
-    "davis":     load_davis_smiles,
-    "kiba":      load_kiba_smiles,
-    # BindingDB (~1.3M drugs) and ChEMBL (~935K drugs): need GPU or overnight run
-    # Uncomment when GPU is available or running batch overnight
-    # "bindingdb": load_bindingdb_smiles,
-    # "chembl":    load_chembl_smiles,
+    "davis":          load_davis_smiles,
+    "kiba":           load_kiba_smiles,
+    "luo_17":         load_luo17_smiles,
+    "yamanishi_e":    lambda: load_yamanishi_smiles("e"),
+    "yamanishi_ic":   lambda: load_yamanishi_smiles("ic"),
+    "yamanishi_gpcr": lambda: load_yamanishi_smiles("gpcr"),
+    "yamanishi_nr":   lambda: load_yamanishi_smiles("nr"),
+}
+
+# Large datasets processed via streaming (CSV path only — not loaded into memory)
+LARGE_DATASET_PATHS = {
+    "bindingdb": (os.path.join("raw", "bindingdb", "BindingDB_DTI.csv"), "smiles"),
+    "chembl":    (os.path.join("raw", "chembl",    "chembl_DTI.csv"),    "smiles"),
 }
 
 
 # ── Main processing ───────────────────────────────────────────────────────────
 
-def process_dataset(name, smiles_dict, encoder):
+CHECKPOINT_INTERVAL = 5000   # save partial graphs every N drugs for large datasets
+STREAM_CHUNK_SIZE   = 10000  # rows per chunk for BindingDB / ChEMBL streaming
+
+
+def process_dataset(name, smiles_dict, encoder, out_path):
     print(f"\nProcessing {name} ({len(smiles_dict):,} drugs)...")
-    graphs = {}
+
+    # Load existing checkpoint if present (allows resume after interruption)
+    ckpt_path = out_path.replace(".pt", "_ckpt.pt")
+    graphs    = torch.load(ckpt_path) if os.path.exists(ckpt_path) else {}
+    already   = set(graphs.keys())
+    remaining = {did: smi for did, smi in smiles_dict.items() if did not in already}
+    if already:
+        print(f"  Resuming from checkpoint: {len(already):,} done, "
+              f"{len(remaining):,} remaining.")
+
     failed = []
 
-    # Get ChemBERTa embeddings for all SMILES in one batched pass
-    unique_smiles = list(set(smiles_dict.values()))
-    print(f"  Getting ChemBERTa embeddings for {len(unique_smiles)} unique SMILES...")
-    emb_map = encoder.encode_batch(unique_smiles)
+    # ChemBERTa embeddings in batches
+    unique_smiles = list({smi for smi in remaining.values()
+                          if smi not in {g.smiles for g in graphs.values()
+                                         if hasattr(g, 'smiles')}})
+    if unique_smiles:
+        print(f"  Getting ChemBERTa embeddings for {len(unique_smiles):,} unique SMILES...")
+        emb_map = encoder.encode_batch(unique_smiles)
+    else:
+        emb_map = {}
 
-    for drug_id, smiles in tqdm(smiles_dict.items(), desc=f"  Building graphs"):
+    for i, (drug_id, smiles) in enumerate(
+            tqdm(remaining.items(), desc=f"  Building graphs ({name})")):
         graph = smiles_to_graph(smiles)
         if graph is None:
             failed.append(drug_id)
             continue
 
-        # Append ChemBERTa CLS embedding as graph-level feature
-        global_emb    = emb_map.get(smiles)
+        global_emb = emb_map.get(smiles)
         if global_emb is not None:
             graph.chemberta = torch.tensor(global_emb, dtype=torch.float).unsqueeze(0)
 
         graphs[drug_id] = graph
 
+        # Periodic checkpoint for large datasets
+        if (i + 1) % CHECKPOINT_INTERVAL == 0:
+            torch.save(graphs, ckpt_path)
+            print(f"    Checkpoint saved ({len(graphs):,} graphs).")
+
     print(f"  Successful: {len(graphs):,}  |  Failed (invalid SMILES): {len(failed)}")
     if failed:
-        print(f"  Failed drug IDs: {failed[:10]}{'...' if len(failed)>10 else ''}")
+        print(f"  Failed: {failed[:10]}{'...' if len(failed) > 10 else ''}")
+
+    # Remove checkpoint on clean completion
+    if os.path.exists(ckpt_path):
+        os.remove(ckpt_path)
 
     return graphs
+
+
+# Map dataset names to their raw data subdirectories for existence checks
+RAW_CHECK_MAP = {
+    "davis":          "davis",
+    "kiba":           "kiba",
+    "luo_17":         "luo_17",
+    "yamanishi_e":    os.path.join("yamanishi_08", "e"),
+    "yamanishi_ic":   os.path.join("yamanishi_08", "ic"),
+    "yamanishi_gpcr": os.path.join("yamanishi_08", "gpcr"),
+    "yamanishi_nr":   os.path.join("yamanishi_08", "nr"),
+    "bindingdb":      "bindingdb",
+    "chembl":         "chembl",
+}
+
+
+def process_dataset_streaming(name, csv_path, smiles_col, encoder, out_path):
+    """
+    Memory-safe processor for large datasets (BindingDB, ChEMBL).
+    Saves one .pt file per chunk to avoid accumulating millions of objects in RAM.
+    Final output is a manifest JSON listing the chunk files.
+    """
+    chunk_dir = out_path.replace(".pt", "_chunks")
+    os.makedirs(chunk_dir, exist_ok=True)
+    manifest_path = out_path.replace(".pt", "_manifest.json")
+
+    # Load manifest to resume
+    manifest = {}
+    if os.path.exists(manifest_path):
+        with open(manifest_path) as f:
+            manifest = json.load(f)
+
+    seen   = set(manifest.get("seen_smiles", []))
+    failed = set(manifest.get("failed_smiles", []))
+    chunk_n = manifest.get("last_chunk", 0)
+
+    print(f"\nProcessing {name} (streaming {STREAM_CHUNK_SIZE:,}/chunk -> separate files)...")
+    if seen:
+        print(f"  Resuming: {len(seen):,} SMILES already processed, "
+              f"{chunk_n} chunks saved.")
+
+    total_graphs = manifest.get("total_graphs", 0)
+
+    for chunk in pd.read_csv(csv_path, usecols=[smiles_col],
+                              chunksize=STREAM_CHUNK_SIZE):
+        chunk_n += 1
+        chunk_file = os.path.join(chunk_dir, f"chunk_{chunk_n:04d}.pt")
+        if os.path.exists(chunk_file):
+            continue   # already processed this chunk
+
+        new_smiles = (chunk[smiles_col].dropna()
+                                       .drop_duplicates()
+                                       .tolist())
+        new_smiles = [s for s in new_smiles if s not in seen and s not in failed]
+        if not new_smiles:
+            continue
+
+        emb_map     = encoder.encode_batch(new_smiles)
+        chunk_graphs = {}
+
+        for smiles in new_smiles:
+            graph = smiles_to_graph(smiles)
+            if graph is None:
+                failed.add(smiles)
+                continue
+            emb = emb_map.get(smiles)
+            if emb is not None:
+                graph.chemberta = torch.tensor(emb, dtype=torch.float).unsqueeze(0)
+            chunk_graphs[smiles] = graph
+            seen.add(smiles)
+
+        # Save this chunk and free memory immediately
+        torch.save(chunk_graphs, chunk_file)
+        total_graphs += len(chunk_graphs)
+        del chunk_graphs, emb_map
+
+        # Update manifest
+        manifest = {
+            "chunk_files":    sorted(os.listdir(chunk_dir)),
+            "last_chunk":     chunk_n,
+            "total_graphs":   total_graphs,
+            "total_failed":   len(failed),
+            "seen_smiles":    list(seen),
+            "failed_smiles":  list(failed),
+        }
+        with open(manifest_path, "w") as f:
+            json.dump(manifest, f)
+
+        print(f"  Chunk {chunk_n:04d}: +{len(chunk_graphs) if 'chunk_graphs' in dir() else 0:,} "
+              f"| total: {total_graphs:,} | failed: {len(failed):,}")
+
+    print(f"  {name} complete: {total_graphs:,} graphs in {chunk_n} chunk files.")
+    print(f"  Chunks saved in: {chunk_dir}")
+    print(f"  Manifest: {manifest_path}")
+    # Return manifest path as signal of completion (caller saves manifest, not .pt)
+    return None
 
 
 def main():
@@ -230,27 +430,47 @@ def main():
     print(" Drug Preprocessing (SMILES -> Graphs + ChemBERTa)")
     print("=" * 55)
 
+    os.makedirs(OUT_DIR, exist_ok=True)
     encoder = ChemBERTaEncoder()
 
+    # ── Standard datasets (fit in memory) ────────────────────────────────────
     for name, loader_fn in DATASET_LOADERS.items():
-        raw_check = os.path.join(RAW_DIR, name if name not in ("bindingdb","chembl")
-                                 else name)
+        raw_sub   = RAW_CHECK_MAP.get(name, name)
+        raw_check = os.path.join(RAW_DIR, raw_sub)
         if not os.path.isdir(raw_check) or not os.listdir(raw_check):
-            print(f"\nSkipping {name} — raw data not found. Run download script first.")
+            print(f"\nSkipping {name} — raw data not found.")
             continue
 
         out_path = os.path.join(OUT_DIR, f"{name}_drug_graphs.pt")
         if os.path.exists(out_path):
-            print(f"\n{name} graphs already exist at {out_path} — skipping.")
+            print(f"\n{name}: graphs already exist — skipping.")
             continue
 
         try:
             smiles_dict = loader_fn()
-            graphs      = process_dataset(name, smiles_dict, encoder)
+            if not smiles_dict:
+                print(f"\n{name}: no SMILES loaded — skipping.")
+                continue
+            graphs = process_dataset(name, smiles_dict, encoder, out_path)
             torch.save(graphs, out_path)
             print(f"  Saved -> {out_path}")
         except FileNotFoundError as e:
             print(f"\n  WARNING: Could not load {name}: {e}")
+
+    # ── Large datasets (streamed chunk-by-chunk) ──────────────────────────────
+    for name, (rel_csv, smiles_col) in LARGE_DATASET_PATHS.items():
+        csv_path  = os.path.join(BASE_DIR, rel_csv)
+        out_path  = os.path.join(OUT_DIR, f"{name}_drug_graphs.pt")
+
+        if not os.path.exists(csv_path):
+            print(f"\nSkipping {name} — CSV not found: {csv_path}")
+            continue
+        if os.path.exists(out_path):
+            print(f"\n{name}: graphs already exist — skipping.")
+            continue
+
+        process_dataset_streaming(name, csv_path, smiles_col, encoder, out_path)
+        print(f"  Done -> chunks in {out_path.replace('.pt','_chunks/')}")
 
     print("\nDone. Run 11_preprocess_proteins.py next.")
 

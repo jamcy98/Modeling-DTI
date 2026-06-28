@@ -1,0 +1,152 @@
+﻿[
+    {
+        "model":  "concat_baseline",
+        "dataset":  "luo_17",
+        "split":  "cold_drug",
+        "fold":  0,
+        "auroc":  0.8989,
+        "auprc":  0.8494,
+        "acc":  0.8503,
+        "f1":  0.8066
+    },
+    {
+        "model":  "hgnn_rnn_dti",
+        "dataset":  "luo_17",
+        "split":  "cold_drug",
+        "fold":  0,
+        "auroc":  0.9199,
+        "auprc":  0.8867,
+        "acc":  0.8439,
+        "f1":  0.8048
+    },
+    {
+        "model":  "hgnn_rnn_dti",
+        "dataset":  "luo_17",
+        "split":  "cold_pair",
+        "fold":  0,
+        "auroc":  0.9532,
+        "auprc":  0.9464,
+        "acc":  0.8846,
+        "f1":  0.8691
+    },
+    {
+        "model":  "concat_baseline",
+        "dataset":  "luo_17",
+        "split":  "cold_target",
+        "fold":  0,
+        "auroc":  0.8063,
+        "auprc":  0.7089,
+        "acc":  0.6774,
+        "f1":  0.4382
+    },
+    {
+        "model":  "hgnn_rnn_dti",
+        "dataset":  "luo_17",
+        "split":  "cold_target",
+        "fold":  0,
+        "auroc":  0.811,
+        "auprc":  0.7461,
+        "acc":  0.7226,
+        "f1":  0.5222
+    },
+    {
+        "model":  "concat_baseline",
+        "dataset":  "luo_17",
+        "split":  "random",
+        "fold":  0,
+        "auroc":  0.9416,
+        "auprc":  0.9298,
+        "acc":  0.8496,
+        "f1":  0.8271
+    },
+    {
+        "model":  "hgnn_rnn_dti",
+        "dataset":  "luo_17",
+        "split":  "random",
+        "fold":  0,
+        "auroc":  0.9478,
+        "auprc":  0.95,
+        "acc":  0.885,
+        "f1":  0.877
+    },
+    {
+        "model":  "concat_baseline",
+        "dataset":  "yamanishi_e",
+        "split":  "cold_drug",
+        "fold":  0,
+        "auroc":  0.5866,
+        "auprc":  0.6316,
+        "acc":  0.5269,
+        "f1":  0.1852
+    },
+    {
+        "model":  "hgnn_rnn_dti",
+        "dataset":  "yamanishi_e",
+        "split":  "cold_drug",
+        "fold":  0,
+        "auroc":  0.756,
+        "auprc":  0.7823,
+        "acc":  0.6667,
+        "f1":  0.6517
+    },
+    {
+        "model":  "concat_baseline",
+        "dataset":  "yamanishi_e",
+        "split":  "cold_pair",
+        "fold":  0,
+        "auroc":  0.6281,
+        "auprc":  0.5419,
+        "acc":  0.5588,
+        "f1":  0
+    },
+    {
+        "model":  "hgnn_rnn_dti",
+        "dataset":  "yamanishi_e",
+        "split":  "cold_pair",
+        "fold":  0,
+        "auroc":  0.5805,
+        "auprc":  0.5761,
+        "acc":  0.5588,
+        "f1":  0
+    },
+    {
+        "model":  "concat_baseline",
+        "dataset":  "yamanishi_e",
+        "split":  "cold_target",
+        "fold":  0,
+        "auroc":  0.5724,
+        "auprc":  0.4754,
+        "acc":  0.6429,
+        "f1":  0
+    },
+    {
+        "model":  "hgnn_rnn_dti",
+        "dataset":  "yamanishi_e",
+        "split":  "cold_target",
+        "fold":  0,
+        "auroc":  0.48,
+        "auprc":  0.3421,
+        "acc":  0.4571,
+        "f1":  0.1364
+    },
+    {
+        "model":  "concat_baseline",
+        "dataset":  "yamanishi_e",
+        "split":  "random",
+        "fold":  0,
+        "auroc":  0.5017,
+        "auprc":  0.4988,
+        "acc":  0.5,
+        "f1":  0
+    },
+    {
+        "model":  "hgnn_rnn_dti",
+        "dataset":  "yamanishi_e",
+        "split":  "random",
+        "fold":  0,
+        "auroc":  0.7874,
+        "auprc":  0.7646,
+        "acc":  0.7143,
+        "f1":  0.7073
+    }
+]

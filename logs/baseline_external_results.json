@@ -1,0 +1,89 @@
+﻿{
+    "date":  "2026-06-28",
+    "gsrf_dti":  {
+                     "published_target":  {
+                                              "split":  "random_5fold",
+                                              "note":  "Zhu et al. 2024, BMC Biology, their own preprocessing + 5-fold CV on full DrugBank KG (1M+ nodes)",
+                                              "auroc":  0.9818
+                                          },
+                     "note":  "Re-implementation: GraphSAGE on DDI+PPI+DTI network + Random Forest. Drug features: mean-pooled atom features (65-dim). Protein features: mean-pooled ESM-2 (1280-dim). 2-layer SAGEConv, hidden=256. n_trees=200.",
+                     "dataset":  "luo_17",
+                     "results":  [
+                                     {
+                                         "auroc_mean":  0.767,
+                                         "auroc_std":  0.053,
+                                         "split":  "random",
+                                         "auprc_mean":  0.9858,
+                                         "auprc_std":  0.0049
+                                     },
+                                     {
+                                         "auroc_mean":  0.775,
+                                         "auroc_std":  0.047,
+                                         "split":  "cold_drug",
+                                         "auprc_mean":  0.988,
+                                         "auprc_std":  0.003
+                                     },
+                                     {
+                                         "split":  "cold_target",
+                                         "auroc_mean":  0.362,
+                                         "note":  "Fails: transductive model cannot embed unseen proteins",
+                                         "auprc_std":  0.0183,
+                                         "auroc_std":  0.055,
+                                         "auprc_mean":  0.8969
+                                     },
+                                     {
+                                         "auroc_mean":  0.859,
+                                         "auroc_std":  0.016,
+                                         "split":  "cold_pair",
+                                         "auprc_mean":  0.9929,
+                                         "auprc_std":  0.0011
+                                     }
+                                 ]
+                 },
+    "description":  "Phase 3 External Baseline Evaluation (GSRF-DTI on luo_17, DTKGIN on yamanishi_e), 3 seeds",
+    "seeds":  [
+                  1,
+                  2,
+                  3
+              ],
+    "dtkgin":  {
+                   "published_target":  {
+                                            "split":  "cold_drug",
+                                            "auprc":  0.753,
+                                            "note":  "Luo et al. 2024, Methods, yamanishi_08 cold-drug",
+                                            "auroc":  0.894
+                                        },
+                   "note":  "Re-implementation: GNN on KG (DTI + drug structural similarity + protein sequence similarity edges). Drug features: mean-pooled atom features. Protein features: mean-pooled ESM-2. 2-layer SAGEConv + intent residual, inner product scoring.",
+                   "dataset":  "yamanishi_e",
+                   "results":  [
+                                   {
+                                       "auroc_mean":  0.869,
+                                       "auroc_std":  0.011,
+                                       "split":  "random",
+                                       "auprc_mean":  0.903,
+                                       "auprc_std":  0.01
+                                   },
+                                   {
+                                       "auroc_mean":  0.747,
+                                       "auroc_std":  0.1,
+                                       "split":  "cold_drug",
+                                       "auprc_mean":  0.8047,
+                                       "auprc_std":  0.098
+                                   },
+                                   {
+                                       "auroc_mean":  0.557,
+                                       "auroc_std":  0.082,
+                                       "split":  "cold_target",
+                                       "auprc_mean":  0.4644,
+                                       "auprc_std":  0.067
+                                   },
+                                   {
+                                       "auroc_mean":  0.863,
+                                       "auroc_std":  0.015,
+                                       "split":  "cold_pair",
+                                       "auprc_mean":  0.871,
+                                       "auprc_std":  0.013
+                                   }
+                               ]
+               }
+}

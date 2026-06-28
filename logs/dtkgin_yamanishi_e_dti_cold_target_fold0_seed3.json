@@ -1,0 +1,11 @@
+{
+  "model": "dtkgin",
+  "dataset": "yamanishi_e",
+  "split": "cold_target",
+  "seed": 3,
+  "test_metrics": {
+    "auroc": 0.649,
+    "auprc": 0.5394,
+    "f1": 0.1481
+  }
+}

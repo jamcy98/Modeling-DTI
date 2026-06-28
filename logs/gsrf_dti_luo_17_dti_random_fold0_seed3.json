@@ -1,0 +1,16 @@
+{
+  "model": "gsrf_dti",
+  "dataset": "luo_17",
+  "split": "random",
+  "seed": 3,
+  "val_metrics": {
+    "auroc": 0.884,
+    "auprc": 0.994,
+    "f1": 0.9653
+  },
+  "test_metrics": {
+    "auroc": 0.817,
+    "auprc": 0.9903,
+    "f1": 0.9637
+  }
+}

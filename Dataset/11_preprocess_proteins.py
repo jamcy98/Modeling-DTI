@@ -33,9 +33,9 @@ BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
 RAW_DIR   = os.path.join(BASE_DIR, "raw")
 OUT_DIR   = os.path.join(BASE_DIR, "processed", "protein_embeddings")
 
-ESM2_MODEL   = "facebook/esm2_t33_650M_UR50D"
+ESM2_MODEL   = "facebook/esm2_t6_8M_UR50D"   # 8M params, 320-dim, ~50MB RAM
 MAX_SEQ_LEN  = 1200    # truncate sequences longer than this
-BATCH_SIZE   = 4       # reduce to 1 or 2 if you run out of GPU memory
+BATCH_SIZE   = 16      # safe with small model
 
 
 # ── Dataset-specific sequence loaders ────────────────────────────────────────
@@ -52,94 +52,118 @@ def load_kiba_proteins():
         return json.load(f)
 
 
+def fetch_uniprot_sequences(uniprot_ids, cache_path=None):
+    """
+    Fetch protein sequences from UniProt REST API with caching.
+    cache_path: optional JSON file to persist results across runs.
+    """
+    import requests, time
+    cache = {}
+    if cache_path and os.path.exists(cache_path):
+        with open(cache_path) as f:
+            cache = json.load(f)
+
+    to_fetch = [uid for uid in uniprot_ids if uid not in cache]
+    print(f"  UniProt: {len(uniprot_ids)} proteins, "
+          f"{len(to_fetch)} to fetch, {len(uniprot_ids)-len(to_fetch)} cached.")
+
+    for i, uid in enumerate(tqdm(to_fetch, desc="  UniProt fetch")):
+        try:
+            r = requests.get(f"https://rest.uniprot.org/uniprotkb/{uid}.fasta",
+                             timeout=10)
+            if r.status_code == 200:
+                lines = r.text.strip().split("\n")
+                cache[uid] = "".join(lines[1:])
+            else:
+                cache[uid] = None
+        except Exception:
+            cache[uid] = None
+        time.sleep(0.05)
+        if cache_path and (i + 1) % 500 == 0:
+            with open(cache_path, "w") as f:
+                json.dump(cache, f)
+
+    if cache_path:
+        with open(cache_path, "w") as f:
+            json.dump(cache, f)
+
+    seqs = {uid: seq for uid, seq in cache.items() if seq}
+    print(f"  Successfully fetched {len(seqs)}/{len(uniprot_ids)} sequences.")
+    return seqs
+
+
 def load_yamanishi_proteins(subclass):
-    """
-    Load protein sequences from Yamanishi_08 sub-class.
-    The DTINet repo stores sequences in 'protein_sequences.txt' or similar.
-    Falls back to fetching from UniProt if file is not found.
-    """
-    seq_path = os.path.join(RAW_DIR, "yamanishi_08", subclass, "target_sequence.txt")
-    if not os.path.exists(seq_path):
-        seq_path = os.path.join(RAW_DIR, "yamanishi_08", subclass, "protein_sequences.txt")
+    """Load unique protein sequences directly from Yamanishi pairs.csv."""
+    import pandas as pd
+    path = os.path.join(RAW_DIR, "yamanishi_08", subclass, "pairs.csv")
+    df   = pd.read_csv(path, usecols=["protein_id", "sequence"]).dropna().drop_duplicates("protein_id")
+    return dict(zip(df["protein_id"], df["sequence"]))
 
-    if os.path.exists(seq_path):
-        proteins = {}
-        with open(seq_path) as f:
-            for line in f:
-                parts = line.strip().split("\t")
-                if len(parts) >= 2:
-                    proteins[parts[0]] = parts[1]
-        return proteins
 
-    # File not found — warn and return empty
-    print(f"    WARNING: Protein sequences not found for yamanishi_{subclass}.")
-    print(f"    Expected at: {seq_path}")
-    print(f"    Please download sequences manually from UniProt and save in that path.")
-    return {}
+def load_luo17_proteins():
+    """UniProt accessions from protein_dict_map.txt -> sequences via UniProt REST."""
+    map_path   = os.path.join(RAW_DIR, "luo_17", "protein_dict_map.txt")
+    cache_path = os.path.join(RAW_DIR, "luo_17", "protein_seq_cache.json")
+    ids = []
+    with open(map_path) as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                ids.append(line.split(":")[0].strip())
+    print(f"  Luo_17: {len(ids)} proteins.")
+    return fetch_uniprot_sequences(ids, cache_path=cache_path)
 
 
 def load_bindingdb_proteins():
-    import pandas as pd
-    dti_path = os.path.join(RAW_DIR, "bindingdb", "BindingDB_DTI.csv")
-    df = pd.read_csv(dti_path)
-    # BindingDB DTI file may not have sequences; protein_id is UniProt accession
-    # Sequences would need to be fetched from UniProt
-    if "protein_sequence" in df.columns:
-        return dict(zip(df["uniprot_id"], df["protein_sequence"]))
-    print("  NOTE: BindingDB file has no sequences. Fetching from UniProt...")
-    return fetch_uniprot_sequences(df["uniprot_id"].dropna().unique().tolist())
+    """
+    Load BindingDB protein sequences from pre-built cache.
+    Cache is built from BindingDB_All.tsv (column: BindingDB Target Chain Sequence 1)
+    which contains the actual sequences — no UniProt API needed.
+    Run: python -c "..." to rebuild cache if needed (see extraction script).
+    """
+    cache_path = os.path.join(RAW_DIR, "bindingdb", "protein_seq_cache.json")
+    if os.path.exists(cache_path):
+        with open(cache_path) as f:
+            seqs = json.load(f)
+        valid = {k: v for k, v in seqs.items() if v and len(v) > 0}
+        print(f"  BindingDB: {len(valid):,} proteins loaded from sequence cache.")
+        return valid
+    print("  BindingDB: no sequence cache found — run extraction script first.")
+    return {}
 
 
 def load_chembl_proteins():
     import pandas as pd
-    dta_path = os.path.join(RAW_DIR, "chembl", "chembl_DTA.csv")
-    df = pd.read_csv(dta_path)
-    if "protein_sequence" in df.columns:
-        return dict(zip(df["uniprot_id"], df["protein_sequence"]))
-    # ChEMBL SQLite query already returned sequences in column 'protein_sequence'
-    # but they were not saved in the CSV. Load from chembl_DTI.csv if available.
-    dti_path = os.path.join(RAW_DIR, "chembl", "chembl_DTI.csv")
-    if os.path.exists(dti_path):
-        df2 = pd.read_csv(dti_path)
-        if "protein_sequence" in df2.columns:
-            return dict(zip(df2["uniprot_id"], df2["protein_sequence"]))
-    print("  NOTE: Sequences not in ChEMBL CSV. Fetching from UniProt...")
-    return fetch_uniprot_sequences(df["uniprot_id"].dropna().unique().tolist())
+    cache_path = os.path.join(RAW_DIR, "chembl", "protein_seq_cache.json")
+    df  = pd.read_csv(os.path.join(RAW_DIR, "chembl", "chembl_DTI.csv"),
+                      usecols=["uniprot_id"]).dropna().drop_duplicates()
+    ids = df["uniprot_id"].tolist()
+    print(f"  ChEMBL: {len(ids)} unique proteins.")
+    return fetch_uniprot_sequences(ids, cache_path=cache_path)
 
 
-def fetch_uniprot_sequences(uniprot_ids, max_fetch=5000):
-    """Batch fetch protein sequences from the UniProt REST API."""
-    import requests
-    print(f"  Fetching {min(len(uniprot_ids), max_fetch)} sequences from UniProt...")
-    sequences = {}
-    ids_to_fetch = uniprot_ids[:max_fetch]
-
-    for uid in tqdm(ids_to_fetch, desc="  UniProt fetch"):
-        url = f"https://rest.uniprot.org/uniprotkb/{uid}.fasta"
-        try:
-            r = requests.get(url, timeout=10)
-            if r.status_code == 200:
-                lines = r.text.strip().split("\n")
-                seq   = "".join(lines[1:])   # skip header line
-                sequences[uid] = seq
-        except Exception:
-            pass
-
-    print(f"  Successfully fetched {len(sequences)} sequences.")
-    return sequences
-
+RAW_CHECK_MAP = {
+    "davis":          "davis",
+    "kiba":           "kiba",
+    "luo_17":         "luo_17",
+    "yamanishi_e":    os.path.join("yamanishi_08", "e"),
+    "yamanishi_ic":   os.path.join("yamanishi_08", "ic"),
+    "yamanishi_gpcr": os.path.join("yamanishi_08", "gpcr"),
+    "yamanishi_nr":   os.path.join("yamanishi_08", "nr"),
+    "bindingdb":      "bindingdb",
+    "chembl":         "chembl",
+}
 
 DATASET_LOADERS = {
-    # DAVIS and KIBA first — small and fast on CPU (~442 and ~229 proteins)
     "davis":           load_davis_proteins,
     "kiba":            load_kiba_proteins,
-    # Large datasets commented out — enable after confirming GPU or run overnight
-    # "yamanishi_e":     lambda: load_yamanishi_proteins("e"),
-    # "yamanishi_ic":    lambda: load_yamanishi_proteins("ic"),
-    # "yamanishi_gpcr":  lambda: load_yamanishi_proteins("gpcr"),
-    # "yamanishi_nr":    lambda: load_yamanishi_proteins("nr"),
-    # "bindingdb":       load_bindingdb_proteins,
-    # "chembl":          load_chembl_proteins,
+    "luo_17":          load_luo17_proteins,
+    "yamanishi_e":     lambda: load_yamanishi_proteins("e"),
+    "yamanishi_ic":    lambda: load_yamanishi_proteins("ic"),
+    "yamanishi_gpcr":  lambda: load_yamanishi_proteins("gpcr"),
+    "yamanishi_nr":    lambda: load_yamanishi_proteins("nr"),
+    "bindingdb":       load_bindingdb_proteins,
+    "chembl":          load_chembl_proteins,
 }
 
 
@@ -157,17 +181,17 @@ class ESM2Encoder:
         self.embed_dim = self.model.config.hidden_size   # 1280 for ESM-2 650M
 
     @torch.no_grad()
-    def encode(self, sequences, max_len=MAX_SEQ_LEN):
+    def encode(self, sequences, max_len=MAX_SEQ_LEN, mean_pool=False):
         """
         Encode a list of sequences.
-        Returns: numpy array of shape (n_seqs, max_len, embed_dim)
+
+        mean_pool=False: returns (n_seqs, max_len, embed_dim)  — full residue embeddings
+        mean_pool=True:  returns (n_seqs, embed_dim)           — mean-pooled, memory-safe
         """
         all_embeddings = []
 
         for i in range(0, len(sequences), BATCH_SIZE):
             batch_seqs = sequences[i : i + BATCH_SIZE]
-
-            # Truncate long sequences
             batch_seqs_trunc = [s[:max_len] for s in batch_seqs]
 
             tokens = self.tokenizer(
@@ -175,29 +199,39 @@ class ESM2Encoder:
                 return_tensors="pt",
                 padding=True,
                 truncation=True,
-                max_length=max_len + 2,   # +2 for [CLS] and [EOS] tokens
+                max_length=max_len + 2,
             ).to(self.device)
 
-            out        = self.model(**tokens)
-            hidden     = out.last_hidden_state  # (batch, seq_len+2, embed_dim)
+            out    = self.model(**tokens)
+            hidden = out.last_hidden_state       # (batch, seq_len+2, embed_dim)
 
-            # Remove [CLS] and [EOS] tokens; keep residue embeddings only
+            # Strip [CLS] and [EOS] tokens
             residue_emb = hidden[:, 1:-1, :]    # (batch, seq_len, embed_dim)
 
-            # Pad to max_len if shorter
-            seq_len = residue_emb.size(1)
-            if seq_len < max_len:
-                pad = torch.zeros(
-                    residue_emb.size(0), max_len - seq_len, self.embed_dim,
-                    device=self.device
-                )
-                residue_emb = torch.cat([residue_emb, pad], dim=1)
+            if mean_pool:
+                # Mean over residue dimension → (batch, embed_dim)
+                # Mask padding tokens so they don't affect the mean
+                attention = tokens["attention_mask"][:, 1:-1].unsqueeze(-1).float()
+                pooled    = (residue_emb * attention).sum(dim=1) / attention.sum(dim=1).clamp(min=1)
+                all_embeddings.append(pooled.cpu().numpy())
             else:
-                residue_emb = residue_emb[:, :max_len, :]
+                # Pad/truncate to fixed max_len
+                seq_len = residue_emb.size(1)
+                if seq_len < max_len:
+                    pad = torch.zeros(
+                        residue_emb.size(0), max_len - seq_len, self.embed_dim,
+                        device=self.device)
+                    residue_emb = torch.cat([residue_emb, pad], dim=1)
+                else:
+                    residue_emb = residue_emb[:, :max_len, :]
+                all_embeddings.append(residue_emb.cpu().numpy())
 
-            all_embeddings.append(residue_emb.cpu().numpy())
+        return np.concatenate(all_embeddings, axis=0)
 
-        return np.concatenate(all_embeddings, axis=0)   # (n_seqs, max_len, 1280)
+
+# Datasets with > this many proteins use mean-pooling to avoid OOM
+# (full residue arrays would exceed available RAM)
+MEAN_POOL_THRESHOLD = 1000
 
 
 # ── Main processing ───────────────────────────────────────────────────────────
@@ -209,26 +243,33 @@ def process_dataset(name, protein_dict, encoder):
 
     print(f"\nProcessing {name} ({len(protein_dict):,} proteins)...")
 
-    ids       = list(protein_dict.keys())
-    seqs      = [protein_dict[pid] for pid in ids]
+    ids   = list(protein_dict.keys())
+    seqs  = [protein_dict[pid] for pid in ids]
 
-    # Remove proteins with empty sequences
     valid = [(pid, seq) for pid, seq in zip(ids, seqs) if seq and len(seq) > 0]
     if len(valid) < len(ids):
         print(f"  Removed {len(ids) - len(valid)} proteins with empty sequences.")
     ids  = [v[0] for v in valid]
     seqs = [v[1] for v in valid]
 
-    print(f"  Encoding {len(seqs)} sequences with ESM-2 (max_len={MAX_SEQ_LEN})...")
-    print(f"  Sequence length stats:")
-    lengths = [len(s) for s in seqs]
-    print(f"    min={min(lengths)}, max={max(lengths)}, "
+    lengths   = [len(s) for s in seqs]
+    mean_pool = len(seqs) > MEAN_POOL_THRESHOLD
+
+    if mean_pool:
+        est_gb = len(seqs) * MAX_SEQ_LEN * encoder.embed_dim * 4 / 1e9
+        print(f"  Large dataset ({len(seqs):,} proteins) — using mean-pooling.")
+        print(f"  (Full residue arrays would require ~{est_gb:.1f} GB RAM.)")
+    else:
+        print(f"  Small dataset — storing full residue embeddings (max_len={MAX_SEQ_LEN}).")
+
+    print(f"  Sequence lengths: min={min(lengths)}, max={max(lengths)}, "
           f"mean={int(sum(lengths)/len(lengths))}, "
           f"truncated={sum(l > MAX_SEQ_LEN for l in lengths)}")
+    print(f"  Encoding {len(seqs):,} sequences with ESM-2...")
 
-    embeddings = encoder.encode(seqs)   # (n_proteins, MAX_SEQ_LEN, 1280)
+    embeddings = encoder.encode(seqs, mean_pool=mean_pool)
+    print(f"  Output shape: {embeddings.shape}")
 
-    # Save embeddings
     emb_path = os.path.join(OUT_DIR, f"{name}_protein_embeddings.npy")
     id_path  = os.path.join(OUT_DIR, f"{name}_protein_ids.json")
 
@@ -236,8 +277,8 @@ def process_dataset(name, protein_dict, encoder):
     with open(id_path, "w") as f:
         json.dump(ids, f)
 
-    print(f"  Embeddings saved -> {emb_path}  shape: {embeddings.shape}")
-    print(f"  IDs saved        -> {id_path}")
+    print(f"  Saved -> {emb_path}")
+    print(f"  IDs  -> {id_path}")
 
 
 def main():
@@ -245,12 +286,19 @@ def main():
     print(" Protein Preprocessing (Sequences -> ESM-2 Embeddings)")
     print("=" * 55)
 
+    os.makedirs(OUT_DIR, exist_ok=True)
     encoder = ESM2Encoder()
 
     for name, loader_fn in DATASET_LOADERS.items():
+        raw_sub   = RAW_CHECK_MAP.get(name, name)
+        raw_check = os.path.join(RAW_DIR, raw_sub)
+        if not os.path.isdir(raw_check) or not os.listdir(raw_check):
+            print(f"\nSkipping {name} — raw data not found.")
+            continue
+
         emb_path = os.path.join(OUT_DIR, f"{name}_protein_embeddings.npy")
         if os.path.exists(emb_path):
-            print(f"\n{name} embeddings already exist — skipping.")
+            print(f"\n{name}: embeddings already exist — skipping.")
             continue
 
         try:
@@ -259,7 +307,7 @@ def main():
         except FileNotFoundError as e:
             print(f"\nSkipping {name}: {e}")
 
-    print("\nDone. Run 12_preprocess_labels.py next.")
+    print("\nDone.")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,630 @@
+
+== GSRF-DTI (luo_17) ==
+
+== Run 1/24 : GSRF-DTI | luo_17 | random | seed 1 ==
+Loading adjacency matrices...
+Loading node features...
+Loading split: random...
+  Graph: 708 drugs + 1512 proteins = 2220 nodes
+  Edges: DDI=10036, PPI=7363, DTI-train=1615
+  Train=1615, Val=181, Test=201
+  Parameters: 371,329
+  Epoch   1 | loss=0.7426 | val_auroc=0.3540
+  Epoch  10 | loss=0.1536 | val_auroc=0.6366
+  Epoch  20 | loss=0.1017 | val_auroc=0.6973
+  Epoch  30 | loss=0.0684 | val_auroc=0.6149
+  Epoch  40 | loss=0.0425 | val_auroc=0.5788
+  Epoch  50 | loss=0.0297 | val_auroc=0.5679
+  Epoch  60 | loss=0.0199 | val_auroc=0.6019
+  Epoch  70 | loss=0.0147 | val_auroc=0.6178
+  Epoch  80 | loss=0.0137 | val_auroc=0.6149
+  Epoch  90 | loss=0.0132 | val_auroc=0.6185
+  Epoch 100 | loss=0.0115 | val_auroc=0.6113
+  Training Random Forest...
+
+==================================================
+  GSRF-DTI | luo_17 | random | seed=1
+  Val : auroc=0.8544  auprc=0.992  f1=0.9653
+  Test: auroc=0.7315  auprc=0.9845  f1=0.9637
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\gsrf_dti_luo_17_dti_random_fold0_seed1.json
+
+== Run 2/24 : GSRF-DTI | luo_17 | random | seed 2 ==
+Loading adjacency matrices...
+Loading node features...
+Loading split: random...
+  Graph: 708 drugs + 1512 proteins = 2220 nodes
+  Edges: DDI=10036, PPI=7363, DTI-train=1615
+  Train=1615, Val=181, Test=201
+  Parameters: 371,329
+  Epoch   1 | loss=0.5952 | val_auroc=0.5173
+  Epoch  10 | loss=0.1412 | val_auroc=0.7327
+  Epoch  20 | loss=0.0928 | val_auroc=0.7536
+  Epoch  30 | loss=0.0585 | val_auroc=0.6655
+  Epoch  40 | loss=0.0379 | val_auroc=0.6727
+  Epoch  50 | loss=0.0235 | val_auroc=0.6720
+  Epoch  60 | loss=0.0174 | val_auroc=0.6922
+  Epoch  70 | loss=0.0131 | val_auroc=0.6842
+  Epoch  80 | loss=0.0126 | val_auroc=0.6821
+  Epoch  90 | loss=0.0103 | val_auroc=0.6759
+  Epoch 100 | loss=0.0105 | val_auroc=0.6741
+  Training Random Forest...
+
+==================================================
+  GSRF-DTI | luo_17 | random | seed=2
+  Val : auroc=0.8905  auprc=0.9945  f1=0.9653
+  Test: auroc=0.7108  auprc=0.9794  f1=0.961
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\gsrf_dti_luo_17_dti_random_fold0_seed2.json
+
+== Run 3/24 : GSRF-DTI | luo_17 | random | seed 3 ==
+Loading adjacency matrices...
+Loading node features...
+Loading split: random...
+  Graph: 708 drugs + 1512 proteins = 2220 nodes
+  Edges: DDI=10036, PPI=7363, DTI-train=1615
+  Train=1615, Val=181, Test=201
+  Parameters: 371,329
+  Epoch   1 | loss=0.6590 | val_auroc=0.6134
+  Epoch  10 | loss=0.1435 | val_auroc=0.6828
+  Epoch  20 | loss=0.0963 | val_auroc=0.7608
+  Epoch  30 | loss=0.0633 | val_auroc=0.6871
+  Epoch  40 | loss=0.0416 | val_auroc=0.6084
+  Epoch  50 | loss=0.0298 | val_auroc=0.5997
+  Epoch  60 | loss=0.0220 | val_auroc=0.6243
+  Epoch  70 | loss=0.0168 | val_auroc=0.6546
+  Epoch  80 | loss=0.0135 | val_auroc=0.6604
+  Epoch  90 | loss=0.0125 | val_auroc=0.6568
+  Epoch 100 | loss=0.0132 | val_auroc=0.6561
+  Training Random Forest...
+
+==================================================
+  GSRF-DTI | luo_17 | random | seed=3
+  Val : auroc=0.884  auprc=0.994  f1=0.9653
+  Test: auroc=0.817  auprc=0.9903  f1=0.9637
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\gsrf_dti_luo_17_dti_random_fold0_seed3.json
+
+== Run 4/24 : GSRF-DTI | luo_17 | cold_drug | seed 1 ==
+Loading adjacency matrices...
+Loading node features...
+Loading split: cold_drug...
+  Graph: 708 drugs + 1512 proteins = 2220 nodes
+  Edges: DDI=10036, PPI=7363, DTI-train=1610
+  Train=1610, Val=195, Test=192
+  Parameters: 371,329
+  Epoch   1 | loss=0.7419 | val_auroc=0.2979
+  Epoch  10 | loss=0.1532 | val_auroc=0.2632
+  Epoch  20 | loss=0.1066 | val_auroc=0.4684
+  Epoch  30 | loss=0.0693 | val_auroc=0.6263
+  Epoch  40 | loss=0.0435 | val_auroc=0.6474
+  Epoch  50 | loss=0.0312 | val_auroc=0.7074
+  Epoch  60 | loss=0.0217 | val_auroc=0.7579
+  Epoch  70 | loss=0.0175 | val_auroc=0.7695
+  Epoch  80 | loss=0.0158 | val_auroc=0.7589
+  Epoch  90 | loss=0.0158 | val_auroc=0.7611
+  Epoch 100 | loss=0.0142 | val_auroc=0.7632
+  Training Random Forest...
+
+==================================================
+  GSRF-DTI | luo_17 | cold_drug | seed=1
+  Val : auroc=0.7137  auprc=0.9852  f1=0.9817
+  Test: auroc=0.7863  auprc=0.9885  f1=0.9786
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\gsrf_dti_luo_17_dti_cold_drug_fold0_seed1.json
+
+== Run 5/24 : GSRF-DTI | luo_17 | cold_drug | seed 2 ==
+Loading adjacency matrices...
+Loading node features...
+Loading split: cold_drug...
+  Graph: 708 drugs + 1512 proteins = 2220 nodes
+  Edges: DDI=10036, PPI=7363, DTI-train=1610
+  Train=1610, Val=195, Test=192
+  Parameters: 371,329
+  Epoch   1 | loss=0.5980 | val_auroc=0.5253
+  Epoch  10 | loss=0.1437 | val_auroc=0.2905
+  Epoch  20 | loss=0.0962 | val_auroc=0.3705
+  Epoch  30 | loss=0.0590 | val_auroc=0.4021
+  Epoch  40 | loss=0.0382 | val_auroc=0.4926
+  Epoch  50 | loss=0.0243 | val_auroc=0.5989
+  Epoch  60 | loss=0.0174 | val_auroc=0.6505
+  Epoch  70 | loss=0.0130 | val_auroc=0.6537
+  Epoch  80 | loss=0.0132 | val_auroc=0.6621
+  Epoch  90 | loss=0.0111 | val_auroc=0.6779
+  Epoch 100 | loss=0.0115 | val_auroc=0.6800
+  Training Random Forest...
+
+==================================================
+  GSRF-DTI | luo_17 | cold_drug | seed=2
+  Val : auroc=0.7032  auprc=0.985  f1=0.987
+  Test: auroc=0.7228  auprc=0.9847  f1=0.9813
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\gsrf_dti_luo_17_dti_cold_drug_fold0_seed2.json
+
+== Run 6/24 : GSRF-DTI | luo_17 | cold_drug | seed 3 ==
+Loading adjacency matrices...
+Loading node features...
+Loading split: cold_drug...
+  Graph: 708 drugs + 1512 proteins = 2220 nodes
+  Edges: DDI=10036, PPI=7363, DTI-train=1610
+  Train=1610, Val=195, Test=192
+  Parameters: 371,329
+  Epoch   1 | loss=0.6594 | val_auroc=0.4537
+  Epoch  10 | loss=0.1437 | val_auroc=0.4284
+  Epoch  20 | loss=0.0982 | val_auroc=0.3779
+  Epoch  30 | loss=0.0631 | val_auroc=0.4084
+  Epoch  40 | loss=0.0413 | val_auroc=0.4695
+  Epoch  50 | loss=0.0284 | val_auroc=0.5126
+  Epoch  60 | loss=0.0213 | val_auroc=0.5400
+  Epoch  70 | loss=0.0160 | val_auroc=0.5811
+  Epoch  80 | loss=0.0138 | val_auroc=0.5905
+  Epoch  90 | loss=0.0127 | val_auroc=0.6011
+  Epoch 100 | loss=0.0136 | val_auroc=0.5989
+  Training Random Forest...
+
+==================================================
+  GSRF-DTI | luo_17 | cold_drug | seed=3
+  Val : auroc=0.6558  auprc=0.9825  f1=0.9869
+  Test: auroc=0.8152  auprc=0.9907  f1=0.9813
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\gsrf_dti_luo_17_dti_cold_drug_fold0_seed3.json
+
+== Run 7/24 : GSRF-DTI | luo_17 | cold_target | seed 1 ==
+Loading adjacency matrices...
+Loading node features...
+Loading split: cold_target...
+  Graph: 708 drugs + 1512 proteins = 2220 nodes
+  Edges: DDI=10036, PPI=7363, DTI-train=1660
+  Train=1660, Val=179, Test=158
+  Parameters: 371,329
+  Epoch   1 | loss=0.7426 | val_auroc=0.4069
+  Epoch  10 | loss=0.1461 | val_auroc=0.4954
+  Epoch  20 | loss=0.0986 | val_auroc=0.5172
+  Epoch  30 | loss=0.0654 | val_auroc=0.5828
+  Epoch  40 | loss=0.0409 | val_auroc=0.5908
+  Epoch  50 | loss=0.0289 | val_auroc=0.5839
+  Epoch  60 | loss=0.0211 | val_auroc=0.5793
+  Epoch  70 | loss=0.0174 | val_auroc=0.5839
+  Epoch  80 | loss=0.0161 | val_auroc=0.5759
+  Epoch  90 | loss=0.0156 | val_auroc=0.5724
+  Epoch 100 | loss=0.0153 | val_auroc=0.5724
+  Training Random Forest...
+
+==================================================
+  GSRF-DTI | luo_17 | cold_target | seed=1
+  Val : auroc=0.7454  auprc=0.9896  f1=0.9858
+  Test: auroc=0.3128  auprc=0.8885  f1=0.9536
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\gsrf_dti_luo_17_dti_cold_target_fold0_seed1.json
+
+== Run 8/24 : GSRF-DTI | luo_17 | cold_target | seed 2 ==
+Loading adjacency matrices...
+Loading node features...
+Loading split: cold_target...
+  Graph: 708 drugs + 1512 proteins = 2220 nodes
+  Edges: DDI=10036, PPI=7363, DTI-train=1660
+  Train=1660, Val=179, Test=158
+  Parameters: 371,329
+  Epoch   1 | loss=0.5955 | val_auroc=0.5885
+  Epoch  10 | loss=0.1368 | val_auroc=0.5609
+  Epoch  20 | loss=0.0897 | val_auroc=0.6069
+  Epoch  30 | loss=0.0548 | val_auroc=0.6471
+  Epoch  40 | loss=0.0341 | val_auroc=0.6621
+  Epoch  50 | loss=0.0232 | val_auroc=0.7023
+  Epoch  60 | loss=0.0173 | val_auroc=0.6977
+  Epoch  70 | loss=0.0125 | val_auroc=0.6690
+  Epoch  80 | loss=0.0143 | val_auroc=0.6563
+  Epoch  90 | loss=0.0115 | val_auroc=0.6540
+  Epoch 100 | loss=0.0118 | val_auroc=0.6540
+  Training Random Forest...
+
+==================================================
+  GSRF-DTI | luo_17 | cold_target | seed=2
+  Val : auroc=0.8333  auprc=0.9929  f1=0.9858
+  Test: auroc=0.4207  auprc=0.9179  f1=0.9502
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\gsrf_dti_luo_17_dti_cold_target_fold0_seed2.json
+
+== Run 9/24 : GSRF-DTI | luo_17 | cold_target | seed 3 ==
+Loading adjacency matrices...
+Loading node features...
+Loading split: cold_target...
+  Graph: 708 drugs + 1512 proteins = 2220 nodes
+  Edges: DDI=10036, PPI=7363, DTI-train=1660
+  Train=1660, Val=179, Test=158
+  Parameters: 371,329
+  Epoch   1 | loss=0.6632 | val_auroc=0.5782
+  Epoch  10 | loss=0.1404 | val_auroc=0.5770
+  Epoch  20 | loss=0.0950 | val_auroc=0.6103
+  Epoch  30 | loss=0.0634 | val_auroc=0.7161
+  Epoch  40 | loss=0.0404 | val_auroc=0.7322
+  Epoch  50 | loss=0.0281 | val_auroc=0.7299
+  Epoch  60 | loss=0.0214 | val_auroc=0.7241
+  Epoch  70 | loss=0.0154 | val_auroc=0.6759
+  Epoch  80 | loss=0.0143 | val_auroc=0.6690
+  Epoch  90 | loss=0.0140 | val_auroc=0.6678
+  Epoch 100 | loss=0.0137 | val_auroc=0.6632
+  Training Random Forest...
+
+==================================================
+  GSRF-DTI | luo_17 | cold_target | seed=3
+  Val : auroc=0.8253  auprc=0.9936  f1=0.983
+  Test: auroc=0.353  auprc=0.8842  f1=0.9288
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\gsrf_dti_luo_17_dti_cold_target_fold0_seed3.json
+
+== Run 10/24 : GSRF-DTI | luo_17 | cold_pair | seed 1 ==
+Loading adjacency matrices...
+Loading node features...
+Loading split: cold_pair...
+  Graph: 708 drugs + 1512 proteins = 2220 nodes
+  Edges: DDI=10036, PPI=7363, DTI-train=1448
+  Train=1448, Val=155, Test=394
+  Parameters: 371,329
+  Epoch   1 | loss=0.7393 | val_auroc=0.3060
+  Epoch  10 | loss=0.1449 | val_auroc=0.6255
+  Epoch  20 | loss=0.0932 | val_auroc=0.6110
+  Epoch  30 | loss=0.0609 | val_auroc=0.6236
+  Epoch  40 | loss=0.0337 | val_auroc=0.6583
+  Epoch  50 | loss=0.0226 | val_auroc=0.6091
+  Epoch  60 | loss=0.0167 | val_auroc=0.6274
+  Epoch  70 | loss=0.0127 | val_auroc=0.6236
+  Epoch  80 | loss=0.0131 | val_auroc=0.6409
+  Epoch  90 | loss=0.0123 | val_auroc=0.6429
+  Epoch 100 | loss=0.0117 | val_auroc=0.6506
+  Training Random Forest...
+
+==================================================
+  GSRF-DTI | luo_17 | cold_pair | seed=1
+  Val : auroc=0.819  auprc=0.9893  f1=0.9701
+  Test: auroc=0.8413  auprc=0.9917  f1=0.9629
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\gsrf_dti_luo_17_dti_cold_pair_fold0_seed1.json
+
+== Run 11/24 : GSRF-DTI | luo_17 | cold_pair | seed 2 ==
+Loading adjacency matrices...
+Loading node features...
+Loading split: cold_pair...
+  Graph: 708 drugs + 1512 proteins = 2220 nodes
+  Edges: DDI=10036, PPI=7363, DTI-train=1448
+  Train=1448, Val=155, Test=394
+  Parameters: 371,329
+  Epoch   1 | loss=0.5974 | val_auroc=0.6757
+  Epoch  10 | loss=0.1335 | val_auroc=0.6708
+  Epoch  20 | loss=0.0837 | val_auroc=0.7288
+  Epoch  30 | loss=0.0474 | val_auroc=0.6834
+  Epoch  40 | loss=0.0261 | val_auroc=0.5888
+  Epoch  50 | loss=0.0159 | val_auroc=0.5579
+  Epoch  60 | loss=0.0113 | val_auroc=0.5898
+  Epoch  70 | loss=0.0085 | val_auroc=0.6178
+  Epoch  80 | loss=0.0107 | val_auroc=0.6380
+  Epoch  90 | loss=0.0086 | val_auroc=0.6400
+  Epoch 100 | loss=0.0082 | val_auroc=0.6409
+  Training Random Forest...
+
+==================================================
+  GSRF-DTI | luo_17 | cold_pair | seed=2
+  Val : auroc=0.707  auprc=0.9758  f1=0.9632
+  Test: auroc=0.87  auprc=0.9936  f1=0.9531
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\gsrf_dti_luo_17_dti_cold_pair_fold0_seed2.json
+
+== Run 12/24 : GSRF-DTI | luo_17 | cold_pair | seed 3 ==
+Loading adjacency matrices...
+Loading node features...
+Loading split: cold_pair...
+  Graph: 708 drugs + 1512 proteins = 2220 nodes
+  Edges: DDI=10036, PPI=7363, DTI-train=1448
+  Train=1448, Val=155, Test=394
+  Parameters: 371,329
+  Epoch   1 | loss=0.6599 | val_auroc=0.6853
+  Epoch  10 | loss=0.1368 | val_auroc=0.7693
+  Epoch  20 | loss=0.0867 | val_auroc=0.7944
+  Epoch  30 | loss=0.0521 | val_auroc=0.6525
+  Epoch  40 | loss=0.0323 | val_auroc=0.5743
+  Epoch  50 | loss=0.0214 | val_auroc=0.5936
+  Epoch  60 | loss=0.0173 | val_auroc=0.6236
+  Epoch  70 | loss=0.0136 | val_auroc=0.6535
+  Epoch  80 | loss=0.0117 | val_auroc=0.6834
+  Epoch  90 | loss=0.0112 | val_auroc=0.6931
+  Epoch 100 | loss=0.0110 | val_auroc=0.6931
+  Training Random Forest...
+
+==================================================
+  GSRF-DTI | luo_17 | cold_pair | seed=3
+  Val : auroc=0.7915  auprc=0.9863  f1=0.9562
+  Test: auroc=0.8656  auprc=0.9935  f1=0.9503
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\gsrf_dti_luo_17_dti_cold_pair_fold0_seed3.json
+
+== DTKGIN (yamanishi_e) ==
+
+== Run 13/24 : DTKGIN | yamanishi_e | random | seed 1 ==
+Loading yamanishi_e | random...
+  Drugs: 359, Proteins: 90
+  Train=726, Val=80, Test=90
+  KG edges: DTI=726, drug-sim=3000, prot-sim=3000
+  Parameters: 313,216
+  Epoch   1 | loss=2.2117 | val_auroc=0.5513
+  Epoch  15 | loss=0.3046 | val_auroc=0.6419
+  Epoch  30 | loss=0.2129 | val_auroc=0.8200
+  Epoch  45 | loss=0.1664 | val_auroc=0.8438
+  Epoch  60 | loss=0.1364 | val_auroc=0.8688
+  Epoch  75 | loss=0.1272 | val_auroc=0.8588
+  Epoch  90 | loss=0.1277 | val_auroc=0.8688
+  Epoch 105 | loss=0.1197 | val_auroc=0.8513
+  Epoch 120 | loss=0.1061 | val_auroc=0.8544
+  Epoch 135 | loss=0.1088 | val_auroc=0.8569
+  Epoch 150 | loss=0.1010 | val_auroc=0.8562
+
+==================================================
+  DTKGIN | yamanishi_e | random | seed=1
+    auroc: 0.8701
+    auprc: 0.9119
+    f1: 0.7733
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\dtkgin_yamanishi_e_dti_random_fold0_seed1.json
+
+== Run 14/24 : DTKGIN | yamanishi_e | random | seed 2 ==
+Loading yamanishi_e | random...
+  Drugs: 359, Proteins: 90
+  Train=726, Val=80, Test=90
+  KG edges: DTI=726, drug-sim=3000, prot-sim=3000
+  Parameters: 313,216
+  Epoch   1 | loss=2.6582 | val_auroc=0.5419
+  Epoch  15 | loss=0.3087 | val_auroc=0.6038
+  Epoch  30 | loss=0.2009 | val_auroc=0.8319
+  Epoch  45 | loss=0.1894 | val_auroc=0.8400
+  Epoch  60 | loss=0.1524 | val_auroc=0.8438
+  Epoch  75 | loss=0.1158 | val_auroc=0.8438
+  Epoch  90 | loss=0.1240 | val_auroc=0.8663
+  Epoch 105 | loss=0.1211 | val_auroc=0.8500
+  Epoch 120 | loss=0.1134 | val_auroc=0.8594
+  Epoch 135 | loss=0.0975 | val_auroc=0.8594
+  Epoch 150 | loss=0.1195 | val_auroc=0.8600
+
+==================================================
+  DTKGIN | yamanishi_e | random | seed=2
+    auroc: 0.8578
+    auprc: 0.9047
+    f1: 0.7733
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\dtkgin_yamanishi_e_dti_random_fold0_seed2.json
+
+== Run 15/24 : DTKGIN | yamanishi_e | random | seed 3 ==
+Loading yamanishi_e | random...
+  Drugs: 359, Proteins: 90
+  Train=726, Val=80, Test=90
+  KG edges: DTI=726, drug-sim=3000, prot-sim=3000
+  Parameters: 313,216
+  Epoch   1 | loss=2.1799 | val_auroc=0.5281
+  Epoch  15 | loss=0.3021 | val_auroc=0.6472
+  Epoch  30 | loss=0.1981 | val_auroc=0.8956
+  Epoch  45 | loss=0.1738 | val_auroc=0.8825
+  Epoch  60 | loss=0.1346 | val_auroc=0.8781
+  Epoch  75 | loss=0.1373 | val_auroc=0.8712
+  Epoch  90 | loss=0.1136 | val_auroc=0.8819
+  Epoch 105 | loss=0.1287 | val_auroc=0.8731
+  Epoch 120 | loss=0.1239 | val_auroc=0.8763
+  Epoch 135 | loss=0.1133 | val_auroc=0.8731
+  Epoch 150 | loss=0.1098 | val_auroc=0.8738
+
+==================================================
+  DTKGIN | yamanishi_e | random | seed=3
+    auroc: 0.8800
+    auprc: 0.8923
+    f1: 0.7532
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\dtkgin_yamanishi_e_dti_random_fold0_seed3.json
+
+== Run 16/24 : DTKGIN | yamanishi_e | cold_drug | seed 1 ==
+Loading yamanishi_e | cold_drug...
+  Drugs: 359, Proteins: 90
+  Train=721, Val=80, Test=95
+  KG edges: DTI=721, drug-sim=3000, prot-sim=3000
+  Parameters: 313,216
+  Epoch   1 | loss=2.1850 | val_auroc=0.4872
+  Epoch  15 | loss=0.2944 | val_auroc=0.6052
+  Epoch  30 | loss=0.2029 | val_auroc=0.7705
+  Epoch  45 | loss=0.1580 | val_auroc=0.7839
+  Epoch  60 | loss=0.1313 | val_auroc=0.7999
+  Epoch  75 | loss=0.1224 | val_auroc=0.7941
+  Epoch  90 | loss=0.1218 | val_auroc=0.7980
+  Epoch 105 | loss=0.1155 | val_auroc=0.7928
+  Epoch 120 | loss=0.0951 | val_auroc=0.8114
+  Epoch 135 | loss=0.1069 | val_auroc=0.8050
+  Epoch 150 | loss=0.1004 | val_auroc=0.8063
+
+==================================================
+  DTKGIN | yamanishi_e | cold_drug | seed=1
+    auroc: 0.8075
+    auprc: 0.8639
+    f1: 0.6111
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\dtkgin_yamanishi_e_dti_cold_drug_fold0_seed1.json
+
+== Run 17/24 : DTKGIN | yamanishi_e | cold_drug | seed 2 ==
+Loading yamanishi_e | cold_drug...
+  Drugs: 359, Proteins: 90
+  Train=721, Val=80, Test=95
+  KG edges: DTI=721, drug-sim=3000, prot-sim=3000
+  Parameters: 313,216
+  Epoch   1 | loss=2.6458 | val_auroc=0.4693
+  Epoch  15 | loss=0.2863 | val_auroc=0.6352
+  Epoch  30 | loss=0.1975 | val_auroc=0.7992
+  Epoch  45 | loss=0.1797 | val_auroc=0.8248
+  Epoch  60 | loss=0.1440 | val_auroc=0.8127
+  Epoch  75 | loss=0.1221 | val_auroc=0.8216
+  Epoch  90 | loss=0.1222 | val_auroc=0.8229
+  Epoch 105 | loss=0.1123 | val_auroc=0.8197
+  Epoch 120 | loss=0.1107 | val_auroc=0.8318
+  Epoch 135 | loss=0.0992 | val_auroc=0.8274
+  Epoch 150 | loss=0.1185 | val_auroc=0.8254
+
+==================================================
+  DTKGIN | yamanishi_e | cold_drug | seed=2
+    auroc: 0.8092
+    auprc: 0.8633
+    f1: 0.6027
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\dtkgin_yamanishi_e_dti_cold_drug_fold0_seed2.json
+
+== Run 18/24 : DTKGIN | yamanishi_e | cold_drug | seed 3 ==
+Loading yamanishi_e | cold_drug...
+  Drugs: 359, Proteins: 90
+  Train=721, Val=80, Test=95
+  KG edges: DTI=721, drug-sim=3000, prot-sim=3000
+  Parameters: 313,216
+  Epoch   1 | loss=2.1489 | val_auroc=0.4834
+  Epoch  15 | loss=0.2849 | val_auroc=0.5799
+  Epoch  30 | loss=0.1927 | val_auroc=0.7928
+  Epoch  45 | loss=0.1681 | val_auroc=0.8338
+  Epoch  60 | loss=0.1224 | val_auroc=0.8350
+  Epoch  75 | loss=0.1238 | val_auroc=0.8376
+  Epoch  90 | loss=0.1129 | val_auroc=0.8299
+  Epoch 105 | loss=0.1271 | val_auroc=0.8242
+  Epoch 120 | loss=0.1141 | val_auroc=0.8344
+  Epoch 135 | loss=0.1044 | val_auroc=0.8325
+  Epoch 150 | loss=0.1015 | val_auroc=0.8306
+
+==================================================
+  DTKGIN | yamanishi_e | cold_drug | seed=3
+    auroc: 0.7733
+    auprc: 0.8320
+    f1: 0.6133
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\dtkgin_yamanishi_e_dti_cold_drug_fold0_seed3.json
+
+== Run 19/24 : DTKGIN | yamanishi_e | cold_target | seed 1 ==
+Loading yamanishi_e | cold_target...
+  Drugs: 359, Proteins: 90
+  Train=740, Val=82, Test=74
+  KG edges: DTI=740, drug-sim=3000, prot-sim=3000
+  Parameters: 313,216
+  Epoch   1 | loss=2.1847 | val_auroc=0.6823
+  Epoch  15 | loss=0.2977 | val_auroc=0.6706
+  Epoch  30 | loss=0.2039 | val_auroc=0.8715
+  Epoch  45 | loss=0.1649 | val_auroc=0.9303
+  Epoch  60 | loss=0.1345 | val_auroc=0.9405
+  Epoch  75 | loss=0.1244 | val_auroc=0.9483
+  Epoch  90 | loss=0.1202 | val_auroc=0.9453
+  Epoch 105 | loss=0.1123 | val_auroc=0.9399
+  Epoch 120 | loss=0.1109 | val_auroc=0.9441
+  Epoch 135 | loss=0.1043 | val_auroc=0.9459
+  Epoch 150 | loss=0.1038 | val_auroc=0.9453
+
+==================================================
+  DTKGIN | yamanishi_e | cold_target | seed=1
+    auroc: 0.5322
+    auprc: 0.4439
+    f1: 0.1481
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\dtkgin_yamanishi_e_dti_cold_target_fold0_seed1.json
+
+== Run 20/24 : DTKGIN | yamanishi_e | cold_target | seed 2 ==
+Loading yamanishi_e | cold_target...
+  Drugs: 359, Proteins: 90
+  Train=740, Val=82, Test=74
+  KG edges: DTI=740, drug-sim=3000, prot-sim=3000
+  Parameters: 313,216
+  Epoch   1 | loss=2.6359 | val_auroc=0.6613
+  Epoch  15 | loss=0.2980 | val_auroc=0.7291
+  Epoch  30 | loss=0.1900 | val_auroc=0.9069
+  Epoch  45 | loss=0.1819 | val_auroc=0.9189
+  Epoch  60 | loss=0.1453 | val_auroc=0.9177
+  Epoch  75 | loss=0.1180 | val_auroc=0.9291
+  Epoch  90 | loss=0.1276 | val_auroc=0.9345
+  Epoch 105 | loss=0.1192 | val_auroc=0.9381
+  Epoch 120 | loss=0.1140 | val_auroc=0.9429
+  Epoch 135 | loss=0.0980 | val_auroc=0.9357
+  Epoch 150 | loss=0.1214 | val_auroc=0.9357
+
+==================================================
+  DTKGIN | yamanishi_e | cold_target | seed=2
+    auroc: 0.4898
+    auprc: 0.4098
+    f1: 0.0769
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\dtkgin_yamanishi_e_dti_cold_target_fold0_seed2.json
+
+== Run 21/24 : DTKGIN | yamanishi_e | cold_target | seed 3 ==
+Loading yamanishi_e | cold_target...
+  Drugs: 359, Proteins: 90
+  Train=740, Val=82, Test=74
+  KG edges: DTI=740, drug-sim=3000, prot-sim=3000
+  Parameters: 313,216
+  Epoch   1 | loss=2.1622 | val_auroc=0.6288
+  Epoch  15 | loss=0.2938 | val_auroc=0.6213
+  Epoch  30 | loss=0.1944 | val_auroc=0.9051
+  Epoch  45 | loss=0.1741 | val_auroc=0.9351
+  Epoch  60 | loss=0.1312 | val_auroc=0.9405
+  Epoch  75 | loss=0.1320 | val_auroc=0.9375
+  Epoch  90 | loss=0.1166 | val_auroc=0.9471
+  Epoch 105 | loss=0.1272 | val_auroc=0.9417
+  Epoch 120 | loss=0.1116 | val_auroc=0.9405
+  Epoch 135 | loss=0.1076 | val_auroc=0.9435
+  Epoch 150 | loss=0.1036 | val_auroc=0.9387
+
+==================================================
+  DTKGIN | yamanishi_e | cold_target | seed=3
+    auroc: 0.6490
+    auprc: 0.5394
+    f1: 0.1481
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\dtkgin_yamanishi_e_dti_cold_target_fold0_seed3.json
+
+== Run 22/24 : DTKGIN | yamanishi_e | cold_pair | seed 1 ==
+Loading yamanishi_e | cold_pair...
+  Drugs: 359, Proteins: 90
+  Train=646, Val=71, Test=179
+  KG edges: DTI=646, drug-sim=3000, prot-sim=3000
+  Parameters: 313,216
+  Epoch   1 | loss=2.1777 | val_auroc=0.6645
+  Epoch  15 | loss=0.3030 | val_auroc=0.6653
+  Epoch  30 | loss=0.2185 | val_auroc=0.8597
+  Epoch  45 | loss=0.1637 | val_auroc=0.8581
+  Epoch  60 | loss=0.1345 | val_auroc=0.8653
+  Epoch  75 | loss=0.1211 | val_auroc=0.8710
+  Epoch  90 | loss=0.1269 | val_auroc=0.8806
+  Epoch 105 | loss=0.1258 | val_auroc=0.8589
+  Epoch 120 | loss=0.1107 | val_auroc=0.8629
+  Epoch 135 | loss=0.1014 | val_auroc=0.8581
+  Epoch 150 | loss=0.1068 | val_auroc=0.8597
+
+==================================================
+  DTKGIN | yamanishi_e | cold_pair | seed=1
+    auroc: 0.8738
+    auprc: 0.8850
+    f1: 0.6875
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\dtkgin_yamanishi_e_dti_cold_pair_fold0_seed1.json
+
+== Run 23/24 : DTKGIN | yamanishi_e | cold_pair | seed 2 ==
+Loading yamanishi_e | cold_pair...
+  Drugs: 359, Proteins: 90
+  Train=646, Val=71, Test=179
+  KG edges: DTI=646, drug-sim=3000, prot-sim=3000
+  Parameters: 313,216
+  Epoch   1 | loss=2.6337 | val_auroc=0.6044
+  Epoch  15 | loss=0.2998 | val_auroc=0.7258
+  Epoch  30 | loss=0.2012 | val_auroc=0.8669
+  Epoch  45 | loss=0.1732 | val_auroc=0.8702
+  Epoch  60 | loss=0.1385 | val_auroc=0.8855
+  Epoch  75 | loss=0.1229 | val_auroc=0.8815
+  Epoch  90 | loss=0.1301 | val_auroc=0.8806
+  Epoch 105 | loss=0.1114 | val_auroc=0.8806
+  Epoch 120 | loss=0.1105 | val_auroc=0.8734
+  Epoch 135 | loss=0.0938 | val_auroc=0.8710
+  Epoch 150 | loss=0.1143 | val_auroc=0.8694
+
+==================================================
+  DTKGIN | yamanishi_e | cold_pair | seed=2
+    auroc: 0.8464
+    auprc: 0.8606
+    f1: 0.6349
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\dtkgin_yamanishi_e_dti_cold_pair_fold0_seed2.json
+
+== Run 24/24 : DTKGIN | yamanishi_e | cold_pair | seed 3 ==
+Loading yamanishi_e | cold_pair...
+  Drugs: 359, Proteins: 90
+  Train=646, Val=71, Test=179
+  KG edges: DTI=646, drug-sim=3000, prot-sim=3000
+  Parameters: 313,216
+  Epoch   1 | loss=2.1646 | val_auroc=0.6323
+  Epoch  15 | loss=0.2925 | val_auroc=0.6573
+  Epoch  30 | loss=0.1939 | val_auroc=0.8597
+  Epoch  45 | loss=0.1687 | val_auroc=0.8653
+  Epoch  60 | loss=0.1291 | val_auroc=0.8750
+  Epoch  75 | loss=0.1288 | val_auroc=0.8645
+  Epoch  90 | loss=0.1092 | val_auroc=0.8661
+  Epoch 105 | loss=0.1275 | val_auroc=0.8621
+  Epoch 120 | loss=0.1020 | val_auroc=0.8637
+  Epoch 135 | loss=0.1003 | val_auroc=0.8573
+  Epoch 150 | loss=0.1029 | val_auroc=0.8556
+
+==================================================
+  DTKGIN | yamanishi_e | cold_pair | seed=3
+    auroc: 0.8699
+    auprc: 0.8675
+    f1: 0.6923
+  Saved -> C:\Users\Jamila\Modeling-DTI\logs\dtkgin_yamanishi_e_dti_cold_pair_fold0_seed3.json
+
+== Baseline runs complete. ==

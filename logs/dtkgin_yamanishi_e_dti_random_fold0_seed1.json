@@ -1,0 +1,11 @@
+{
+  "model": "dtkgin",
+  "dataset": "yamanishi_e",
+  "split": "random",
+  "seed": 1,
+  "test_metrics": {
+    "auroc": 0.8701,
+    "auprc": 0.9119,
+    "f1": 0.7733
+  }
+}

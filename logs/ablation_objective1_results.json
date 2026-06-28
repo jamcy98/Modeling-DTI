@@ -1,0 +1,50 @@
+﻿{
+    "split":  "random",
+    "description":  "Ablation Study: H-GNN-RNN-DTI vs Simple Concatenation Baseline",
+    "fold":  0,
+    "date":  "2026-06-27",
+    "results":  [
+                    {
+                        "model":  "hgnn_rnn_dti",
+                        "acc":  0.7143,
+                        "best_epoch":  56,
+                        "f1":  0.7073,
+                        "stopped_epoch":  71,
+                        "dataset":  "yamanishi_e",
+                        "auroc":  0.7874,
+                        "auprc":  0.7646
+                    },
+                    {
+                        "model":  "concat_baseline",
+                        "acc":  0.5,
+                        "best_epoch":  1,
+                        "f1":  0,
+                        "stopped_epoch":  16,
+                        "dataset":  "yamanishi_e",
+                        "auroc":  0.5017,
+                        "auprc":  0.4988
+                    },
+                    {
+                        "model":  "hgnn_rnn_dti",
+                        "acc":  0.885,
+                        "best_epoch":  56,
+                        "f1":  0.877,
+                        "stopped_epoch":  71,
+                        "dataset":  "luo_17",
+                        "auroc":  0.9478,
+                        "auprc":  0.95
+                    },
+                    {
+                        "model":  "concat_baseline",
+                        "acc":  0.8496,
+                        "best_epoch":  20,
+                        "f1":  0.8271,
+                        "stopped_epoch":  35,
+                        "dataset":  "luo_17",
+                        "auroc":  0.9416,
+                        "auprc":  0.9298
+                    }
+                ],
+    "conclusion":  "GatedCrossAttention outperforms simple concatenation on both datasets. Gap is largest on yamanishi_e (AUROC +0.286) where data is sparse. luo_17 gap smaller but consistent (+0.006 AUROC, +0.020 AUPRC, +0.050 F1).",
+    "task":  "dti"
+}
