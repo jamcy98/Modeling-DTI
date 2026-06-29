@@ -79,7 +79,12 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:github.com)",
       "Bash(git add *)",
-      "Bash(git rm *)"
+      "Bash(git rm *)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\Jamila\\\\Modeling-DTI\\\\Dataset\\\\processed\" -Recurse -File | Where-Object { $_.Name -match \"davis|kiba\" } | Select-Object FullName)",
+      "PowerShell(Stop-Process *)",
+      "PowerShell($procs = Get-Process | Where-Object { $_.Name -eq \"python\" }; foreach \\($p in $procs\\) { Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue }; Start-Sleep -Seconds 2; $procs2 = Get-Process | Where-Object { $_.Name -eq \"python\" }; if \\($procs2\\) { $procs2 | Select-Object Id, Name, CPU } else { Write-Host \"Clean.\" })",
+      "PowerShell(Get-CimInstance *)",
+      "PowerShell(Set-Location \"C:\\\\Users\\\\Jamila\\\\Modeling-DTI\"; Start-Process powershell -ArgumentList \"-NoProfile\", \"-File\", \"run_dta_eval.ps1\" -RedirectStandardOutput \"logs\\\\dta_eval_run.log\" -RedirectStandardError \"logs\\\\dta_eval_run_err.log\" -WindowStyle Hidden; Write-Host \"Launched.\")"
     ]
   }
 }

@@ -1,0 +1,162 @@
+=======================================================
+ Drug Preprocessing (SMILES -> Graphs + ChemBERTa)
+=======================================================
+  Loading ChemBERTa model: seyonec/ChemBERTa-zinc-base-v1 (device: cpu)
+
+davis: graphs already exist — skipping.
+
+kiba: graphs already exist — skipping.
+
+luo_17: graphs already exist — skipping.
+
+yamanishi_e: graphs already exist — skipping.
+
+yamanishi_ic: graphs already exist — skipping.
+
+yamanishi_gpcr: graphs already exist — skipping.
+
+yamanishi_nr: graphs already exist — skipping.
+
+Processing bindingdb (streaming 10,000/chunk -> separate files)...
+  Resuming: 1,287,900 SMILES already processed, 210 chunks saved.
+  bindingdb complete: 1,287,900 graphs in 420 chunk files.
+  Chunks saved in: C:\Users\Jamila\Modeling-DTI\Dataset\processed\drug_graphs\bindingdb_drug_graphs_chunks
+  Manifest: C:\Users\Jamila\Modeling-DTI\Dataset\processed\drug_graphs\bindingdb_drug_graphs_manifest.json
+  Done -> chunks in C:\Users\Jamila\Modeling-DTI\Dataset\processed\drug_graphs\bindingdb_drug_graphs_chunks/
+
+Processing chembl (streaming 10,000/chunk -> separate files)...
+  Resuming: 935,611 SMILES already processed, 149 chunks saved.
+  chembl complete: 935,611 graphs in 298 chunk files.
+  Chunks saved in: C:\Users\Jamila\Modeling-DTI\Dataset\processed\drug_graphs\chembl_drug_graphs_chunks
+  Manifest: C:\Users\Jamila\Modeling-DTI\Dataset\processed\drug_graphs\chembl_drug_graphs_manifest.json
+  Done -> chunks in C:\Users\Jamila\Modeling-DTI\Dataset\processed\drug_graphs\chembl_drug_graphs_chunks/
+
+Done. Run 11_preprocess_proteins.py next.
+=======================================================
+ Protein Preprocessing (Sequences -> ESM-2 Embeddings)
+=======================================================
+  Loading ESM-2 model: facebook/esm2_t6_8M_UR50D
+  Device: cpu
+  NOTE: First run will download ~2.5 GB model weights from HuggingFace.
+
+davis: embeddings already exist — skipping.
+
+kiba: embeddings already exist — skipping.
+
+luo_17: embeddings already exist — skipping.
+
+yamanishi_e: embeddings already exist — skipping.
+
+yamanishi_ic: embeddings already exist — skipping.
+
+yamanishi_gpcr: embeddings already exist — skipping.
+
+yamanishi_nr: embeddings already exist — skipping.
+
+bindingdb: embeddings already exist — skipping.
+
+chembl: embeddings already exist — skipping.
+
+Done.
+=======================================================
+ Label Preprocessing
+=======================================================
+
+davis DTA labels already exist — skipping.
+
+kiba DTA labels already exist — skipping.
+
+yamanishi_e DTI labels already exist — skipping.
+
+yamanishi_ic DTI labels already exist — skipping.
+
+yamanishi_gpcr DTI labels already exist — skipping.
+
+yamanishi_nr DTI labels already exist — skipping.
+
+luo_17 DTI labels already exist — skipping.
+
+Building BindingDB labels...
+  Saved balanced DTI -> C:\Users\Jamila\Modeling-DTI\Dataset\processed\labels\bindingdb_dti_labels_1to1.csv  (2,096,791 pairs)
+  Copied DTA labels -> C:\Users\Jamila\Modeling-DTI\Dataset\processed\labels\bindingdb_dta_labels.csv
+
+Done. Run 13_preprocess_splits.py next.
+=======================================================
+ Split Generation
+=======================================================
+
+bindingdb_dta_labels: splits already exist — skipping.
+
+bindingdb_dti_labels_1to1: splits already exist — skipping.
+
+davis_dta_labels: splits already exist — skipping.
+
+kiba_dta_labels: splits already exist — skipping.
+
+luo_17_dti_labels_1to1: splits already exist — skipping.
+
+luo_17_dti_labels_1to10: splits already exist — skipping.
+
+yamanishi_e_dti_labels_1to1: splits already exist — skipping.
+
+yamanishi_e_dti_labels_1to10: splits already exist — skipping.
+
+yamanishi_gpcr_dti_labels_1to1: splits already exist — skipping.
+
+yamanishi_gpcr_dti_labels_1to10: splits already exist — skipping.
+
+yamanishi_ic_dti_labels_1to1: splits already exist — skipping.
+
+yamanishi_ic_dti_labels_1to10: splits already exist — skipping.
+
+yamanishi_nr_dti_labels_1to1: splits already exist — skipping.
+
+yamanishi_nr_dti_labels_1to10: splits already exist — skipping.
+
+Done. All splits saved to processed/splits/
+
+Next steps:
+  1. Install requirements:  pip install -r requirements.txt
+  2. Run preprocessing:     python run_all_preprocessing.py
+  3. Start model training.
+=======================================================
+ H-GNN-RNN-DTI  Data Preprocessing Pipeline
+=======================================================
+ Base directory: C:\Users\Jamila\Modeling-DTI\Dataset
+
+Steps to run: [10, 11, 12, 13]
+
+=======================================================
+ STEP 10: Drug graphs        (SMILES -> RDKit graphs + ChemBERTa embeddings)
+=======================================================
+
+  Completed in 23.0s
+
+=======================================================
+ STEP 11: Protein embeddings (sequences -> ESM-2 residue embeddings)
+=======================================================
+
+  Completed in 10.0s
+
+=======================================================
+ STEP 12: Label files        (interaction labels + negative sampling)
+=======================================================
+
+  Completed in 13.1s
+
+=======================================================
+ STEP 13: Data splits        (random / cold-drug / cold-target / cold-pair)
+=======================================================
+
+  Completed in 1.4s
+
+=======================================================
+ Summary
+=======================================================
+  Step 10: OK        Drug graphs        (SMILES -> RDKit graphs + ChemBERTa embeddings)
+  Step 11: OK        Protein embeddings (sequences -> ESM-2 residue embeddings)
+  Step 12: OK        Label files        (interaction labels + negative sampling)
+  Step 13: OK        Data splits        (random / cold-drug / cold-target / cold-pair)
+
+All preprocessing complete. Your data is ready in:
+  C:\Users\Jamila\Modeling-DTI\Dataset\processed

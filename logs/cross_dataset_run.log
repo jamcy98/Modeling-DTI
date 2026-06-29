@@ -1,0 +1,458 @@
+
+== Run 1/5 : cross luo_17 -> yamanishi_e | seed 1 ==
+
+============================================================
+  Cross-dataset: luo_17 -> yamanishi_e
+  Seed: 1  Device: cpu  Epochs: 100
+============================================================
+
+  Train (luo_17): 3,115  Val: 346  Test (yamanishi_e): 896
+  Train ESM dim: 1280  Test ESM dim: 320
+  Parameters: 4,479,043
+
+  Caching luo_17 proteins (3695)...
+  Done. 3695 proteins cached.
+
+  Caching yamanishi_e proteins (90)...
+  Done. 90 proteins cached.
+
+Epoch   1/100 | train=0.0729 | val=0.0812 | auroc=0.5949  auprc=0.5522  acc=0.5250  f1=0.0000 | 14.0s
+Epoch   2/100 | train=0.0690 | val=0.0698 | auroc=0.6474  auprc=0.5973  acc=0.5250  f1=0.0000 | 13.9s
+Epoch   3/100 | train=0.0656 | val=0.0714 | auroc=0.7091  auprc=0.6723  acc=0.5281  f1=0.0131 | 14.0s
+Epoch   4/100 | train=0.0621 | val=0.0694 | auroc=0.7383  auprc=0.7056  acc=0.5656  f1=0.1775 | 14.1s
+Epoch   5/100 | train=0.0611 | val=0.0654 | auroc=0.7650  auprc=0.7065  acc=0.5437  f1=0.0988 | 14.2s
+Epoch   6/100 | train=0.0572 | val=0.0603 | auroc=0.8127  auprc=0.7990  acc=0.5781  f1=0.2012 | 17.0s
+Epoch   7/100 | train=0.0557 | val=0.0553 | auroc=0.8312  auprc=0.8023  acc=0.6625  f1=0.5046 | 17.6s
+Epoch   8/100 | train=0.0507 | val=0.0567 | auroc=0.8563  auprc=0.8407  acc=0.6656  f1=0.4880 | 18.5s
+Epoch   9/100 | train=0.0476 | val=0.0542 | auroc=0.8536  auprc=0.8294  acc=0.7750  f1=0.7372 | 17.5s
+Epoch  10/100 | train=0.0464 | val=0.0791 | auroc=0.8826  auprc=0.8500  acc=0.5437  f1=0.0875 | 16.2s
+Epoch  11/100 | train=0.0466 | val=0.0482 | auroc=0.8806  auprc=0.8721  acc=0.7594  f1=0.6883 | 15.8s
+Epoch  12/100 | train=0.0417 | val=0.0465 | auroc=0.8893  auprc=0.8840  acc=0.7562  f1=0.6777 | 15.0s
+Epoch  13/100 | train=0.0391 | val=0.0629 | auroc=0.8864  auprc=0.8761  acc=0.6687  f1=0.4854 | 15.0s
+Epoch  14/100 | train=0.0380 | val=0.0526 | auroc=0.8910  auprc=0.8533  acc=0.7312  f1=0.6293 | 15.0s
+Epoch  15/100 | train=0.0355 | val=0.0559 | auroc=0.8847  auprc=0.8574  acc=0.7562  f1=0.6803 | 15.2s
+Epoch  16/100 | train=0.0328 | val=0.0509 | auroc=0.8996  auprc=0.8899  acc=0.7875  f1=0.7258 | 15.0s
+Epoch  17/100 | train=0.0331 | val=0.0467 | auroc=0.8995  auprc=0.8963  acc=0.8156  f1=0.7839 | 15.4s
+Epoch  18/100 | train=0.0315 | val=0.0447 | auroc=0.9093  auprc=0.8977  acc=0.8187  f1=0.7852 | 15.0s
+Epoch  19/100 | train=0.0315 | val=0.0506 | auroc=0.8985  auprc=0.8851  acc=0.7750  f1=0.7252 | 14.7s
+Epoch  20/100 | train=0.0296 | val=0.0591 | auroc=0.8941  auprc=0.8711  acc=0.8125  f1=0.7931 | 14.8s
+Epoch  21/100 | train=0.0286 | val=0.0507 | auroc=0.9003  auprc=0.8940  acc=0.8281  f1=0.8029 | 14.9s
+Epoch  22/100 | train=0.0275 | val=0.0468 | auroc=0.9049  auprc=0.8952  acc=0.8219  f1=0.8014 | 14.7s
+Epoch  23/100 | train=0.0262 | val=0.0536 | auroc=0.8967  auprc=0.8771  acc=0.7906  f1=0.7564 | 14.3s
+Epoch  24/100 | train=0.0249 | val=0.0514 | auroc=0.9046  auprc=0.8895  acc=0.7969  f1=0.7547 | 14.5s
+Epoch  25/100 | train=0.0260 | val=0.0728 | auroc=0.9044  auprc=0.8877  acc=0.8313  f1=0.8280 | 14.4s
+Epoch  26/100 | train=0.0249 | val=0.0475 | auroc=0.9085  auprc=0.8973  acc=0.8125  f1=0.7857 | 14.3s
+Epoch  27/100 | train=0.0237 | val=0.0628 | auroc=0.9020  auprc=0.8795  acc=0.8469  f1=0.8339 | 14.4s
+Epoch  28/100 | train=0.0247 | val=0.0555 | auroc=0.9124  auprc=0.9134  acc=0.7656  f1=0.6888 | 14.7s
+Epoch  29/100 | train=0.0207 | val=0.0537 | auroc=0.9062  auprc=0.9008  acc=0.8313  f1=0.8043 | 14.4s
+Epoch  30/100 | train=0.0189 | val=0.0675 | auroc=0.9102  auprc=0.9021  acc=0.7875  f1=0.7385 | 14.8s
+Epoch  31/100 | train=0.0232 | val=0.0499 | auroc=0.9144  auprc=0.9120  acc=0.8406  f1=0.8211 | 14.8s
+Epoch  32/100 | train=0.0216 | val=0.0539 | auroc=0.9180  auprc=0.9126  acc=0.8406  f1=0.8159 | 14.7s
+Epoch  33/100 | train=0.0201 | val=0.0631 | auroc=0.9150  auprc=0.9077  acc=0.8250  f1=0.7941 | 14.8s
+Epoch  34/100 | train=0.0196 | val=0.0667 | auroc=0.9100  auprc=0.9006  acc=0.8500  f1=0.8452 | 14.8s
+Epoch  35/100 | train=0.0203 | val=0.0754 | auroc=0.9137  auprc=0.9005  acc=0.8594  f1=0.8580 | 14.7s
+Epoch  36/100 | train=0.0186 | val=0.0701 | auroc=0.9068  auprc=0.9014  acc=0.8313  f1=0.8163 | 15.2s
+Epoch  37/100 | train=0.0169 | val=0.0637 | auroc=0.9150  auprc=0.9095  acc=0.8469  f1=0.8328 | 14.4s
+Epoch  38/100 | train=0.0180 | val=0.0604 | auroc=0.9138  auprc=0.9085  acc=0.8562  f1=0.8506 | 14.7s
+Epoch  39/100 | train=0.0179 | val=0.0576 | auroc=0.9158  auprc=0.9118  acc=0.8281  f1=0.8043 | 14.3s
+Epoch  40/100 | train=0.0150 | val=0.0495 | auroc=0.9222  auprc=0.9180  acc=0.8313  f1=0.8043 | 14.7s
+Epoch  41/100 | train=0.0158 | val=0.0604 | auroc=0.9189  auprc=0.9250  acc=0.8500  f1=0.8389 | 14.4s
+Epoch  42/100 | train=0.0163 | val=0.0818 | auroc=0.9099  auprc=0.9075  acc=0.8531  f1=0.8489 | 14.6s
+Epoch  43/100 | train=0.0153 | val=0.0847 | auroc=0.9125  auprc=0.9069  acc=0.8500  f1=0.8500 | 14.4s
+Epoch  44/100 | train=0.0147 | val=0.0649 | auroc=0.9183  auprc=0.9130  acc=0.8469  f1=0.8281 | 14.7s
+Epoch  45/100 | train=0.0137 | val=0.0674 | auroc=0.9183  auprc=0.9185  acc=0.8469  f1=0.8339 | 14.3s
+Epoch  46/100 | train=0.0133 | val=0.0897 | auroc=0.9114  auprc=0.9068  acc=0.8438  f1=0.8322 | 14.5s
+Epoch  47/100 | train=0.0151 | val=0.0770 | auroc=0.9135  auprc=0.9070  acc=0.8187  f1=0.7868 | 14.7s
+Epoch  48/100 | train=0.0141 | val=0.0580 | auroc=0.9196  auprc=0.9190  acc=0.8469  f1=0.8244 | 14.8s
+Epoch  49/100 | train=0.0153 | val=0.0660 | auroc=0.9203  auprc=0.9175  acc=0.8219  f1=0.7849 | 14.7s
+Epoch  50/100 | train=0.0139 | val=0.1063 | auroc=0.9095  auprc=0.9004  acc=0.8531  f1=0.8498 | 14.8s
+Epoch  51/100 | train=0.0131 | val=0.0763 | auroc=0.9142  auprc=0.9113  acc=0.8625  f1=0.8514 | 14.5s
+Epoch  52/100 | train=0.0128 | val=0.0804 | auroc=0.9098  auprc=0.9023  acc=0.8594  f1=0.8534 | 14.8s
+Epoch  53/100 | train=0.0129 | val=0.0849 | auroc=0.9162  auprc=0.9044  acc=0.8438  f1=0.8264 | 14.9s
+Epoch  54/100 | train=0.0126 | val=0.0788 | auroc=0.9109  auprc=0.9031  acc=0.8219  f1=0.7912 | 14.5s
+Epoch  55/100 | train=0.0112 | val=0.0936 | auroc=0.9113  auprc=0.9055  acc=0.8500  f1=0.8431 | 14.6s
+
+  Early stopping at epoch 55 (best: 40)
+
+============================================================
+  Loading best checkpoint from epoch 40...
+  TEST (yamanishi_e):
+    auroc: 0.5005
+    auprc: 0.4957
+    acc: 0.5089
+    f1: 0.6585
+
+  Results saved -> C:\Users\Jamila\Modeling-DTI\logs\cross_luo_17_to_yamanishi_e_seed1.json
+  Checkpoint   -> C:\Users\Jamila\Modeling-DTI\checkpoints\cross_luo_17_to_yamanishi_e_seed1_best.pt
+
+== Run 2/5 : cross luo_17 -> yamanishi_e | seed 2 ==
+
+============================================================
+  Cross-dataset: luo_17 -> yamanishi_e
+  Seed: 2  Device: cpu  Epochs: 100
+============================================================
+
+  Train (luo_17): 3,115  Val: 346  Test (yamanishi_e): 896
+  Train ESM dim: 1280  Test ESM dim: 320
+  Parameters: 4,479,043
+
+  Caching luo_17 proteins (3695)...
+  Done. 3695 proteins cached.
+
+  Caching yamanishi_e proteins (90)...
+  Done. 90 proteins cached.
+
+Epoch   1/100 | train=0.0712 | val=0.0784 | auroc=0.6386  auprc=0.5679  acc=0.5250  f1=0.0000 | 15.7s
+Epoch   2/100 | train=0.0673 | val=0.0700 | auroc=0.6966  auprc=0.6465  acc=0.5250  f1=0.0000 | 15.0s
+Epoch   3/100 | train=0.0651 | val=0.0665 | auroc=0.7144  auprc=0.6685  acc=0.5375  f1=0.0633 | 14.7s
+Epoch   4/100 | train=0.0632 | val=0.0639 | auroc=0.7482  auprc=0.7022  acc=0.5281  f1=0.0131 | 14.5s
+Epoch   5/100 | train=0.0624 | val=0.0637 | auroc=0.7559  auprc=0.7234  acc=0.6250  f1=0.4175 | 14.3s
+Epoch   6/100 | train=0.0590 | val=0.0643 | auroc=0.7970  auprc=0.7651  acc=0.5375  f1=0.0633 | 14.4s
+Epoch   7/100 | train=0.0551 | val=0.0584 | auroc=0.8291  auprc=0.7900  acc=0.7438  f1=0.7133 | 14.4s
+Epoch   8/100 | train=0.0548 | val=0.0560 | auroc=0.8431  auprc=0.8121  acc=0.6469  f1=0.4378 | 14.5s
+Epoch   9/100 | train=0.0487 | val=0.0524 | auroc=0.8569  auprc=0.8071  acc=0.7562  f1=0.7045 | 14.6s
+Epoch  10/100 | train=0.0478 | val=0.0512 | auroc=0.8663  auprc=0.8363  acc=0.6312  f1=0.3980 | 15.1s
+Epoch  11/100 | train=0.0439 | val=0.0499 | auroc=0.8785  auprc=0.8461  acc=0.7812  f1=0.7328 | 14.6s
+Epoch  12/100 | train=0.0421 | val=0.0481 | auroc=0.8845  auprc=0.8548  acc=0.7969  f1=0.7653 | 14.3s
+Epoch  13/100 | train=0.0411 | val=0.0668 | auroc=0.8800  auprc=0.8607  acc=0.6281  f1=0.3704 | 14.5s
+Epoch  14/100 | train=0.0383 | val=0.0496 | auroc=0.8811  auprc=0.8709  acc=0.7469  f1=0.6721 | 14.2s
+Epoch  15/100 | train=0.0373 | val=0.0559 | auroc=0.8773  auprc=0.8290  acc=0.7625  f1=0.7099 | 14.3s
+Epoch  16/100 | train=0.0359 | val=0.0478 | auroc=0.8977  auprc=0.8720  acc=0.8000  f1=0.7664 | 14.4s
+Epoch  17/100 | train=0.0338 | val=0.0540 | auroc=0.8883  auprc=0.8833  acc=0.7312  f1=0.6228 | 14.5s
+Epoch  18/100 | train=0.0337 | val=0.0509 | auroc=0.8891  auprc=0.8716  acc=0.7812  f1=0.7287 | 14.3s
+Epoch  19/100 | train=0.0309 | val=0.0548 | auroc=0.8949  auprc=0.8898  acc=0.8219  f1=0.8028 | 14.3s
+Epoch  20/100 | train=0.0300 | val=0.0526 | auroc=0.9018  auprc=0.8840  acc=0.8250  f1=0.8000 | 14.4s
+Epoch  21/100 | train=0.0273 | val=0.0541 | auroc=0.8909  auprc=0.8734  acc=0.7906  f1=0.7564 | 14.2s
+Epoch  22/100 | train=0.0280 | val=0.0516 | auroc=0.8932  auprc=0.8787  acc=0.7625  f1=0.7008 | 14.0s
+Epoch  23/100 | train=0.0245 | val=0.0508 | auroc=0.9029  auprc=0.8968  acc=0.8250  f1=0.8056 | 14.2s
+Epoch  24/100 | train=0.0248 | val=0.0631 | auroc=0.9044  auprc=0.8995  acc=0.8344  f1=0.8203 | 14.4s
+Epoch  25/100 | train=0.0262 | val=0.0519 | auroc=0.8902  auprc=0.8533  acc=0.8031  f1=0.7709 | 14.3s
+Epoch  26/100 | train=0.0243 | val=0.0569 | auroc=0.9011  auprc=0.8946  acc=0.8063  f1=0.7770 | 14.6s
+Epoch  27/100 | train=0.0241 | val=0.0589 | auroc=0.9048  auprc=0.9043  acc=0.8344  f1=0.8140 | 14.4s
+Epoch  28/100 | train=0.0228 | val=0.0645 | auroc=0.8944  auprc=0.8755  acc=0.8219  f1=0.8041 | 14.2s
+Epoch  29/100 | train=0.0219 | val=0.0572 | auroc=0.9130  auprc=0.9085  acc=0.8375  f1=0.8231 | 14.4s
+Epoch  30/100 | train=0.0231 | val=0.0643 | auroc=0.8981  auprc=0.8844  acc=0.7781  f1=0.7300 | 14.3s
+Epoch  31/100 | train=0.0205 | val=0.0674 | auroc=0.9098  auprc=0.8989  acc=0.8719  f1=0.8664 | 14.3s
+Epoch  32/100 | train=0.0218 | val=0.0655 | auroc=0.9058  auprc=0.8979  acc=0.8531  f1=0.8407 | 14.1s
+Epoch  33/100 | train=0.0198 | val=0.0644 | auroc=0.9050  auprc=0.8871  acc=0.7844  f1=0.7396 | 14.5s
+Epoch  34/100 | train=0.0197 | val=0.0688 | auroc=0.8891  auprc=0.8680  acc=0.8375  f1=0.8255 | 14.1s
+Epoch  35/100 | train=0.0189 | val=0.0727 | auroc=0.9081  auprc=0.8967  acc=0.8313  f1=0.8112 | 14.1s
+Epoch  36/100 | train=0.0181 | val=0.0802 | auroc=0.9026  auprc=0.8885  acc=0.8500  f1=0.8421 | 14.2s
+Epoch  37/100 | train=0.0191 | val=0.0768 | auroc=0.8991  auprc=0.8858  acc=0.8500  f1=0.8421 | 14.3s
+Epoch  38/100 | train=0.0175 | val=0.0710 | auroc=0.9070  auprc=0.8980  acc=0.8625  f1=0.8562 | 14.3s
+Epoch  39/100 | train=0.0179 | val=0.0611 | auroc=0.9044  auprc=0.8864  acc=0.8531  f1=0.8407 | 14.3s
+Epoch  40/100 | train=0.0175 | val=0.0718 | auroc=0.9026  auprc=0.8931  acc=0.8562  f1=0.8477 | 14.8s
+Epoch  41/100 | train=0.0154 | val=0.0725 | auroc=0.9064  auprc=0.8963  acc=0.8313  f1=0.8071 | 14.4s
+Epoch  42/100 | train=0.0151 | val=0.0811 | auroc=0.9048  auprc=0.8819  acc=0.8562  f1=0.8467 | 14.8s
+Epoch  43/100 | train=0.0164 | val=0.0813 | auroc=0.9096  auprc=0.8921  acc=0.8562  f1=0.8526 | 14.1s
+Epoch  44/100 | train=0.0153 | val=0.0939 | auroc=0.9082  auprc=0.9034  acc=0.8625  f1=0.8562 | 14.4s
+
+  Early stopping at epoch 44 (best: 29)
+
+============================================================
+  Loading best checkpoint from epoch 29...
+  TEST (yamanishi_e):
+    auroc: 0.4992
+    auprc: 0.4896
+    acc: 0.4982
+    f1: 0.0741
+
+  Results saved -> C:\Users\Jamila\Modeling-DTI\logs\cross_luo_17_to_yamanishi_e_seed2.json
+  Checkpoint   -> C:\Users\Jamila\Modeling-DTI\checkpoints\cross_luo_17_to_yamanishi_e_seed2_best.pt
+
+== Run 3/5 : cross luo_17 -> yamanishi_e | seed 3 ==
+
+============================================================
+  Cross-dataset: luo_17 -> yamanishi_e
+  Seed: 3  Device: cpu  Epochs: 100
+============================================================
+
+  Train (luo_17): 3,115  Val: 346  Test (yamanishi_e): 896
+  Train ESM dim: 1280  Test ESM dim: 320
+  Parameters: 4,479,043
+
+  Caching luo_17 proteins (3695)...
+  Done. 3695 proteins cached.
+
+  Caching yamanishi_e proteins (90)...
+  Done. 90 proteins cached.
+
+Epoch   1/100 | train=0.0728 | val=0.0703 | auroc=0.6376  auprc=0.5810  acc=0.5250  f1=0.0000 | 14.5s
+Epoch   2/100 | train=0.0685 | val=0.0666 | auroc=0.6964  auprc=0.6470  acc=0.5250  f1=0.0000 | 14.4s
+Epoch   3/100 | train=0.0649 | val=0.0722 | auroc=0.7047  auprc=0.6640  acc=0.5312  f1=0.0260 | 15.6s
+Epoch   4/100 | train=0.0631 | val=0.0619 | auroc=0.7567  auprc=0.7272  acc=0.5781  f1=0.2623 | 14.9s
+Epoch   5/100 | train=0.0601 | val=0.0626 | auroc=0.7751  auprc=0.7477  acc=0.5813  f1=0.2472 | 14.6s
+Epoch   6/100 | train=0.0565 | val=0.0637 | auroc=0.8117  auprc=0.7599  acc=0.5656  f1=0.1965 | 13.7s
+Epoch   7/100 | train=0.0552 | val=0.0733 | auroc=0.8144  auprc=0.7763  acc=0.5344  f1=0.0859 | 13.8s
+Epoch   8/100 | train=0.0521 | val=0.0659 | auroc=0.8562  auprc=0.8250  acc=0.5750  f1=0.2093 | 13.7s
+Epoch   9/100 | train=0.0497 | val=0.0613 | auroc=0.8659  auprc=0.8233  acc=0.6562  f1=0.4712 | 13.8s
+Epoch  10/100 | train=0.0460 | val=0.0755 | auroc=0.8802  auprc=0.8442  acc=0.5625  f1=0.1566 | 13.8s
+Epoch  11/100 | train=0.0449 | val=0.0704 | auroc=0.8678  auprc=0.8165  acc=0.6000  f1=0.3118 | 13.8s
+Epoch  12/100 | train=0.0415 | val=0.0527 | auroc=0.8968  auprc=0.8748  acc=0.6844  f1=0.5346 | 13.6s
+Epoch  13/100 | train=0.0404 | val=0.0449 | auroc=0.8997  auprc=0.8917  acc=0.8187  f1=0.7958 | 13.7s
+Epoch  14/100 | train=0.0400 | val=0.0591 | auroc=0.9023  auprc=0.8789  acc=0.6906  f1=0.5479 | 13.4s
+Epoch  15/100 | train=0.0370 | val=0.0463 | auroc=0.8992  auprc=0.8803  acc=0.7937  f1=0.7481 | 13.6s
+Epoch  16/100 | train=0.0335 | val=0.0660 | auroc=0.9044  auprc=0.8906  acc=0.8219  f1=0.8224 | 13.7s
+Epoch  17/100 | train=0.0377 | val=0.0534 | auroc=0.9175  auprc=0.8906  acc=0.7219  f1=0.6079 | 13.9s
+Epoch  18/100 | train=0.0331 | val=0.0440 | auroc=0.8999  auprc=0.8811  acc=0.8094  f1=0.7749 | 14.0s
+Epoch  19/100 | train=0.0323 | val=0.0416 | auroc=0.9175  auprc=0.9083  acc=0.8250  f1=0.7926 | 13.9s
+Epoch  20/100 | train=0.0309 | val=0.0433 | auroc=0.9208  auprc=0.9073  acc=0.7844  f1=0.7315 | 13.7s
+Epoch  21/100 | train=0.0286 | val=0.0582 | auroc=0.9022  auprc=0.8862  acc=0.8250  f1=0.8170 | 13.9s
+Epoch  22/100 | train=0.0275 | val=0.0481 | auroc=0.9130  auprc=0.8984  acc=0.7812  f1=0.7244 | 13.6s
+Epoch  23/100 | train=0.0257 | val=0.0579 | auroc=0.9120  auprc=0.8967  acc=0.7875  f1=0.7344 | 13.8s
+Epoch  24/100 | train=0.0264 | val=0.0509 | auroc=0.9155  auprc=0.8994  acc=0.8406  f1=0.8235 | 13.6s
+Epoch  25/100 | train=0.0263 | val=0.0529 | auroc=0.9121  auprc=0.8991  acc=0.8500  f1=0.8333 | 14.0s
+Epoch  26/100 | train=0.0243 | val=0.0547 | auroc=0.9181  auprc=0.9161  acc=0.8063  f1=0.7578 | 13.7s
+Epoch  27/100 | train=0.0229 | val=0.0580 | auroc=0.9253  auprc=0.9182  acc=0.8000  f1=0.7557 | 13.6s
+Epoch  28/100 | train=0.0227 | val=0.0585 | auroc=0.9238  auprc=0.9124  acc=0.8250  f1=0.7910 | 13.7s
+Epoch  29/100 | train=0.0233 | val=0.0525 | auroc=0.9216  auprc=0.9097  acc=0.8625  f1=0.8514 | 13.6s
+Epoch  30/100 | train=0.0225 | val=0.0599 | auroc=0.9066  auprc=0.8757  acc=0.8500  f1=0.8462 | 13.7s
+Epoch  31/100 | train=0.0213 | val=0.0548 | auroc=0.9236  auprc=0.9149  acc=0.8750  f1=0.8701 | 14.0s
+Epoch  32/100 | train=0.0210 | val=0.0523 | auroc=0.9271  auprc=0.9214  acc=0.8562  f1=0.8456 | 13.8s
+Epoch  33/100 | train=0.0192 | val=0.0768 | auroc=0.9156  auprc=0.9085  acc=0.8531  f1=0.8517 | 13.7s
+Epoch  34/100 | train=0.0195 | val=0.0639 | auroc=0.9212  auprc=0.9095  acc=0.8250  f1=0.7986 | 13.8s
+Epoch  35/100 | train=0.0210 | val=0.0534 | auroc=0.9184  auprc=0.9110  acc=0.8031  f1=0.7605 | 13.9s
+Epoch  36/100 | train=0.0192 | val=0.0655 | auroc=0.9135  auprc=0.9064  acc=0.8375  f1=0.8156 | 13.8s
+Epoch  37/100 | train=0.0184 | val=0.0678 | auroc=0.9175  auprc=0.9124  acc=0.8531  f1=0.8469 | 13.8s
+Epoch  38/100 | train=0.0183 | val=0.0734 | auroc=0.9145  auprc=0.8920  acc=0.8562  f1=0.8456 | 13.9s
+Epoch  39/100 | train=0.0168 | val=0.0651 | auroc=0.9178  auprc=0.9028  acc=0.8344  f1=0.8100 | 13.8s
+Epoch  40/100 | train=0.0175 | val=0.0743 | auroc=0.9183  auprc=0.9088  acc=0.8594  f1=0.8553 | 13.8s
+Epoch  41/100 | train=0.0162 | val=0.0985 | auroc=0.9131  auprc=0.8940  acc=0.8625  f1=0.8599 | 13.8s
+Epoch  42/100 | train=0.0178 | val=0.0894 | auroc=0.9109  auprc=0.8929  acc=0.8594  f1=0.8525 | 13.8s
+Epoch  43/100 | train=0.0166 | val=0.0674 | auroc=0.9141  auprc=0.9041  acc=0.8594  f1=0.8495 | 13.8s
+Epoch  44/100 | train=0.0154 | val=0.0801 | auroc=0.9103  auprc=0.8924  acc=0.8313  f1=0.8099 | 13.7s
+Epoch  45/100 | train=0.0150 | val=0.1025 | auroc=0.9097  auprc=0.9023  acc=0.8531  f1=0.8517 | 13.8s
+Epoch  46/100 | train=0.0137 | val=0.0804 | auroc=0.9160  auprc=0.8985  acc=0.8406  f1=0.8283 | 13.7s
+Epoch  47/100 | train=0.0167 | val=0.0783 | auroc=0.9167  auprc=0.9081  acc=0.8562  f1=0.8467 | 13.7s
+
+  Early stopping at epoch 47 (best: 32)
+
+============================================================
+  Loading best checkpoint from epoch 32...
+  TEST (yamanishi_e):
+    auroc: 0.5420
+    auprc: 0.5482
+    acc: 0.5230
+    f1: 0.5960
+
+  Results saved -> C:\Users\Jamila\Modeling-DTI\logs\cross_luo_17_to_yamanishi_e_seed3.json
+  Checkpoint   -> C:\Users\Jamila\Modeling-DTI\checkpoints\cross_luo_17_to_yamanishi_e_seed3_best.pt
+
+== Run 4/5 : cross luo_17 -> yamanishi_e | seed 4 ==
+
+============================================================
+  Cross-dataset: luo_17 -> yamanishi_e
+  Seed: 4  Device: cpu  Epochs: 100
+============================================================
+
+  Train (luo_17): 3,115  Val: 346  Test (yamanishi_e): 896
+  Train ESM dim: 1280  Test ESM dim: 320
+  Parameters: 4,479,043
+
+  Caching luo_17 proteins (3695)...
+  Done. 3695 proteins cached.
+
+  Caching yamanishi_e proteins (90)...
+  Done. 90 proteins cached.
+
+Epoch   1/100 | train=0.0722 | val=0.0679 | auroc=0.6541  auprc=0.5961  acc=0.5250  f1=0.0000 | 13.9s
+Epoch   2/100 | train=0.0675 | val=0.0830 | auroc=0.6334  auprc=0.5879  acc=0.5250  f1=0.0000 | 14.2s
+Epoch   3/100 | train=0.0652 | val=0.0647 | auroc=0.7081  auprc=0.6728  acc=0.5594  f1=0.1657 | 13.7s
+Epoch   4/100 | train=0.0626 | val=0.0624 | auroc=0.7522  auprc=0.7265  acc=0.5969  f1=0.3246 | 13.9s
+Epoch   5/100 | train=0.0609 | val=0.0608 | auroc=0.7797  auprc=0.7487  acc=0.5781  f1=0.2458 | 13.8s
+Epoch   6/100 | train=0.0564 | val=0.0550 | auroc=0.8294  auprc=0.8056  acc=0.6000  f1=0.3043 | 13.9s
+Epoch   7/100 | train=0.0546 | val=0.0537 | auroc=0.8478  auprc=0.8445  acc=0.6344  f1=0.3874 | 14.4s
+Epoch   8/100 | train=0.0519 | val=0.0527 | auroc=0.8509  auprc=0.8261  acc=0.6969  f1=0.5837 | 14.2s
+Epoch   9/100 | train=0.0492 | val=0.0489 | auroc=0.8716  auprc=0.8620  acc=0.7156  f1=0.6128 | 13.8s
+Epoch  10/100 | train=0.0474 | val=0.0482 | auroc=0.8775  auprc=0.8489  acc=0.7656  f1=0.7104 | 13.9s
+Epoch  11/100 | train=0.0444 | val=0.0652 | auroc=0.8742  auprc=0.8495  acc=0.6687  f1=0.4904 | 13.7s
+Epoch  12/100 | train=0.0442 | val=0.0552 | auroc=0.8940  auprc=0.8652  acc=0.7125  f1=0.6034 | 13.7s
+Epoch  13/100 | train=0.0443 | val=0.0475 | auroc=0.8846  auprc=0.8757  acc=0.7812  f1=0.7266 | 13.8s
+Epoch  14/100 | train=0.0373 | val=0.0567 | auroc=0.8745  auprc=0.8580  acc=0.7344  f1=0.6352 | 13.7s
+Epoch  15/100 | train=0.0390 | val=0.0498 | auroc=0.8891  auprc=0.8697  acc=0.7688  f1=0.7040 | 13.8s
+Epoch  16/100 | train=0.0356 | val=0.0539 | auroc=0.8850  auprc=0.8585  acc=0.7281  f1=0.6234 | 13.7s
+Epoch  17/100 | train=0.0339 | val=0.0627 | auroc=0.8767  auprc=0.8490  acc=0.7937  f1=0.7574 | 13.7s
+Epoch  18/100 | train=0.0323 | val=0.0501 | auroc=0.8963  auprc=0.8768  acc=0.8000  f1=0.7500 | 13.3s
+Epoch  19/100 | train=0.0310 | val=0.0627 | auroc=0.8866  auprc=0.8705  acc=0.7344  f1=0.6288 | 13.5s
+Epoch  20/100 | train=0.0318 | val=0.0578 | auroc=0.8946  auprc=0.8621  acc=0.8187  f1=0.7899 | 13.6s
+Epoch  21/100 | train=0.0307 | val=0.0585 | auroc=0.8862  auprc=0.8643  acc=0.7969  f1=0.7471 | 13.8s
+Epoch  22/100 | train=0.0292 | val=0.0646 | auroc=0.8941  auprc=0.8760  acc=0.7625  f1=0.6885 | 13.6s
+Epoch  23/100 | train=0.0278 | val=0.0579 | auroc=0.9019  auprc=0.8873  acc=0.7781  f1=0.7102 | 13.4s
+Epoch  24/100 | train=0.0264 | val=0.0700 | auroc=0.8926  auprc=0.8788  acc=0.8250  f1=0.8042 | 13.7s
+Epoch  25/100 | train=0.0272 | val=0.0571 | auroc=0.8914  auprc=0.8649  acc=0.8250  f1=0.7986 | 13.8s
+Epoch  26/100 | train=0.0259 | val=0.0605 | auroc=0.9026  auprc=0.8732  acc=0.8063  f1=0.7704 | 13.7s
+Epoch  27/100 | train=0.0235 | val=0.0581 | auroc=0.9040  auprc=0.8846  acc=0.8656  f1=0.8532 | 13.9s
+Epoch  28/100 | train=0.0224 | val=0.0867 | auroc=0.8941  auprc=0.8644  acc=0.8344  f1=0.8262 | 16.8s
+Epoch  29/100 | train=0.0247 | val=0.0559 | auroc=0.9099  auprc=0.8874  acc=0.8313  f1=0.8138 | 14.8s
+Epoch  30/100 | train=0.0213 | val=0.0596 | auroc=0.9111  auprc=0.8948  acc=0.8406  f1=0.8185 | 14.1s
+Epoch  31/100 | train=0.0195 | val=0.0617 | auroc=0.9108  auprc=0.8942  acc=0.8500  f1=0.8356 | 14.0s
+Epoch  32/100 | train=0.0201 | val=0.0644 | auroc=0.9083  auprc=0.8987  acc=0.8375  f1=0.8143 | 13.7s
+Epoch  33/100 | train=0.0208 | val=0.0587 | auroc=0.9061  auprc=0.8893  acc=0.8375  f1=0.8143 | 13.9s
+Epoch  34/100 | train=0.0199 | val=0.0699 | auroc=0.9097  auprc=0.8988  acc=0.8500  f1=0.8345 | 13.2s
+Epoch  35/100 | train=0.0196 | val=0.0736 | auroc=0.9071  auprc=0.8927  acc=0.8469  f1=0.8269 | 13.1s
+Epoch  36/100 | train=0.0198 | val=0.0800 | auroc=0.8943  auprc=0.8850  acc=0.8406  f1=0.8211 | 12.8s
+Epoch  37/100 | train=0.0185 | val=0.0652 | auroc=0.9053  auprc=0.8922  acc=0.8156  f1=0.7823 | 12.7s
+Epoch  38/100 | train=0.0184 | val=0.0771 | auroc=0.8957  auprc=0.8641  acc=0.8313  f1=0.8125 | 13.1s
+Epoch  39/100 | train=0.0177 | val=0.0838 | auroc=0.9059  auprc=0.8796  acc=0.8344  f1=0.8100 | 13.0s
+Epoch  40/100 | train=0.0174 | val=0.0764 | auroc=0.9043  auprc=0.8935  acc=0.8625  f1=0.8523 | 12.8s
+Epoch  41/100 | train=0.0166 | val=0.0695 | auroc=0.9105  auprc=0.9014  acc=0.8438  f1=0.8175 | 12.5s
+Epoch  42/100 | train=0.0173 | val=0.0735 | auroc=0.9128  auprc=0.9040  acc=0.8719  f1=0.8571 | 13.6s
+Epoch  43/100 | train=0.0152 | val=0.0943 | auroc=0.9041  auprc=0.8892  acc=0.8438  f1=0.8201 | 14.7s
+Epoch  44/100 | train=0.0164 | val=0.0841 | auroc=0.8952  auprc=0.8791  acc=0.8125  f1=0.7727 | 14.3s
+Epoch  45/100 | train=0.0166 | val=0.0737 | auroc=0.8993  auprc=0.8864  acc=0.8281  f1=0.7970 | 14.9s
+Epoch  46/100 | train=0.0146 | val=0.0819 | auroc=0.8992  auprc=0.8741  acc=0.8187  f1=0.7852 | 14.3s
+Epoch  47/100 | train=0.0141 | val=0.0910 | auroc=0.9030  auprc=0.8966  acc=0.8500  f1=0.8345 | 14.8s
+Epoch  48/100 | train=0.0137 | val=0.0931 | auroc=0.9072  auprc=0.9042  acc=0.8562  f1=0.8403 | 14.2s
+Epoch  49/100 | train=0.0153 | val=0.0824 | auroc=0.9065  auprc=0.9027  acc=0.8500  f1=0.8322 | 14.6s
+Epoch  50/100 | train=0.0124 | val=0.0997 | auroc=0.9040  auprc=0.8883  acc=0.8562  f1=0.8467 | 14.3s
+Epoch  51/100 | train=0.0123 | val=0.0933 | auroc=0.9067  auprc=0.8943  acc=0.8438  f1=0.8227 | 14.8s
+Epoch  52/100 | train=0.0130 | val=0.0864 | auroc=0.9098  auprc=0.9030  acc=0.8562  f1=0.8425 | 14.8s
+Epoch  53/100 | train=0.0127 | val=0.0913 | auroc=0.9064  auprc=0.8974  acc=0.8656  f1=0.8562 | 14.7s
+Epoch  54/100 | train=0.0123 | val=0.0855 | auroc=0.9116  auprc=0.9109  acc=0.8375  f1=0.8116 | 13.6s
+Epoch  55/100 | train=0.0110 | val=0.0976 | auroc=0.9100  auprc=0.9076  acc=0.8688  f1=0.8591 | 14.1s
+Epoch  56/100 | train=0.0120 | val=0.0839 | auroc=0.9070  auprc=0.9034  acc=0.8531  f1=0.8315 | 13.8s
+Epoch  57/100 | train=0.0115 | val=0.0891 | auroc=0.9065  auprc=0.9028  acc=0.8500  f1=0.8356 | 13.9s
+
+  Early stopping at epoch 57 (best: 42)
+
+============================================================
+  Loading best checkpoint from epoch 42...
+  TEST (yamanishi_e):
+    auroc: 0.5137
+    auprc: 0.5249
+    acc: 0.5124
+    f1: 0.4587
+
+  Results saved -> C:\Users\Jamila\Modeling-DTI\logs\cross_luo_17_to_yamanishi_e_seed4.json
+  Checkpoint   -> C:\Users\Jamila\Modeling-DTI\checkpoints\cross_luo_17_to_yamanishi_e_seed4_best.pt
+
+== Run 5/5 : cross luo_17 -> yamanishi_e | seed 5 ==
+
+============================================================
+  Cross-dataset: luo_17 -> yamanishi_e
+  Seed: 5  Device: cpu  Epochs: 100
+============================================================
+
+  Train (luo_17): 3,115  Val: 346  Test (yamanishi_e): 896
+  Train ESM dim: 1280  Test ESM dim: 320
+  Parameters: 4,479,043
+
+  Caching luo_17 proteins (3695)...
+  Done. 3695 proteins cached.
+
+  Caching yamanishi_e proteins (90)...
+  Done. 90 proteins cached.
+
+Epoch   1/100 | train=0.0737 | val=0.0689 | auroc=0.6130  auprc=0.5615  acc=0.5250  f1=0.0000 | 14.6s
+Epoch   2/100 | train=0.0676 | val=0.0760 | auroc=0.6494  auprc=0.5898  acc=0.5281  f1=0.0131 | 14.1s
+Epoch   3/100 | train=0.0671 | val=0.0685 | auroc=0.7034  auprc=0.6736  acc=0.5250  f1=0.0000 | 13.3s
+Epoch   4/100 | train=0.0631 | val=0.0644 | auroc=0.7388  auprc=0.7115  acc=0.5437  f1=0.0875 | 14.0s
+Epoch   5/100 | train=0.0610 | val=0.0637 | auroc=0.7732  auprc=0.7383  acc=0.5531  f1=0.1227 | 14.0s
+Epoch   6/100 | train=0.0577 | val=0.0635 | auroc=0.7993  auprc=0.7851  acc=0.5656  f1=0.1677 | 13.8s
+Epoch   7/100 | train=0.0550 | val=0.1040 | auroc=0.8001  auprc=0.7792  acc=0.5281  f1=0.0131 | 13.7s
+Epoch   8/100 | train=0.0534 | val=0.0567 | auroc=0.8392  auprc=0.8311  acc=0.6469  f1=0.4264 | 14.0s
+Epoch   9/100 | train=0.0502 | val=0.0552 | auroc=0.8461  auprc=0.8437  acc=0.6531  f1=0.4365 | 13.7s
+Epoch  10/100 | train=0.0484 | val=0.0577 | auroc=0.8527  auprc=0.8252  acc=0.6219  f1=0.3665 | 13.9s
+Epoch  11/100 | train=0.0459 | val=0.0527 | auroc=0.8790  auprc=0.8665  acc=0.6844  f1=0.5258 | 13.7s
+Epoch  12/100 | train=0.0448 | val=0.0535 | auroc=0.8817  auprc=0.8561  acc=0.7344  f1=0.6414 | 14.3s
+Epoch  13/100 | train=0.0422 | val=0.0458 | auroc=0.8925  auprc=0.8863  acc=0.7812  f1=0.7308 | 13.7s
+Epoch  14/100 | train=0.0386 | val=0.0449 | auroc=0.9005  auprc=0.8957  acc=0.7688  f1=0.6992 | 15.8s
+Epoch  15/100 | train=0.0368 | val=0.0538 | auroc=0.8860  auprc=0.8606  acc=0.7562  f1=0.6880 | 14.2s
+Epoch  16/100 | train=0.0370 | val=0.0529 | auroc=0.8940  auprc=0.8690  acc=0.7281  f1=0.6201 | 14.0s
+Epoch  17/100 | train=0.0340 | val=0.0515 | auroc=0.8936  auprc=0.8822  acc=0.8187  f1=0.7914 | 13.8s
+Epoch  18/100 | train=0.0366 | val=0.0554 | auroc=0.8923  auprc=0.8646  acc=0.6312  f1=0.3854 | 13.6s
+Epoch  19/100 | train=0.0356 | val=0.0479 | auroc=0.8990  auprc=0.8911  acc=0.8125  f1=0.7761 | 14.4s
+Epoch  20/100 | train=0.0306 | val=0.0670 | auroc=0.8863  auprc=0.8561  acc=0.8375  f1=0.8312 | 14.1s
+Epoch  21/100 | train=0.0301 | val=0.0520 | auroc=0.9000  auprc=0.8814  acc=0.7781  f1=0.7237 | 14.4s
+Epoch  22/100 | train=0.0282 | val=0.0513 | auroc=0.9007  auprc=0.8779  acc=0.7875  f1=0.7405 | 14.4s
+Epoch  23/100 | train=0.0294 | val=0.0587 | auroc=0.8992  auprc=0.8773  acc=0.7375  f1=0.6379 | 16.3s
+Epoch  24/100 | train=0.0272 | val=0.0515 | auroc=0.8987  auprc=0.8901  acc=0.8250  f1=0.8014 | 20.2s
+Epoch  25/100 | train=0.0275 | val=0.0532 | auroc=0.8984  auprc=0.8835  acc=0.8250  f1=0.8000 | 19.0s
+Epoch  26/100 | train=0.0237 | val=0.0570 | auroc=0.8988  auprc=0.8874  acc=0.8219  f1=0.7881 | 17.6s
+Epoch  27/100 | train=0.0255 | val=0.0589 | auroc=0.8995  auprc=0.8793  acc=0.8156  f1=0.7839 | 15.8s
+Epoch  28/100 | train=0.0236 | val=0.0647 | auroc=0.8900  auprc=0.8596  acc=0.8406  f1=0.8317 | 16.3s
+Epoch  29/100 | train=0.0228 | val=0.0523 | auroc=0.9031  auprc=0.8886  acc=0.8250  f1=0.8000 | 17.5s
+Epoch  30/100 | train=0.0225 | val=0.0879 | auroc=0.8879  auprc=0.8402  acc=0.8219  f1=0.8014 | 17.0s
+Epoch  31/100 | train=0.0234 | val=0.0558 | auroc=0.9011  auprc=0.8779  acc=0.8375  f1=0.8169 | 15.8s
+Epoch  32/100 | train=0.0219 | val=0.0627 | auroc=0.8976  auprc=0.8710  acc=0.7969  f1=0.7529 | 17.8s
+Epoch  33/100 | train=0.0214 | val=0.0682 | auroc=0.8997  auprc=0.8789  acc=0.7531  f1=0.6722 | 17.8s
+Epoch  34/100 | train=0.0195 | val=0.0725 | auroc=0.9020  auprc=0.8789  acc=0.8469  f1=0.8383 | 15.8s
+Epoch  35/100 | train=0.0194 | val=0.0756 | auroc=0.9066  auprc=0.8810  acc=0.8531  f1=0.8469 | 17.4s
+Epoch  36/100 | train=0.0203 | val=0.0660 | auroc=0.9046  auprc=0.8896  acc=0.8375  f1=0.8182 | 17.9s
+Epoch  37/100 | train=0.0174 | val=0.0760 | auroc=0.9030  auprc=0.8931  acc=0.8250  f1=0.8056 | 17.9s
+Epoch  38/100 | train=0.0195 | val=0.0895 | auroc=0.8999  auprc=0.8869  acc=0.8500  f1=0.8378 | 19.6s
+Epoch  39/100 | train=0.0179 | val=0.0860 | auroc=0.9043  auprc=0.8892  acc=0.8688  f1=0.8618 | 21.7s
+Epoch  40/100 | train=0.0179 | val=0.0873 | auroc=0.9023  auprc=0.8782  acc=0.8500  f1=0.8411 | 22.1s
+Epoch  41/100 | train=0.0173 | val=0.0853 | auroc=0.9057  auprc=0.8824  acc=0.8625  f1=0.8543 | 22.4s
+Epoch  42/100 | train=0.0171 | val=0.1012 | auroc=0.8998  auprc=0.8771  acc=0.8562  f1=0.8506 | 22.2s
+Epoch  43/100 | train=0.0157 | val=0.1007 | auroc=0.9034  auprc=0.8815  acc=0.8688  f1=0.8609 | 21.7s
+Epoch  44/100 | train=0.0151 | val=0.0920 | auroc=0.9055  auprc=0.9105  acc=0.8500  f1=0.8400 | 20.6s
+Epoch  45/100 | train=0.0161 | val=0.0746 | auroc=0.9149  auprc=0.9110  acc=0.8469  f1=0.8372 | 20.4s
+Epoch  46/100 | train=0.0130 | val=0.0935 | auroc=0.9040  auprc=0.8996  acc=0.8500  f1=0.8345 | 19.1s
+Epoch  47/100 | train=0.0152 | val=0.0759 | auroc=0.9159  auprc=0.9045  acc=0.8406  f1=0.8223 | 18.3s
+Epoch  48/100 | train=0.0148 | val=0.0888 | auroc=0.9068  auprc=0.9031  acc=0.8469  f1=0.8293 | 22.3s
+Epoch  49/100 | train=0.0149 | val=0.1096 | auroc=0.9057  auprc=0.8801  acc=0.8781  f1=0.8738 | 24.8s
+Epoch  50/100 | train=0.0130 | val=0.0971 | auroc=0.9051  auprc=0.8890  acc=0.8594  f1=0.8464 | 21.5s
+Epoch  51/100 | train=0.0140 | val=0.0904 | auroc=0.9094  auprc=0.9010  acc=0.8656  f1=0.8522 | 19.3s
+Epoch  52/100 | train=0.0124 | val=0.0999 | auroc=0.9093  auprc=0.8862  acc=0.8562  f1=0.8467 | 18.6s
+Epoch  53/100 | train=0.0122 | val=0.0863 | auroc=0.9134  auprc=0.8884  acc=0.8750  f1=0.8693 | 18.9s
+Epoch  54/100 | train=0.0127 | val=0.0821 | auroc=0.9156  auprc=0.9023  acc=0.8406  f1=0.8159 | 20.8s
+Epoch  55/100 | train=0.0137 | val=0.0891 | auroc=0.9144  auprc=0.9086  acc=0.8625  f1=0.8503 | 18.4s
+Epoch  56/100 | train=0.0121 | val=0.0880 | auroc=0.9173  auprc=0.9133  acc=0.8719  f1=0.8620 | 19.1s
+Epoch  57/100 | train=0.0112 | val=0.1021 | auroc=0.9099  auprc=0.9086  acc=0.8531  f1=0.8439 | 20.4s
+Epoch  58/100 | train=0.0116 | val=0.0941 | auroc=0.9190  auprc=0.9110  acc=0.8625  f1=0.8523 | 19.3s
+Epoch  59/100 | train=0.0117 | val=0.0937 | auroc=0.9080  auprc=0.8836  acc=0.8625  f1=0.8514 | 22.2s
+Epoch  60/100 | train=0.0114 | val=0.1063 | auroc=0.9147  auprc=0.9002  acc=0.8719  f1=0.8620 | 21.8s
+Epoch  61/100 | train=0.0095 | val=0.1260 | auroc=0.9109  auprc=0.8982  acc=0.8594  f1=0.8525 | 20.2s
+Epoch  62/100 | train=0.0118 | val=0.1147 | auroc=0.9123  auprc=0.9039  acc=0.8531  f1=0.8449 | 18.7s
+Epoch  63/100 | train=0.0095 | val=0.1165 | auroc=0.9210  auprc=0.9152  acc=0.8781  f1=0.8721 | 21.7s
+Epoch  64/100 | train=0.0106 | val=0.1092 | auroc=0.9131  auprc=0.9013  acc=0.8812  f1=0.8733 | 22.9s
+Epoch  65/100 | train=0.0099 | val=0.0974 | auroc=0.9153  auprc=0.9079  acc=0.8531  f1=0.8362 | 23.0s
+Epoch  66/100 | train=0.0100 | val=0.1171 | auroc=0.9162  auprc=0.9120  acc=0.8688  f1=0.8636 | 22.0s
+Epoch  67/100 | train=0.0090 | val=0.1231 | auroc=0.9136  auprc=0.9077  acc=0.8875  f1=0.8816 | 20.5s
+Epoch  68/100 | train=0.0097 | val=0.1017 | auroc=0.9206  auprc=0.9166  acc=0.8750  f1=0.8649 | 18.5s
+Epoch  69/100 | train=0.0095 | val=0.0974 | auroc=0.9234  auprc=0.9161  acc=0.8781  f1=0.8696 | 19.6s
+Epoch  70/100 | train=0.0083 | val=0.1162 | auroc=0.9190  auprc=0.9157  acc=0.8875  f1=0.8808 | 20.2s
+Epoch  71/100 | train=0.0085 | val=0.1119 | auroc=0.9187  auprc=0.9158  acc=0.8812  f1=0.8742 | 19.8s
+Epoch  72/100 | train=0.0088 | val=0.1179 | auroc=0.9196  auprc=0.9124  acc=0.8750  f1=0.8675 | 19.9s
+Epoch  73/100 | train=0.0085 | val=0.1235 | auroc=0.9184  auprc=0.9122  acc=0.8719  f1=0.8656 | 20.5s
+Epoch  74/100 | train=0.0077 | val=0.1197 | auroc=0.9202  auprc=0.9160  acc=0.8844  f1=0.8771 | 18.7s
+Epoch  75/100 | train=0.0078 | val=0.1154 | auroc=0.9203  auprc=0.9115  acc=0.8750  f1=0.8667 | 20.8s
+Epoch  76/100 | train=0.0077 | val=0.1123 | auroc=0.9229  auprc=0.9158  acc=0.8688  f1=0.8581 | 18.3s
+Epoch  77/100 | train=0.0073 | val=0.1131 | auroc=0.9199  auprc=0.9136  acc=0.8719  f1=0.8629 | 19.1s
+Epoch  78/100 | train=0.0076 | val=0.1219 | auroc=0.9220  auprc=0.9175  acc=0.8688  f1=0.8627 | 19.1s
+Epoch  79/100 | train=0.0071 | val=0.1262 | auroc=0.9209  auprc=0.9160  acc=0.8781  f1=0.8713 | 18.2s
+Epoch  80/100 | train=0.0076 | val=0.1230 | auroc=0.9217  auprc=0.9168  acc=0.8781  f1=0.8704 | 20.7s
+Epoch  81/100 | train=0.0070 | val=0.1177 | auroc=0.9228  auprc=0.9196  acc=0.8781  f1=0.8696 | 20.3s
+Epoch  82/100 | train=0.0071 | val=0.1222 | auroc=0.9224  auprc=0.9187  acc=0.8781  f1=0.8713 | 18.8s
+Epoch  83/100 | train=0.0064 | val=0.1283 | auroc=0.9236  auprc=0.9205  acc=0.8781  f1=0.8721 | 19.9s
+Epoch  84/100 | train=0.0073 | val=0.1255 | auroc=0.9240  auprc=0.9208  acc=0.8812  f1=0.8742 | 18.1s
+Epoch  85/100 | train=0.0065 | val=0.1160 | auroc=0.9243  auprc=0.9215  acc=0.8812  f1=0.8725 | 20.3s
+Epoch  86/100 | train=0.0069 | val=0.1182 | auroc=0.9255  auprc=0.9233  acc=0.8781  f1=0.8696 | 18.9s
+Epoch  87/100 | train=0.0073 | val=0.1243 | auroc=0.9246  auprc=0.9198  acc=0.8781  f1=0.8696 | 18.9s
+Epoch  88/100 | train=0.0064 | val=0.1284 | auroc=0.9247  auprc=0.9209  acc=0.8812  f1=0.8742 | 19.7s
+Epoch  89/100 | train=0.0060 | val=0.1227 | auroc=0.9247  auprc=0.9233  acc=0.8781  f1=0.8704 | 19.4s
+Epoch  90/100 | train=0.0056 | val=0.1218 | auroc=0.9251  auprc=0.9223  acc=0.8812  f1=0.8733 | 19.7s
+Epoch  91/100 | train=0.0061 | val=0.1236 | auroc=0.9254  auprc=0.9229  acc=0.8844  f1=0.8771 | 18.8s
+Epoch  92/100 | train=0.0065 | val=0.1261 | auroc=0.9247  auprc=0.9215  acc=0.8812  f1=0.8742 | 19.9s
+Epoch  93/100 | train=0.0064 | val=0.1228 | auroc=0.9253  auprc=0.9231  acc=0.8812  f1=0.8733 | 18.0s
+Epoch  94/100 | train=0.0057 | val=0.1245 | auroc=0.9245  auprc=0.9225  acc=0.8812  f1=0.8733 | 20.4s
+Epoch  95/100 | train=0.0056 | val=0.1248 | auroc=0.9244  auprc=0.9223  acc=0.8812  f1=0.8742 | 18.2s
+Epoch  96/100 | train=0.0060 | val=0.1270 | auroc=0.9248  auprc=0.9222  acc=0.8844  f1=0.8771 | 20.1s
+Epoch  97/100 | train=0.0062 | val=0.1260 | auroc=0.9245  auprc=0.9220  acc=0.8844  f1=0.8771 | 18.3s
+Epoch  98/100 | train=0.0074 | val=0.1256 | auroc=0.9248  auprc=0.9223  acc=0.8812  f1=0.8750 | 20.1s
+Epoch  99/100 | train=0.0061 | val=0.1269 | auroc=0.9245  auprc=0.9212  acc=0.8781  f1=0.8713 | 18.3s
+Epoch 100/100 | train=0.0060 | val=0.1269 | auroc=0.9243  auprc=0.9212  acc=0.8844  f1=0.8771 | 19.8s
+
+============================================================
+  Loading best checkpoint from epoch 86...
+  TEST (yamanishi_e):
+    auroc: 0.4828
+    auprc: 0.4927
+    acc: 0.5041
+    f1: 0.1064
+
+  Results saved -> C:\Users\Jamila\Modeling-DTI\logs\cross_luo_17_to_yamanishi_e_seed5.json
+  Checkpoint   -> C:\Users\Jamila\Modeling-DTI\checkpoints\cross_luo_17_to_yamanishi_e_seed5_best.pt
+
+== Cross-dataset evaluation complete. ==
