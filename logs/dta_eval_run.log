@@ -653,3 +653,259 @@ Epoch   7/100 | train_loss=0.6856 | val_loss=0.4854 | mse=0.4858  rmse=0.6970  r
 Epoch   8/100 | train_loss=0.6817 | val_loss=0.5851 | mse=0.5853  rmse=0.7650  r2=0.1579  pearson=0.6241  spearman=0.5671 | 346.0s
 Epoch   9/100 | train_loss=0.6682 | val_loss=0.4422 | mse=0.4428  rmse=0.6654  r2=0.3629  pearson=0.6265  spearman=0.5691 | 359.1s
 Epoch  10/100 | train_loss=0.6626 | val_loss=0.4238 | mse=0.4243  rmse=0.6513  r2=0.3896  pearson=0.6380  spearman=0.5789 | 322.2s
+Epoch  11/100 | train_loss=0.6465 | val_loss=0.6223 | mse=0.6223  rmse=0.7888  r2=0.1046  pearson=0.6304  spearman=0.5767 | 300.1s
+Epoch  12/100 | train_loss=0.6448 | val_loss=0.4285 | mse=0.4288  rmse=0.6548  r2=0.3830  pearson=0.6501  spearman=0.5949 | 269.6s
+Epoch  13/100 | train_loss=0.6344 | val_loss=0.3894 | mse=0.3900  rmse=0.6245  r2=0.4389  pearson=0.6637  spearman=0.6104 | 265.4s
+Epoch  14/100 | train_loss=0.6284 | val_loss=0.3983 | mse=0.3989  rmse=0.6316  r2=0.4261  pearson=0.6539  spearman=0.5981 | 305.4s
+Epoch  15/100 | train_loss=0.6241 | val_loss=0.4975 | mse=0.4976  rmse=0.7054  r2=0.2840  pearson=0.6764  spearman=0.6199 | 329.1s
+Epoch  16/100 | train_loss=0.6127 | val_loss=0.3992 | mse=0.3998  rmse=0.6323  r2=0.4248  pearson=0.6682  spearman=0.6175 | 339.1s
+Epoch  17/100 | train_loss=0.6073 | val_loss=0.4695 | mse=0.4695  rmse=0.6852  r2=0.3245  pearson=0.6839  spearman=0.6329 | 338.4s
+Epoch  18/100 | train_loss=0.6000 | val_loss=0.3717 | mse=0.3721  rmse=0.6100  r2=0.4646  pearson=0.6895  spearman=0.6325 | 342.4s
+Epoch  19/100 | train_loss=0.5949 | val_loss=0.3916 | mse=0.3919  rmse=0.6261  r2=0.4360  pearson=0.6897  spearman=0.6317 | 348.5s
+Epoch  20/100 | train_loss=0.5877 | val_loss=0.3707 | mse=0.3714  rmse=0.6094  r2=0.4657  pearson=0.6862  spearman=0.6248 | 346.2s
+Epoch  21/100 | train_loss=0.5882 | val_loss=0.3672 | mse=0.3675  rmse=0.6062  r2=0.4713  pearson=0.6925  spearman=0.6321 | 343.8s
+Epoch  22/100 | train_loss=0.5833 | val_loss=0.3712 | mse=0.3714  rmse=0.6094  r2=0.4657  pearson=0.7105  spearman=0.6666 | 342.3s
+Epoch  23/100 | train_loss=0.5736 | val_loss=0.3483 | mse=0.3488  rmse=0.5906  r2=0.4982  pearson=0.7065  spearman=0.6593 | 343.8s
+Epoch  24/100 | train_loss=0.5660 | val_loss=0.3835 | mse=0.3836  rmse=0.6194  r2=0.4480  pearson=0.7147  spearman=0.6621 | 341.1s
+Epoch  25/100 | train_loss=0.5642 | val_loss=0.3885 | mse=0.3885  rmse=0.6233  r2=0.4411  pearson=0.7172  spearman=0.6706 | 342.0s
+Epoch  26/100 | train_loss=0.5582 | val_loss=0.4550 | mse=0.4549  rmse=0.6745  r2=0.3454  pearson=0.7188  spearman=0.6704 | 344.8s
+Epoch  27/100 | train_loss=0.5531 | val_loss=0.3875 | mse=0.3876  rmse=0.6226  r2=0.4422  pearson=0.7259  spearman=0.6817 | 341.8s
+Epoch  28/100 | train_loss=0.5480 | val_loss=0.3684 | mse=0.3685  rmse=0.6070  r2=0.4698  pearson=0.7222  spearman=0.6692 | 341.4s
+Epoch  29/100 | train_loss=0.5435 | val_loss=0.3406 | mse=0.3408  rmse=0.5838  r2=0.5096  pearson=0.7261  spearman=0.6798 | 341.1s
+Epoch  30/100 | train_loss=0.5467 | val_loss=0.4902 | mse=0.4902  rmse=0.7001  r2=0.2947  pearson=0.7317  spearman=0.6786 | 341.2s
+Epoch  31/100 | train_loss=0.5403 | val_loss=0.4065 | mse=0.4065  rmse=0.6375  r2=0.4152  pearson=0.7281  spearman=0.6858 | 342.5s
+Epoch  32/100 | train_loss=0.5389 | val_loss=0.4225 | mse=0.4230  rmse=0.6503  r2=0.3914  pearson=0.7341  spearman=0.6928 | 340.4s
+Epoch  33/100 | train_loss=0.5335 | val_loss=0.4014 | mse=0.4016  rmse=0.6337  r2=0.4222  pearson=0.7332  spearman=0.6881 | 340.0s
+Epoch  34/100 | train_loss=0.5308 | val_loss=0.3398 | mse=0.3402  rmse=0.5833  r2=0.5105  pearson=0.7297  spearman=0.6927 | 344.5s
+Epoch  35/100 | train_loss=0.5301 | val_loss=0.3310 | mse=0.3315  rmse=0.5757  r2=0.5231  pearson=0.7331  spearman=0.6897 | 339.0s
+Epoch  36/100 | train_loss=0.5263 | val_loss=0.3301 | mse=0.3305  rmse=0.5749  r2=0.5245  pearson=0.7420  spearman=0.7007 | 341.7s
+Epoch  37/100 | train_loss=0.5218 | val_loss=0.3251 | mse=0.3253  rmse=0.5704  r2=0.5319  pearson=0.7404  spearman=0.6914 | 342.5s
+Epoch  38/100 | train_loss=0.5193 | val_loss=0.3383 | mse=0.3385  rmse=0.5818  r2=0.5130  pearson=0.7453  spearman=0.7027 | 341.8s
+Epoch  39/100 | train_loss=0.5177 | val_loss=0.4253 | mse=0.4252  rmse=0.6521  r2=0.3882  pearson=0.7480  spearman=0.7141 | 341.7s
+Epoch  40/100 | train_loss=0.5136 | val_loss=0.3200 | mse=0.3202  rmse=0.5658  r2=0.5393  pearson=0.7439  spearman=0.6970 | 342.1s
+Epoch  41/100 | train_loss=0.5116 | val_loss=0.3577 | mse=0.3579  rmse=0.5983  r2=0.4850  pearson=0.7468  spearman=0.7028 | 344.1s
+Epoch  42/100 | train_loss=0.5094 | val_loss=0.3165 | mse=0.3167  rmse=0.5627  r2=0.5444  pearson=0.7493  spearman=0.7067 | 344.6s
+Epoch  43/100 | train_loss=0.5051 | val_loss=0.3267 | mse=0.3269  rmse=0.5717  r2=0.5297  pearson=0.7514  spearman=0.7038 | 342.7s
+Epoch  44/100 | train_loss=0.5020 | val_loss=0.3465 | mse=0.3467  rmse=0.5888  r2=0.5012  pearson=0.7548  spearman=0.7120 | 342.9s
+Epoch  45/100 | train_loss=0.4976 | val_loss=0.3595 | mse=0.3598  rmse=0.5999  r2=0.4822  pearson=0.7529  spearman=0.7165 | 342.5s
+Epoch  46/100 | train_loss=0.5006 | val_loss=0.3657 | mse=0.3659  rmse=0.6049  r2=0.4736  pearson=0.7576  spearman=0.7185 | 344.2s
+Epoch  47/100 | train_loss=0.4955 | val_loss=0.3150 | mse=0.3152  rmse=0.5614  r2=0.5465  pearson=0.7584  spearman=0.7199 | 359.6s
+Epoch  48/100 | train_loss=0.4913 | val_loss=0.3109 | mse=0.3110  rmse=0.5577  r2=0.5525  pearson=0.7577  spearman=0.7175 | 344.4s
+Epoch  49/100 | train_loss=0.4915 | val_loss=0.3200 | mse=0.3201  rmse=0.5658  r2=0.5394  pearson=0.7570  spearman=0.7150 | 346.6s
+Epoch  50/100 | train_loss=0.4888 | val_loss=0.2985 | mse=0.2987  rmse=0.5465  r2=0.5702  pearson=0.7584  spearman=0.7222 | 345.9s
+Epoch  51/100 | train_loss=0.4885 | val_loss=0.3199 | mse=0.3199  rmse=0.5656  r2=0.5397  pearson=0.7585  spearman=0.7142 | 344.3s
+Epoch  52/100 | train_loss=0.4865 | val_loss=0.3604 | mse=0.3603  rmse=0.6002  r2=0.4816  pearson=0.7648  spearman=0.7247 | 343.4s
+Epoch  53/100 | train_loss=0.4813 | val_loss=0.2977 | mse=0.2977  rmse=0.5456  r2=0.5717  pearson=0.7654  spearman=0.7295 | 342.3s
+Epoch  54/100 | train_loss=0.4769 | val_loss=0.3180 | mse=0.3180  rmse=0.5639  r2=0.5425  pearson=0.7628  spearman=0.7215 | 339.6s
+Epoch  55/100 | train_loss=0.4807 | val_loss=0.3150 | mse=0.3151  rmse=0.5613  r2=0.5467  pearson=0.7672  spearman=0.7320 | 338.8s
+Epoch  56/100 | train_loss=0.4770 | val_loss=0.3056 | mse=0.3056  rmse=0.5528  r2=0.5603  pearson=0.7648  spearman=0.7242 | 335.4s
+Epoch  57/100 | train_loss=0.4731 | val_loss=0.2979 | mse=0.2979  rmse=0.5458  r2=0.5713  pearson=0.7645  spearman=0.7293 | 336.5s
+Epoch  58/100 | train_loss=0.4721 | val_loss=0.3035 | mse=0.3035  rmse=0.5509  r2=0.5632  pearson=0.7696  spearman=0.7363 | 334.6s
+Epoch  59/100 | train_loss=0.4665 | val_loss=0.3307 | mse=0.3309  rmse=0.5752  r2=0.5239  pearson=0.7695  spearman=0.7376 | 338.7s
+Epoch  60/100 | train_loss=0.4666 | val_loss=0.2867 | mse=0.2867  rmse=0.5355  r2=0.5874  pearson=0.7714  spearman=0.7308 | 331.8s
+Epoch  61/100 | train_loss=0.4673 | val_loss=0.3053 | mse=0.3054  rmse=0.5526  r2=0.5606  pearson=0.7670  spearman=0.7263 | 319.5s
+Epoch  62/100 | train_loss=0.4612 | val_loss=0.2857 | mse=0.2859  rmse=0.5347  r2=0.5887  pearson=0.7750  spearman=0.7446 | 230.8s
+Epoch  63/100 | train_loss=0.4603 | val_loss=0.3122 | mse=0.3123  rmse=0.5588  r2=0.5507  pearson=0.7737  spearman=0.7424 | 241.3s
+Epoch  64/100 | train_loss=0.4595 | val_loss=0.2954 | mse=0.2957  rmse=0.5438  r2=0.5746  pearson=0.7700  spearman=0.7327 | 236.2s
+Epoch  65/100 | train_loss=0.4558 | val_loss=0.2941 | mse=0.2943  rmse=0.5425  r2=0.5766  pearson=0.7748  spearman=0.7456 | 234.7s
+Epoch  66/100 | train_loss=0.4595 | val_loss=0.3069 | mse=0.3069  rmse=0.5540  r2=0.5583  pearson=0.7720  spearman=0.7316 | 235.8s
+Epoch  67/100 | train_loss=0.4570 | val_loss=0.3005 | mse=0.3006  rmse=0.5482  r2=0.5675  pearson=0.7745  spearman=0.7388 | 234.3s
+Epoch  68/100 | train_loss=0.4553 | val_loss=0.2844 | mse=0.2845  rmse=0.5333  r2=0.5907  pearson=0.7784  spearman=0.7438 | 234.1s
+Epoch  69/100 | train_loss=0.4517 | val_loss=0.3210 | mse=0.3211  rmse=0.5666  r2=0.5381  pearson=0.7757  spearman=0.7389 | 233.9s
+Epoch  70/100 | train_loss=0.4530 | val_loss=0.2984 | mse=0.2985  rmse=0.5463  r2=0.5706  pearson=0.7759  spearman=0.7409 | 233.7s
+Epoch  71/100 | train_loss=0.4524 | val_loss=0.2880 | mse=0.2880  rmse=0.5367  r2=0.5856  pearson=0.7760  spearman=0.7376 | 233.6s
+Epoch  72/100 | train_loss=0.4519 | val_loss=0.2977 | mse=0.2977  rmse=0.5456  r2=0.5717  pearson=0.7803  spearman=0.7431 | 233.9s
+Epoch  73/100 | train_loss=0.4544 | val_loss=0.2945 | mse=0.2946  rmse=0.5427  r2=0.5762  pearson=0.7756  spearman=0.7402 | 231.6s
+Epoch  74/100 | train_loss=0.4508 | val_loss=0.2897 | mse=0.2896  rmse=0.5382  r2=0.5833  pearson=0.7804  spearman=0.7407 | 233.0s
+Epoch  75/100 | train_loss=0.4475 | val_loss=0.2934 | mse=0.2935  rmse=0.5417  r2=0.5778  pearson=0.7786  spearman=0.7452 | 233.8s
+Epoch  76/100 | train_loss=0.4469 | val_loss=0.2914 | mse=0.2914  rmse=0.5399  r2=0.5807  pearson=0.7811  spearman=0.7432 | 230.3s
+Epoch  77/100 | train_loss=0.4462 | val_loss=0.2950 | mse=0.2950  rmse=0.5431  r2=0.5756  pearson=0.7810  spearman=0.7494 | 231.2s
+Epoch  78/100 | train_loss=0.4457 | val_loss=0.2800 | mse=0.2800  rmse=0.5291  r2=0.5972  pearson=0.7822  spearman=0.7469 | 231.9s
+Epoch  79/100 | train_loss=0.4425 | val_loss=0.2827 | mse=0.2827  rmse=0.5317  r2=0.5932  pearson=0.7814  spearman=0.7475 | 232.7s
+Epoch  80/100 | train_loss=0.4440 | val_loss=0.2990 | mse=0.2990  rmse=0.5468  r2=0.5698  pearson=0.7836  spearman=0.7523 | 230.3s
+Epoch  81/100 | train_loss=0.4448 | val_loss=0.2757 | mse=0.2758  rmse=0.5251  r2=0.6032  pearson=0.7817  spearman=0.7466 | 231.2s
+Epoch  82/100 | train_loss=0.4444 | val_loss=0.2846 | mse=0.2846  rmse=0.5335  r2=0.5905  pearson=0.7821  spearman=0.7477 | 230.5s
+Epoch  83/100 | train_loss=0.4399 | val_loss=0.2868 | mse=0.2869  rmse=0.5356  r2=0.5873  pearson=0.7833  spearman=0.7489 | 231.2s
+Epoch  84/100 | train_loss=0.4399 | val_loss=0.2893 | mse=0.2892  rmse=0.5378  r2=0.5839  pearson=0.7842  spearman=0.7514 | 229.4s
+Epoch  85/100 | train_loss=0.4390 | val_loss=0.2874 | mse=0.2875  rmse=0.5362  r2=0.5864  pearson=0.7847  spearman=0.7518 | 229.6s
+Epoch  86/100 | train_loss=0.4381 | val_loss=0.2886 | mse=0.2887  rmse=0.5373  r2=0.5847  pearson=0.7848  spearman=0.7514 | 230.2s
+Epoch  87/100 | train_loss=0.4386 | val_loss=0.2829 | mse=0.2829  rmse=0.5319  r2=0.5929  pearson=0.7842  spearman=0.7502 | 231.1s
+Epoch  88/100 | train_loss=0.4415 | val_loss=0.2786 | mse=0.2786  rmse=0.5278  r2=0.5991  pearson=0.7836  spearman=0.7483 | 232.7s
+Epoch  89/100 | train_loss=0.4355 | val_loss=0.2881 | mse=0.2881  rmse=0.5368  r2=0.5854  pearson=0.7847  spearman=0.7514 | 230.1s
+Epoch  90/100 | train_loss=0.4316 | val_loss=0.2848 | mse=0.2847  rmse=0.5336  r2=0.5904  pearson=0.7845  spearman=0.7492 | 230.6s
+Epoch  91/100 | train_loss=0.4374 | val_loss=0.2807 | mse=0.2807  rmse=0.5298  r2=0.5961  pearson=0.7850  spearman=0.7502 | 229.8s
+Epoch  92/100 | train_loss=0.4361 | val_loss=0.2806 | mse=0.2806  rmse=0.5297  r2=0.5962  pearson=0.7858  spearman=0.7539 | 229.5s
+Epoch  93/100 | train_loss=0.4343 | val_loss=0.2941 | mse=0.2941  rmse=0.5423  r2=0.5769  pearson=0.7847  spearman=0.7493 | 229.3s
+Epoch  94/100 | train_loss=0.4334 | val_loss=0.2863 | mse=0.2862  rmse=0.5350  r2=0.5881  pearson=0.7859  spearman=0.7515 | 229.6s
+Epoch  95/100 | train_loss=0.4353 | val_loss=0.2813 | mse=0.2812  rmse=0.5303  r2=0.5953  pearson=0.7856  spearman=0.7510 | 229.6s
+Epoch  96/100 | train_loss=0.4343 | val_loss=0.2819 | mse=0.2819  rmse=0.5310  r2=0.5943  pearson=0.7854  spearman=0.7516 | 228.9s
+
+  Early stopping at epoch 96 (best: epoch 81)
+
+============================================================
+  Loading best model from epoch 81...
+  TEST RESULTS:
+    mse: 0.2843
+    rmse: 0.5332
+    r2: 0.5981
+    pearson: 0.7780
+    spearman: 0.7483
+
+  Results saved -> C:\Users\Jamila\Modeling-DTI\logs\hgnn_rnn_dti_kiba_dta_random_fold0_seed3.json
+  Checkpoint   -> C:\Users\Jamila\Modeling-DTI\checkpoints\hgnn_rnn_dti_kiba_dta_random_fold0_seed3_best.pt
+
+== Run 7/10 : hgnn_rnn_dti | davis | dta | random | seed 4 ==
+
+============================================================
+  Model: hgnn_rnn_dti
+  Dataset: davis  Task: dta  Split: random
+  Device: cpu  Epochs: 100
+============================================================
+
+  Train: 24,345  Val: 2,705  Test: 3,006
+  Protein ESM dim: 320
+  Parameters: 4,171,714
+
+  Pre-computing protein representations for 442 proteins...
+  Done. Cache: 442 proteins -> (hidden_dim=256,)
+
+Epoch   1/100 | train_loss=3.5166 | val_loss=0.8460 | mse=0.8453  rmse=0.9194  r2=0.0548  pearson=0.3191  spearman=0.3547 | 67.8s
+Epoch   2/100 | train_loss=0.7695 | val_loss=0.7119 | mse=0.7125  rmse=0.8441  r2=0.2033  pearson=0.4877  spearman=0.4886 | 66.6s
+Epoch   3/100 | train_loss=0.7069 | val_loss=0.6917 | mse=0.6929  rmse=0.8324  r2=0.2252  pearson=0.5239  spearman=0.5016 | 65.2s
+Epoch   4/100 | train_loss=0.6671 | val_loss=0.6503 | mse=0.6512  rmse=0.8070  r2=0.2719  pearson=0.5365  spearman=0.5075 | 67.9s
+Epoch   5/100 | train_loss=0.6607 | val_loss=0.6482 | mse=0.6489  rmse=0.8056  r2=0.2744  pearson=0.5422  spearman=0.4976 | 66.9s
+Epoch   6/100 | train_loss=0.6448 | val_loss=0.6219 | mse=0.6227  rmse=0.7891  r2=0.3037  pearson=0.5538  spearman=0.5128 | 68.3s
+Epoch   7/100 | train_loss=0.6391 | val_loss=0.6163 | mse=0.6160  rmse=0.7849  r2=0.3111  pearson=0.5675  spearman=0.5207 | 68.4s
+Epoch   8/100 | train_loss=0.6244 | val_loss=0.6038 | mse=0.6049  rmse=0.7778  r2=0.3236  pearson=0.5767  spearman=0.5231 | 68.2s
+Epoch   9/100 | train_loss=0.6157 | val_loss=0.6209 | mse=0.6224  rmse=0.7889  r2=0.3040  pearson=0.5837  spearman=0.5246 | 67.2s
+Epoch  10/100 | train_loss=0.6022 | val_loss=0.6065 | mse=0.6076  rmse=0.7795  r2=0.3205  pearson=0.5759  spearman=0.5103 | 68.0s
+Epoch  11/100 | train_loss=0.6062 | val_loss=0.5799 | mse=0.5802  rmse=0.7617  r2=0.3512  pearson=0.5977  spearman=0.5317 | 66.9s
+Epoch  12/100 | train_loss=0.5961 | val_loss=0.5739 | mse=0.5752  rmse=0.7584  r2=0.3568  pearson=0.5980  spearman=0.5297 | 67.7s
+Epoch  13/100 | train_loss=0.5957 | val_loss=0.5841 | mse=0.5864  rmse=0.7658  r2=0.3442  pearson=0.5988  spearman=0.5311 | 68.0s
+Epoch  14/100 | train_loss=0.5710 | val_loss=0.5595 | mse=0.5610  rmse=0.7490  r2=0.3727  pearson=0.6113  spearman=0.5458 | 68.2s
+Epoch  15/100 | train_loss=0.5756 | val_loss=0.5805 | mse=0.5841  rmse=0.7643  r2=0.3468  pearson=0.6113  spearman=0.5430 | 66.7s
+Epoch  16/100 | train_loss=0.5663 | val_loss=0.5694 | mse=0.5712  rmse=0.7558  r2=0.3613  pearson=0.6048  spearman=0.5326 | 67.2s
+Epoch  17/100 | train_loss=0.5585 | val_loss=0.5595 | mse=0.5603  rmse=0.7485  r2=0.3735  pearson=0.6248  spearman=0.5426 | 67.6s
+Epoch  18/100 | train_loss=0.5533 | val_loss=0.5433 | mse=0.5450  rmse=0.7383  r2=0.3905  pearson=0.6424  spearman=0.5571 | 67.5s
+Epoch  19/100 | train_loss=0.5429 | val_loss=0.5359 | mse=0.5373  rmse=0.7330  r2=0.3992  pearson=0.6342  spearman=0.5464 | 68.1s
+Epoch  20/100 | train_loss=0.5444 | val_loss=0.5581 | mse=0.5598  rmse=0.7482  r2=0.3740  pearson=0.6414  spearman=0.5578 | 67.6s
+Epoch  21/100 | train_loss=0.5328 | val_loss=0.5167 | mse=0.5165  rmse=0.7187  r2=0.4224  pearson=0.6519  spearman=0.5593 | 68.1s
+Epoch  22/100 | train_loss=0.5252 | val_loss=0.5181 | mse=0.5198  rmse=0.7210  r2=0.4187  pearson=0.6472  spearman=0.5599 | 68.1s
+Epoch  23/100 | train_loss=0.5198 | val_loss=0.5254 | mse=0.5263  rmse=0.7254  r2=0.4115  pearson=0.6480  spearman=0.5546 | 68.4s
+Epoch  24/100 | train_loss=0.5160 | val_loss=0.5117 | mse=0.5121  rmse=0.7156  r2=0.4274  pearson=0.6612  spearman=0.5678 | 66.4s
+Epoch  25/100 | train_loss=0.5116 | val_loss=0.5104 | mse=0.5117  rmse=0.7154  r2=0.4278  pearson=0.6551  spearman=0.5651 | 67.9s
+Epoch  26/100 | train_loss=0.5099 | val_loss=0.5005 | mse=0.5020  rmse=0.7085  r2=0.4387  pearson=0.6713  spearman=0.5784 | 67.6s
+Epoch  27/100 | train_loss=0.5071 | val_loss=0.5431 | mse=0.5448  rmse=0.7381  r2=0.3908  pearson=0.6665  spearman=0.5681 | 66.8s
+Epoch  28/100 | train_loss=0.5003 | val_loss=0.5207 | mse=0.5224  rmse=0.7228  r2=0.4158  pearson=0.6689  spearman=0.5731 | 67.6s
+Epoch  29/100 | train_loss=0.5000 | val_loss=0.4889 | mse=0.4892  rmse=0.6994  r2=0.4530  pearson=0.6773  spearman=0.5823 | 67.1s
+Epoch  30/100 | train_loss=0.4894 | val_loss=0.5002 | mse=0.5013  rmse=0.7081  r2=0.4394  pearson=0.6795  spearman=0.5802 | 67.7s
+Epoch  31/100 | train_loss=0.4915 | val_loss=0.4772 | mse=0.4775  rmse=0.6910  r2=0.4661  pearson=0.6862  spearman=0.5905 | 67.0s
+Epoch  32/100 | train_loss=0.4948 | val_loss=0.4919 | mse=0.4922  rmse=0.7016  r2=0.4496  pearson=0.6824  spearman=0.5818 | 67.4s
+Epoch  33/100 | train_loss=0.4872 | val_loss=0.4798 | mse=0.4799  rmse=0.6928  r2=0.4633  pearson=0.6856  spearman=0.5811 | 66.9s
+Epoch  34/100 | train_loss=0.4853 | val_loss=0.4825 | mse=0.4837  rmse=0.6955  r2=0.4591  pearson=0.6803  spearman=0.5774 | 68.1s
+Epoch  35/100 | train_loss=0.4802 | val_loss=0.4882 | mse=0.4887  rmse=0.6991  r2=0.4536  pearson=0.6851  spearman=0.5806 | 67.0s
+Epoch  36/100 | train_loss=0.4692 | val_loss=0.4659 | mse=0.4669  rmse=0.6833  r2=0.4779  pearson=0.6924  spearman=0.5922 | 66.8s
+Epoch  37/100 | train_loss=0.4728 | val_loss=0.4836 | mse=0.4859  rmse=0.6971  r2=0.4567  pearson=0.6816  spearman=0.5825 | 67.2s
+Epoch  38/100 | train_loss=0.4710 | val_loss=0.4730 | mse=0.4742  rmse=0.6886  r2=0.4698  pearson=0.7006  spearman=0.5944 | 66.7s
+Epoch  39/100 | train_loss=0.4688 | val_loss=0.4598 | mse=0.4592  rmse=0.6776  r2=0.4865  pearson=0.6998  spearman=0.5949 | 66.0s
+Epoch  40/100 | train_loss=0.4761 | val_loss=0.4590 | mse=0.4601  rmse=0.6783  r2=0.4855  pearson=0.7083  spearman=0.6032 | 67.8s
+Epoch  41/100 | train_loss=0.4636 | val_loss=0.4586 | mse=0.4597  rmse=0.6780  r2=0.4859  pearson=0.7008  spearman=0.5823 | 66.8s
+Epoch  42/100 | train_loss=0.4604 | val_loss=0.4548 | mse=0.4550  rmse=0.6745  r2=0.4912  pearson=0.7116  spearman=0.6025 | 66.9s
+Epoch  43/100 | train_loss=0.4585 | val_loss=0.4442 | mse=0.4440  rmse=0.6663  r2=0.5035  pearson=0.7108  spearman=0.6051 | 67.4s
+Epoch  44/100 | train_loss=0.4643 | val_loss=0.4869 | mse=0.4874  rmse=0.6981  r2=0.4550  pearson=0.6989  spearman=0.5827 | 66.7s
+Epoch  45/100 | train_loss=0.4557 | val_loss=0.4535 | mse=0.4524  rmse=0.6726  r2=0.4942  pearson=0.7058  spearman=0.5867 | 67.5s
+Epoch  46/100 | train_loss=0.4548 | val_loss=0.4701 | mse=0.4710  rmse=0.6863  r2=0.4733  pearson=0.7084  spearman=0.5835 | 67.9s
+Epoch  47/100 | train_loss=0.4558 | val_loss=0.4604 | mse=0.4608  rmse=0.6788  r2=0.4847  pearson=0.7028  spearman=0.5876 | 67.9s
+Epoch  48/100 | train_loss=0.4517 | val_loss=0.4364 | mse=0.4356  rmse=0.6600  r2=0.5129  pearson=0.7166  spearman=0.6042 | 67.9s
+Epoch  49/100 | train_loss=0.4498 | val_loss=0.4432 | mse=0.4435  rmse=0.6659  r2=0.5041  pearson=0.7200  spearman=0.6045 | 67.3s
+Epoch  50/100 | train_loss=0.4534 | val_loss=0.4661 | mse=0.4664  rmse=0.6830  r2=0.4784  pearson=0.7163  spearman=0.6095 | 67.4s
+Epoch  51/100 | train_loss=0.4484 | val_loss=0.4650 | mse=0.4647  rmse=0.6817  r2=0.4804  pearson=0.7123  spearman=0.5918 | 66.6s
+Epoch  52/100 | train_loss=0.4451 | val_loss=0.4500 | mse=0.4509  rmse=0.6715  r2=0.4958  pearson=0.7155  spearman=0.6047 | 69.5s
+Epoch  53/100 | train_loss=0.4441 | val_loss=0.4567 | mse=0.4564  rmse=0.6756  r2=0.4897  pearson=0.7154  spearman=0.5990 | 72.0s
+Epoch  54/100 | train_loss=0.4394 | val_loss=0.4354 | mse=0.4345  rmse=0.6591  r2=0.5142  pearson=0.7199  spearman=0.6045 | 69.6s
+Epoch  55/100 | train_loss=0.4475 | val_loss=0.4496 | mse=0.4484  rmse=0.6697  r2=0.4986  pearson=0.7147  spearman=0.5935 | 67.5s
+Epoch  56/100 | train_loss=0.4440 | val_loss=0.4460 | mse=0.4451  rmse=0.6672  r2=0.5023  pearson=0.7177  spearman=0.6057 | 65.9s
+Epoch  57/100 | train_loss=0.4423 | val_loss=0.4399 | mse=0.4400  rmse=0.6633  r2=0.5080  pearson=0.7193  spearman=0.6070 | 68.3s
+Epoch  58/100 | train_loss=0.4405 | val_loss=0.4432 | mse=0.4424  rmse=0.6651  r2=0.5053  pearson=0.7185  spearman=0.6010 | 67.4s
+Epoch  59/100 | train_loss=0.4419 | val_loss=0.4362 | mse=0.4356  rmse=0.6600  r2=0.5129  pearson=0.7182  spearman=0.5973 | 67.4s
+Epoch  60/100 | train_loss=0.4363 | val_loss=0.4357 | mse=0.4351  rmse=0.6596  r2=0.5135  pearson=0.7231  spearman=0.6052 | 66.6s
+Epoch  61/100 | train_loss=0.4366 | val_loss=0.4397 | mse=0.4391  rmse=0.6627  r2=0.5089  pearson=0.7223  spearman=0.6068 | 68.1s
+Epoch  62/100 | train_loss=0.4349 | val_loss=0.4383 | mse=0.4383  rmse=0.6620  r2=0.5099  pearson=0.7171  spearman=0.5946 | 67.1s
+Epoch  63/100 | train_loss=0.4379 | val_loss=0.4243 | mse=0.4241  rmse=0.6513  r2=0.5257  pearson=0.7253  spearman=0.6111 | 67.7s
+Epoch  64/100 | train_loss=0.4347 | val_loss=0.4392 | mse=0.4387  rmse=0.6623  r2=0.5095  pearson=0.7210  spearman=0.6058 | 67.2s
+Epoch  65/100 | train_loss=0.4323 | val_loss=0.4352 | mse=0.4349  rmse=0.6595  r2=0.5136  pearson=0.7213  spearman=0.6011 | 65.8s
+Epoch  66/100 | train_loss=0.4337 | val_loss=0.4355 | mse=0.4348  rmse=0.6594  r2=0.5138  pearson=0.7235  spearman=0.6098 | 67.7s
+Epoch  67/100 | train_loss=0.4322 | val_loss=0.4381 | mse=0.4375  rmse=0.6614  r2=0.5108  pearson=0.7241  spearman=0.6067 | 67.6s
+Epoch  68/100 | train_loss=0.4335 | val_loss=0.4462 | mse=0.4461  rmse=0.6679  r2=0.5012  pearson=0.7246  spearman=0.6061 | 67.7s
+Epoch  69/100 | train_loss=0.4246 | val_loss=0.4438 | mse=0.4436  rmse=0.6660  r2=0.5040  pearson=0.7244  spearman=0.6074 | 67.6s
+Epoch  70/100 | train_loss=0.4401 | val_loss=0.4272 | mse=0.4267  rmse=0.6532  r2=0.5229  pearson=0.7294  spearman=0.6154 | 66.8s
+Epoch  71/100 | train_loss=0.4261 | val_loss=0.4284 | mse=0.4280  rmse=0.6542  r2=0.5214  pearson=0.7289  spearman=0.6145 | 66.8s
+Epoch  72/100 | train_loss=0.4261 | val_loss=0.4246 | mse=0.4243  rmse=0.6513  r2=0.5256  pearson=0.7300  spearman=0.6127 | 68.2s
+Epoch  73/100 | train_loss=0.4298 | val_loss=0.4488 | mse=0.4484  rmse=0.6696  r2=0.4986  pearson=0.7260  spearman=0.6107 | 67.9s
+Epoch  74/100 | train_loss=0.4242 | val_loss=0.4256 | mse=0.4253  rmse=0.6522  r2=0.5244  pearson=0.7286  spearman=0.6091 | 68.0s
+Epoch  75/100 | train_loss=0.4281 | val_loss=0.4341 | mse=0.4338  rmse=0.6586  r2=0.5149  pearson=0.7295  spearman=0.6126 | 67.9s
+Epoch  76/100 | train_loss=0.4257 | val_loss=0.4271 | mse=0.4265  rmse=0.6530  r2=0.5231  pearson=0.7267  spearman=0.6116 | 68.0s
+Epoch  77/100 | train_loss=0.4272 | val_loss=0.4325 | mse=0.4321  rmse=0.6574  r2=0.5168  pearson=0.7284  spearman=0.6096 | 68.9s
+Epoch  78/100 | train_loss=0.4202 | val_loss=0.4359 | mse=0.4356  rmse=0.6600  r2=0.5129  pearson=0.7288  spearman=0.6131 | 68.1s
+
+  Early stopping at epoch 78 (best: epoch 63)
+
+============================================================
+  Loading best model from epoch 63...
+  TEST RESULTS:
+    mse: 0.3934
+    rmse: 0.6272
+    r2: 0.4888
+    pearson: 0.7017
+    spearman: 0.5944
+
+  Results saved -> C:\Users\Jamila\Modeling-DTI\logs\hgnn_rnn_dti_davis_dta_random_fold0_seed4.json
+  Checkpoint   -> C:\Users\Jamila\Modeling-DTI\checkpoints\hgnn_rnn_dti_davis_dta_random_fold0_seed4_best.pt
+
+== Run 8/10 : hgnn_rnn_dti | kiba | dta | random | seed 4 ==
+
+============================================================
+  Model: hgnn_rnn_dti
+  Dataset: kiba  Task: dta  Split: random
+  Device: cpu  Epochs: 100
+============================================================
+
+  Train: 95,786  Val: 10,642  Test: 11,826
+  Protein ESM dim: 320
+  Parameters: 4,171,714
+
+  Pre-computing protein representations for 229 proteins...
+  Done. Cache: 229 proteins -> (hidden_dim=256,)
+
+Epoch   1/100 | train_loss=11.4129 | val_loss=0.6408 | mse=0.6423  rmse=0.8014  r2=0.0759  pearson=0.3412  spearman=0.3500 | 228.8s
+Epoch   2/100 | train_loss=0.8715 | val_loss=0.5605 | mse=0.5616  rmse=0.7494  r2=0.1919  pearson=0.4661  spearman=0.4573 | 229.5s
+Epoch   3/100 | train_loss=0.8317 | val_loss=0.5650 | mse=0.5659  rmse=0.7523  r2=0.1857  pearson=0.5021  spearman=0.4889 | 229.5s
+Epoch   4/100 | train_loss=0.8011 | val_loss=0.5173 | mse=0.5186  rmse=0.7202  r2=0.2538  pearson=0.5252  spearman=0.5063 | 229.2s
+Epoch   5/100 | train_loss=0.7766 | val_loss=0.4965 | mse=0.4974  rmse=0.7052  r2=0.2844  pearson=0.5620  spearman=0.5303 | 228.2s
+Epoch   6/100 | train_loss=0.7513 | val_loss=0.4561 | mse=0.4569  rmse=0.6760  r2=0.3425  pearson=0.5865  spearman=0.5426 | 229.5s
+Epoch   7/100 | train_loss=0.7340 | val_loss=0.4570 | mse=0.4578  rmse=0.6766  r2=0.3413  pearson=0.6059  spearman=0.5561 | 229.1s
+Epoch   8/100 | train_loss=0.7233 | val_loss=0.4329 | mse=0.4338  rmse=0.6586  r2=0.3758  pearson=0.6140  spearman=0.5677 | 228.6s
+Epoch   9/100 | train_loss=0.7029 | val_loss=0.4214 | mse=0.4223  rmse=0.6498  r2=0.3924  pearson=0.6274  spearman=0.5824 | 230.4s
+Epoch  10/100 | train_loss=0.6919 | val_loss=0.4216 | mse=0.4223  rmse=0.6498  r2=0.3924  pearson=0.6327  spearman=0.5834 | 229.6s
+Epoch  11/100 | train_loss=0.6873 | val_loss=0.5398 | mse=0.5401  rmse=0.7349  r2=0.2229  pearson=0.6508  spearman=0.5925 | 228.5s
+Epoch  12/100 | train_loss=0.6724 | val_loss=0.4976 | mse=0.4980  rmse=0.7057  r2=0.2835  pearson=0.6531  spearman=0.5921 | 227.4s
+Epoch  13/100 | train_loss=0.6575 | val_loss=0.4537 | mse=0.4543  rmse=0.6740  r2=0.3463  pearson=0.6665  spearman=0.6232 | 227.7s
+Epoch  14/100 | train_loss=0.6474 | val_loss=0.4189 | mse=0.4192  rmse=0.6475  r2=0.3968  pearson=0.6682  spearman=0.6208 | 227.2s
+Epoch  15/100 | train_loss=0.6408 | val_loss=0.4458 | mse=0.4461  rmse=0.6679  r2=0.3581  pearson=0.6751  spearman=0.6375 | 227.4s
+Epoch  16/100 | train_loss=0.6368 | val_loss=0.4127 | mse=0.4129  rmse=0.6426  r2=0.4059  pearson=0.6741  spearman=0.6154 | 228.0s
+Epoch  17/100 | train_loss=0.6297 | val_loss=0.3836 | mse=0.3841  rmse=0.6197  r2=0.4474  pearson=0.6870  spearman=0.6377 | 227.3s
+Epoch  18/100 | train_loss=0.6273 | val_loss=0.4334 | mse=0.4340  rmse=0.6588  r2=0.3756  pearson=0.6894  spearman=0.6355 | 229.0s
+Epoch  19/100 | train_loss=0.6224 | val_loss=0.4061 | mse=0.4064  rmse=0.6375  r2=0.4152  pearson=0.7008  spearman=0.6489 | 227.3s
+Epoch  20/100 | train_loss=0.6114 | val_loss=0.4441 | mse=0.4441  rmse=0.6664  r2=0.3609  pearson=0.6986  spearman=0.6437 | 229.3s
+Epoch  21/100 | train_loss=0.6137 | val_loss=0.4636 | mse=0.4639  rmse=0.6811  r2=0.3325  pearson=0.7002  spearman=0.6548 | 229.8s
+Epoch  22/100 | train_loss=0.6044 | val_loss=0.3848 | mse=0.3854  rmse=0.6208  r2=0.4455  pearson=0.7104  spearman=0.6660 | 229.4s
+Epoch  23/100 | train_loss=0.6016 | val_loss=0.3952 | mse=0.3955  rmse=0.6289  r2=0.4310  pearson=0.7102  spearman=0.6604 | 234.0s
+FAILED: kiba seed 4
+
+== Run 9/10 : hgnn_rnn_dti | davis | dta | random | seed 5 ==
+FAILED: davis seed 5
+
+== Run 10/10 : hgnn_rnn_dti | kiba | dta | random | seed 5 ==
+FAILED: kiba seed 5
+
+== DTA evaluation (davis + kiba, random split) complete. ==

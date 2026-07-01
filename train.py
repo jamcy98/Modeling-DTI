@@ -20,7 +20,7 @@ from data.utils   import precompute_protein_cache
 
 from sklearn.metrics import (roc_auc_score, average_precision_score,
                              accuracy_score, f1_score,
-                             mean_squared_error, r2_score)
+                             mean_squared_error, mean_absolute_error, r2_score)
 from scipy.stats import pearsonr, spearmanr
 
 
@@ -41,6 +41,7 @@ def evaluate_dta(preds, targets):
     rho, _ = spearmanr(targets, preds)
     return dict(
         mse  = mse,
+        mae  = mean_absolute_error(targets, preds),
         rmse = mse ** 0.5,
         r2   = r2_score(targets, preds),
         pearson  = r,
