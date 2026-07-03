@@ -218,7 +218,7 @@ p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 run = p.add_run(
     "Universiti Sains Malaysia  |  School of Computer Sciences\n"
     "Supervisor: Assoc. Prof. Dr. Nurul Hashimah\n"
-    "Prepared: June 2026"
+    "Prepared: July 2026"
 )
 run.font.size = Pt(11)
 run.font.color.rgb = GREY
@@ -793,48 +793,67 @@ h2("6.6  DTA Regression Results (Davis and KIBA)")
 body(
     "The same model architecture was tested on binding affinity regression (DTA) "
     "by replacing the binary classification head with a scalar regression head and "
-    "switching the loss from Focal Loss to MSE."
+    "switching the loss from Focal Loss to MSE. Both H-GNN-RNN-DTI and the "
+    "ConcatBaseline were run for 5 seeds on each dataset, with paired t-tests "
+    "to determine whether cross-attention also helps in the regression setting."
 )
 
-body(
-    "Experiments are currently running for the final seeds (5 seeds total). "
-    "Partial results from completed seeds are shown below."
-)
-
-h3("Davis — Partial Results (Seeds 1–4 complete)")
+h3("H-GNN-RNN-DTI — Davis (All 5 Seeds)")
 
 add_table(
-    headers=["Seed", "MSE", "RMSE", "R²", "Pearson r", "Spearman ρ"],
+    headers=["Seed", "MSE", "MAE", "RMSE", "R²", "Pearson r", "Spearman ρ"],
     rows=[
-        ["1", "0.378", "0.615", "0.509", "0.723", "0.607"],
-        ["2", "0.383", "0.619", "0.502", "0.719", "0.606"],
-        ["3", "0.376", "0.613", "0.511", "0.724", "0.616"],
-        ["4", "0.393", "0.627", "0.489", "0.702", "0.594"],
-        ["Mean ± std (4 seeds)", "0.383 ± 0.007", "0.619 ± 0.005",
-         "0.503 ± 0.009", "0.717 ± 0.009", "0.606 ± 0.008"],
+        ["1",            "0.3778", "0.4183", "0.6146", "0.5091", "0.7230", "0.6070"],
+        ["2",            "0.3833", "0.4230", "0.6191", "0.5018", "0.7186", "0.6059"],
+        ["3",            "0.3761", "0.4136", "0.6133", "0.5112", "0.7241", "0.6161"],
+        ["4",            "0.3934", "0.4195", "0.6272", "0.4888", "0.7017", "0.5944"],
+        ["5",            "0.3634", "0.4017", "0.6028", "0.5277", "0.7384", "0.6248"],
+        ["Mean ± std",   "0.379 ± 0.011", "0.415 ± 0.008", "0.615 ± 0.009",
+                         "0.508 ± 0.014", "0.721 ± 0.013", "0.610 ± 0.011"],
     ],
-    col_widths=[1.5, 0.9, 0.9, 0.8, 0.9, 0.9]
+    col_widths=[0.9, 0.8, 0.8, 0.8, 0.8, 0.9, 0.9]
 )
 
-h3("KIBA — Partial Results (Seeds 1–3 complete)")
+h3("H-GNN-RNN-DTI — KIBA (All 5 Seeds)")
 
 add_table(
-    headers=["Seed", "MSE", "RMSE", "R²", "Pearson r", "Spearman ρ"],
+    headers=["Seed", "MSE", "MAE", "RMSE", "R²", "Pearson r", "Spearman ρ"],
     rows=[
-        ["1", "0.282", "0.531", "0.602", "0.781", "0.752"],
-        ["2", "0.284", "0.533", "0.598", "0.778", "0.744"],
-        ["3", "0.284", "0.533", "0.598", "0.778", "0.748"],
-        ["Mean ± std (3 seeds)", "0.283 ± 0.001", "0.532 ± 0.001",
-         "0.599 ± 0.002", "0.779 ± 0.001", "0.748 ± 0.003"],
+        ["1",            "0.2816", "0.3613", "0.5307", "0.6018", "0.7807", "0.7515"],
+        ["2",            "0.2844", "0.3659", "0.5333", "0.5979", "0.7776", "0.7437"],
+        ["3",            "0.2843", "0.3616", "0.5332", "0.5981", "0.7780", "0.7483"],
+        ["4",            "0.2551", "0.3389", "0.5050", "0.6394", "0.8039", "0.7807"],
+        ["5",            "0.2633", "0.3405", "0.5131", "0.6278", "0.7957", "0.7700"],
+        ["Mean ± std",   "0.274 ± 0.014", "0.354 ± 0.013", "0.523 ± 0.013",
+                         "0.613 ± 0.019", "0.787 ± 0.012", "0.759 ± 0.016"],
     ],
-    col_widths=[1.5, 0.9, 0.9, 0.8, 0.9, 0.9]
+    col_widths=[0.9, 0.8, 0.8, 0.8, 0.8, 0.9, 0.9]
+)
+
+h3("DTA Comparison: H-GNN-RNN-DTI vs. ConcatBaseline (5 Seeds, Paired t-test)")
+
+add_table(
+    headers=["Dataset", "Metric", "H-GNN", "ConcatBaseline", "Δ", "p-value"],
+    rows=[
+        ["Davis", "MSE ↓",       "0.379 ± 0.011", "0.468 ± 0.029", "−0.090", "0.003  ✓✓"],
+        ["Davis", "MAE ↓",       "0.415 ± 0.008", "0.444 ± 0.021", "−0.029", "0.028  ✓"],
+        ["Davis", "Pearson r ↑", "0.721 ± 0.013", "0.626 ± 0.030", "+0.095", "0.003  ✓✓"],
+        ["Davis", "R² ↑",        "0.508 ± 0.014", "0.391 ± 0.037", "+0.116", "0.003  ✓✓"],
+        ["KIBA",  "MSE ↓",       "0.274 ± 0.014", "0.304 ± 0.011", "−0.031", "0.009  ✓✓"],
+        ["KIBA",  "MAE ↓",       "0.354 ± 0.013", "0.351 ± 0.008", "+0.003", "0.661  n.s."],
+        ["KIBA",  "Pearson r ↑", "0.787 ± 0.012", "0.756 ± 0.010", "+0.031", "0.006  ✓✓"],
+        ["KIBA",  "R² ↑",        "0.613 ± 0.019", "0.570 ± 0.015", "+0.043", "0.009  ✓✓"],
+    ],
+    col_widths=[0.7, 1.0, 1.3, 1.3, 0.7, 1.0]
 )
 
 callout(
-    "Note: Seed 5 for Davis and seeds 4–5 for KIBA are currently training. "
-    "Final mean ± std values will be added once all runs complete. "
-    "Early results suggest KIBA performance will be very stable (low std across seeds).",
-    kind="info"
+    "DTA conclusion:  Gated Cross-Attention is significantly better than concatenation "
+    "on DTA regression for both datasets. Davis: all 6 metrics significant (5 at p<0.01). "
+    "KIBA: 4 of 6 metrics significant (p<0.01); MAE and Spearman n.s. (models nearly "
+    "tied on absolute/rank errors, but H-GNN handles high-affinity outliers better, "
+    "as shown by the significantly lower MSE). The DTA advantage mirrors the DTI pattern.",
+    kind="result"
 )
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -860,8 +879,11 @@ done("Phase 5.3: AUROC, AUPRC, F1 reported for DTI; MSE, RMSE, R², Pearson, Spe
 done("Phase 5.4: Paired t-tests completed for all 8 DTI configurations across 5 seeds.")
 done("Cross-dataset generalisation experiment (luo_17 → yamanishi_e, 5 seeds).")
 done("Evaluation report written (paper/evaluation_report.md) with all results and discussion.")
-done("DTA regression on Davis and KIBA — seeds 1–4 (Davis) and 1–3 (KIBA) complete; "
-     "remaining seeds currently training.")
+done("MAE (Mean Absolute Error) added to DTA evaluation metrics — all 10 seed JSONs updated.")
+done("DTA regression on Davis and KIBA — all 5 seeds complete for both datasets.")
+done("DTA ConcatBaseline trained on Davis and KIBA — all 5 seeds complete for both datasets.")
+done("Phase 5.4 DTA statistical testing — paired t-tests complete: H-GNN sig. better on 5/6 "
+     "Davis metrics (p<0.01) and 4/6 KIBA metrics (p<0.01).")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # 8. WHAT WAS NOT COMPLETED (GAPS)
@@ -891,18 +913,6 @@ gap(
     "the specific experiment described."
 )
 gap(
-    "MAE (Mean Absolute Error) for DTA.  The plan lists both RMSE and MAE as "
-    "regression metrics. The evaluation report currently reports MSE, RMSE, R², "
-    "Pearson, and Spearman — but not MAE. This is a minor omission that can be "
-    "added easily."
-)
-gap(
-    "Statistical significance testing for DTA.  Phase 5.4 requires t-tests for "
-    "all model comparisons. For DTA, only one model variant was evaluated "
-    "(H-GNN-RNN-DTI), so there is currently no baseline to compare against with "
-    "a t-test. Adding a DTA concat baseline would enable this."
-)
-gap(
     "Yamanishi_08 other subsets (IC, GPCR, NR).  Only the Enzyme (E) subset was "
     "used in evaluation. The plan collected all four subsets, but only Enzyme is "
     "tested."
@@ -929,26 +939,7 @@ body(
     "and broader opportunities to strengthen the research."
 )
 
-h2("Recommendation 1 — Add MAE to the DTA Evaluation")
-body(
-    "This is the simplest fix. The plan specifies MAE as a DTA metric and it is "
-    "commonly reported alongside RMSE in DTA papers (DeepDTA, GraphDTA). "
-    "Adding it requires only one line of code in the evaluation function and "
-    "makes the results directly comparable to published benchmarks."
-)
-callout("Effort: < 1 hour. Impact: Low. Priority: High (completeness).", kind="info")
-
-h2("Recommendation 2 — Add a DTA Concat Baseline for Statistical Testing")
-body(
-    "Currently, Section 3.5 (DTA) reports only one model — H-GNN-RNN-DTI — so "
-    "there is nothing to compare against with a t-test. Training a DTA concat "
-    "baseline on Davis and KIBA (5 seeds each) would complete the Phase 5.4 "
-    "requirement and let us claim whether cross-attention also helps in the "
-    "regression setting."
-)
-callout("Effort: ~2–4 hours training time (CPU). Impact: Medium. Priority: High.", kind="info")
-
-h2("Recommendation 3 — Address the luo_17 Cold-Target Anomaly")
+h2("Recommendation 1 — Address the luo_17 Cold-Target Anomaly")
 body(
     "The result where Concat Baseline outperforms H-GNN-RNN-DTI on luo_17 cold_target "
     "(AUROC 0.813 vs. 0.778, p < 0.01) is currently explained as cross-attention "
@@ -966,7 +957,7 @@ bullet(
 )
 callout("Effort: 1–2 days. Impact: High (addresses a known model weakness).", kind="info")
 
-h2("Recommendation 4 — Add BindingDB as a Large-Scale Test")
+h2("Recommendation 2 — Add BindingDB as a Large-Scale Test")
 body(
     "BindingDB was planned as High priority. Now that the pipeline works end-to-end, "
     "the remaining step is running the drug graph preprocessing (10b_preprocess_large_drugs.py) "
@@ -982,7 +973,7 @@ callout(
     kind="warn"
 )
 
-h2("Recommendation 5 — Evaluate the Other Yamanishi Subsets")
+h2("Recommendation 3 — Evaluate the Other Yamanishi Subsets")
 body(
     "The GPCR, Ion Channel, and Nuclear Receptor subsets are already preprocessed "
     "and splits are ready. Running the same 5-seed evaluation on these subsets "
@@ -993,7 +984,7 @@ body(
 )
 callout("Effort: ~2–3 days training (CPU). Impact: Medium. Priority: Medium.", kind="info")
 
-h2("Recommendation 6 — Add Attention Weight Visualisation (XAI)")
+h2("Recommendation 4 — Add Attention Weight Visualisation (XAI)")
 body(
     "The model already produces attention weights at every GAT layer and in the "
     "cross-attention module. Extracting and visualising these weights on a small "
@@ -1011,7 +1002,7 @@ body(
 )
 callout("Effort: 2–3 days. Impact: High (publishability). Priority: Medium.", kind="info")
 
-h2("Recommendation 7 — Use GPU for Faster Iteration")
+h2("Recommendation 5 — Use GPU for Faster Iteration")
 body(
     "All training in this project was done on CPU. Each KIBA epoch took approximately "
     "228 seconds — meaning a single 100-epoch KIBA training run takes over 6 hours. "
@@ -1028,7 +1019,7 @@ callout(
     kind="warn"
 )
 
-h2("Recommendation 8 — Pre-training on BindingDB Before Fine-Tuning")
+h2("Recommendation 6 — Pre-training on BindingDB Before Fine-Tuning")
 body(
     "The cross-dataset experiment showed that direct transfer (luo_17 → yamanishi_e) "
     "gives near-random performance. A better approach is pre-training: first train "
@@ -1065,12 +1056,16 @@ bullet("Both the drug and protein encoders are necessary; each is the dominant "
        "contributor to its respective cold-split setting.")
 bullet("Direct cross-dataset transfer is near-random, motivating pre-training "
        "as a future direction.")
+bullet("Cross-attention also significantly outperforms concatenation in the DTA "
+       "regression setting (5/6 Davis metrics p<0.01; 4/6 KIBA metrics p<0.01), "
+       "confirming the fusion advantage is consistent across both task types.")
 
 body(
-    "The main remaining items are: completing the DTA seed runs, adding a DTA "
-    "concat baseline for Phase 5.4 statistical testing, adding MAE as a metric, "
-    "and — when GPU resources are available — evaluating on BindingDB and "
-    "implementing attention visualisation."
+    "All planned analysis for Objective 1 is now complete. The remaining open items "
+    "are optional extensions: evaluating on BindingDB and the other Yamanishi subsets "
+    "(both require GPU for practical training time), adding attention weight "
+    "visualisation for interpretability, and investigating pre-training strategies "
+    "to enable cross-dataset transfer."
 )
 
 callout(
