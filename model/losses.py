@@ -46,6 +46,25 @@ class FocalLoss(nn.Module):
         return loss
 
 
+class WeightedBCELoss(nn.Module):
+    """
+    Weighted Binary Cross-Entropy for class-imbalanced DTI data.
+    pos_weight: weight applied to positive class (e.g., 5.0 for 1:5 ratio).
+    """
+
+    def __init__(self, pos_weight: float = 1.0):
+        super().__init__()
+        self.pos_weight = pos_weight
+
+    def forward(self, logits: torch.Tensor, targets: torch.Tensor) -> torch.Tensor:
+        if logits.dim() == 2:
+            # Convert (B, 2) class logits to binary logit: log(p1) - log(p0)
+            logits = logits[:, 1] - logits[:, 0]
+        pw = torch.tensor(self.pos_weight, device=logits.device, dtype=torch.float)
+        return F.binary_cross_entropy_with_logits(
+            logits, targets.float(), pos_weight=pw)
+
+
 class DTALoss(nn.Module):
     """MSE loss for binding affinity regression with optional clamp."""
 

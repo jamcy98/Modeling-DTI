@@ -40,15 +40,27 @@ def _load_drug_graphs(dataset_name: str) -> dict:
     raise FileNotFoundError(f"No drug graphs found for '{dataset_name}'")
 
 
-def _load_protein_embeddings(dataset_name: str):
-    """Load protein embeddings. Returns numpy array and ID list."""
-    emb_path = os.path.join(EMB_DIR, f"{dataset_name}_protein_embeddings.npy")
-    id_path  = os.path.join(EMB_DIR, f"{dataset_name}_protein_ids.json")
+def _load_protein_embeddings(dataset_name: str, emb_tag: str = None):
+    """Load protein embeddings. Returns numpy array and ID list.
+
+    emb_tag: optional variant suffix (e.g. 'esm150m', 'esm650m').
+             None or 'esm8m' loads the default file.
+    """
+    if emb_tag and emb_tag != 'esm8m':
+        emb_path = os.path.join(EMB_DIR, f"{dataset_name}_{emb_tag}_protein_embeddings.npy")
+        id_path  = os.path.join(EMB_DIR, f"{dataset_name}_{emb_tag}_protein_ids.json")
+        if not os.path.exists(id_path):
+            id_path = os.path.join(EMB_DIR, f"{dataset_name}_protein_ids.json")
+    else:
+        emb_path = os.path.join(EMB_DIR, f"{dataset_name}_protein_embeddings.npy")
+        id_path  = os.path.join(EMB_DIR, f"{dataset_name}_protein_ids.json")
 
     if not os.path.exists(emb_path):
-        raise FileNotFoundError(f"No protein embeddings found for '{dataset_name}'")
+        raise FileNotFoundError(
+            f"No protein embeddings found for '{dataset_name}' "
+            f"(tag={emb_tag!r}, path={emb_path})")
 
-    embeddings = np.load(emb_path)   # (n_proteins, ...) — lazy load
+    embeddings = np.load(emb_path)
     with open(id_path) as f:
         protein_ids = json.load(f)
 
@@ -63,12 +75,13 @@ class DTIDataset(Dataset):
 
     def __init__(
         self,
-        dataset_name:  str,
-        split_indices: list,
-        ratio:         str = '1to1',   # '1to1' or '1to10'
+        dataset_name:    str,
+        split_indices:   list,
+        ratio:           str = '1to1',
+        protein_emb_tag: str = None,
     ):
         self.drug_graphs = _load_drug_graphs(dataset_name)
-        emb, prot_ids    = _load_protein_embeddings(dataset_name)
+        emb, prot_ids    = _load_protein_embeddings(dataset_name, emb_tag=protein_emb_tag)
         self.emb         = emb
         self.prot_id_map = {pid: i for i, pid in enumerate(prot_ids)}
 
@@ -108,9 +121,9 @@ class DTADataset(Dataset):
     Affinity column: pKd (Davis/KIBA) — auto-detected.
     """
 
-    def __init__(self, dataset_name: str, split_indices: list):
+    def __init__(self, dataset_name: str, split_indices: list, protein_emb_tag: str = None):
         self.drug_graphs = _load_drug_graphs(dataset_name)
-        emb, prot_ids    = _load_protein_embeddings(dataset_name)
+        emb, prot_ids    = _load_protein_embeddings(dataset_name, emb_tag=protein_emb_tag)
         self.emb         = emb
         self.prot_id_map = {pid: i for i, pid in enumerate(prot_ids)}
 
@@ -146,8 +159,10 @@ class DTADataset(Dataset):
         return graph, prot_emb, torch.tensor(float(label), dtype=torch.float)
 
 
-def build_dataset(dataset_name: str, task: str, split_indices: list, ratio: str = '1to1'):
+def build_dataset(dataset_name: str, task: str, split_indices: list,
+                  ratio: str = '1to1', protein_emb_tag: str = None):
     """Factory function: returns the right Dataset class."""
     if task == 'dta':
-        return DTADataset(dataset_name, split_indices)
-    return DTIDataset(dataset_name, split_indices, ratio=ratio)
+        return DTADataset(dataset_name, split_indices, protein_emb_tag=protein_emb_tag)
+    return DTIDataset(dataset_name, split_indices, ratio=ratio,
+                      protein_emb_tag=protein_emb_tag)

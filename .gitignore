@@ -6,6 +6,9 @@ Dataset/__pycache__/
 *.pyc
 *.pyo
 
+# Model checkpoints (large binaries — tracked separately if needed)
+checkpoints/
+
 # Temporary Word/Office files
 paper/~$*
 ~$*

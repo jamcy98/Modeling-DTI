@@ -210,7 +210,49 @@ def build_bindingdb_labels():
                 print(f"  Copied DTA labels -> {out}")
 
 
+def add_dti_ratio(dataset, ratio_int):
+    """Add a single new negative-sampling ratio to an existing DTI dataset."""
+    out_path = os.path.join(OUT_DIR, f"{dataset}_dti_labels_1to{ratio_int}.csv")
+    if os.path.exists(out_path):
+        print(f"  {dataset} 1:{ratio_int} labels already exist — skipping.")
+        return
+
+    dataset_to_matrix = {
+        "yamanishi_e":    ("yamanishi_08/e",    "mat_drug_protein.txt"),
+        "yamanishi_ic":   ("yamanishi_08/ic",   "mat_drug_protein.txt"),
+        "yamanishi_gpcr": ("yamanishi_08/gpcr", "mat_drug_protein.txt"),
+        "yamanishi_nr":   ("yamanishi_08/nr",   "mat_drug_protein.txt"),
+        "luo_17":         ("luo_17",            "mat_drug_protein.txt"),
+    }
+    if dataset not in dataset_to_matrix:
+        print(f"  {dataset}: not a supported DTI dataset for ratio generation.")
+        return
+
+    sub, mat = dataset_to_matrix[dataset]
+    sub_dir      = os.path.join(RAW_DIR, sub)
+    matrix_path  = os.path.join(sub_dir, mat)
+    drug_map     = os.path.join(sub_dir, "drug_dict_map.txt")
+    protein_map  = os.path.join(sub_dir, "protein_dict_map.txt")
+    build_dti_labels(dataset, matrix_path, drug_map, protein_map,
+                     ratios=(ratio_int,))
+
+
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="Preprocess interaction labels.")
+    parser.add_argument('--dataset', default=None,
+                        help='Generate labels for only this dataset.')
+    parser.add_argument('--ratio', default=None,
+                        help='Generate only this neg:pos ratio for DTI (e.g. 1to5).')
+    args = parser.parse_args()
+
+    # Targeted single-ratio generation (e.g. python 12_preprocess_labels.py --dataset yamanishi_e --ratio 1to5)
+    if args.dataset and args.ratio:
+        ratio_int = int(args.ratio.replace('1to', ''))
+        add_dti_ratio(args.dataset, ratio_int)
+        print("\nDone.")
+        return
+
     print("=" * 55)
     print(" Label Preprocessing")
     print("=" * 55)

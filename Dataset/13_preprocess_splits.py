@@ -83,7 +83,7 @@ def cold_drug_split(df, n_folds=N_FOLDS):
     for fold, test_drugs in enumerate(drug_folds):
         test_mask  = df["drug_id"].isin(test_drugs)
         test_idx   = df.index[test_mask].tolist()
-        train_val  = df.index[~test_mask].values
+        train_val  = df.index[~test_mask].values.copy()
 
         n_val      = max(1, int(len(train_val) * VAL_RATIO))
         rng2       = np.random.default_rng(RANDOM_SEED + fold)
@@ -115,7 +115,7 @@ def cold_target_split(df, n_folds=N_FOLDS):
     for fold, test_proteins in enumerate(prot_folds):
         test_mask     = df["protein_id"].isin(test_proteins)
         test_idx      = df.index[test_mask].tolist()
-        train_val     = df.index[~test_mask].values
+        train_val     = df.index[~test_mask].values.copy()
 
         n_val         = max(1, int(len(train_val) * VAL_RATIO))
         rng2          = np.random.default_rng(RANDOM_SEED + fold)
@@ -238,8 +238,10 @@ def main():
     loaded_dfs = {}
     for fname in label_files:
         dataset   = fname.replace(".csv", "")
-        out_check = os.path.join(OUT_DIR, f"{dataset}_random_split.json")
-        if os.path.exists(out_check):
+        # Only skip if all four split types exist
+        required  = [f"{dataset}_{s}_split.json"
+                     for s in ("random", "cold_drug", "cold_target", "cold_pair")]
+        if all(os.path.exists(os.path.join(OUT_DIR, r)) for r in required):
             print(f"\n{dataset}: splits already exist — skipping.")
             continue
 

@@ -14,7 +14,7 @@ import torch.optim as optim
 from torch.optim.lr_scheduler import CosineAnnealingLR
 
 from config       import MODEL, TRAIN, FOCAL, CKPT_DIR, LOG_DIR, DATA_DIR
-from model        import HGNN_RNN_DTI, ConcatGNN_RNN_DTI, GNN_Only, RNN_Only, FocalLoss, DTALoss
+from model        import HGNN_RNN_DTI, ConcatGNN_RNN_DTI, GNN_Only, RNN_Only, FocalLoss, WeightedBCELoss, DTALoss
 from data         import build_dataset, get_dataloader
 from data.utils   import precompute_protein_cache
 
@@ -150,6 +150,17 @@ def main():
     parser.add_argument('--batch_size', type=int, default=TRAIN['batch_size'])
     parser.add_argument('--lr',         type=float, default=TRAIN['lr'])
     parser.add_argument('--device',     default='cuda' if torch.cuda.is_available() else 'cpu')
+    # Objective 2 args
+    parser.add_argument('--protein_emb_tag', default=None,
+                        help='Protein embedding variant tag (e.g. esm150m, esm650m). '
+                             'None uses the default embeddings.')
+    parser.add_argument('--run_name', default=None,
+                        help='Name prefix for log and checkpoint files. '
+                             'Defaults to --model if not set.')
+    parser.add_argument('--loss', default='focal', choices=['focal', 'weighted_bce'],
+                        help='DTI loss function. focal=FocalLoss, weighted_bce=WeightedBCELoss.')
+    parser.add_argument('--focal_gamma', type=float, default=None,
+                        help='Focal loss gamma override (default: from config.py FOCAL).')
     args = parser.parse_args()
 
     random.seed(args.seed)
@@ -170,9 +181,12 @@ def main():
         args.dataset, args.task, args.split, args.ratio, fold=args.fold)
 
     # Datasets
-    train_ds = build_dataset(args.dataset, args.task, train_idx, ratio=args.ratio)
-    val_ds   = build_dataset(args.dataset, args.task, val_idx,   ratio=args.ratio)
-    test_ds  = build_dataset(args.dataset, args.task, test_idx,  ratio=args.ratio)
+    train_ds = build_dataset(args.dataset, args.task, train_idx, ratio=args.ratio,
+                             protein_emb_tag=args.protein_emb_tag)
+    val_ds   = build_dataset(args.dataset, args.task, val_idx,   ratio=args.ratio,
+                             protein_emb_tag=args.protein_emb_tag)
+    test_ds  = build_dataset(args.dataset, args.task, test_idx,  ratio=args.ratio,
+                             protein_emb_tag=args.protein_emb_tag)
 
     train_loader = get_dataloader(train_ds, batch_size=args.batch_size, shuffle=True)
     val_loader   = get_dataloader(val_ds,   batch_size=args.batch_size, shuffle=False)
@@ -182,10 +196,14 @@ def main():
 
     # Determine protein ESM dim from dataset
     import numpy as _np, json as _json
-    emb = _np.load(os.path.join(DATA_DIR, "protein_embeddings",
-                               f"{args.dataset}_protein_embeddings.npy"), mmap_mode='r')
+    _emb_tag = args.protein_emb_tag
+    if _emb_tag and _emb_tag != 'esm8m':
+        _emb_fname = f"{args.dataset}_{_emb_tag}_protein_embeddings.npy"
+    else:
+        _emb_fname = f"{args.dataset}_protein_embeddings.npy"
+    emb = _np.load(os.path.join(DATA_DIR, "protein_embeddings", _emb_fname), mmap_mode='r')
     esm_dim = emb.shape[-1]
-    print(f"  Protein ESM dim: {esm_dim}")
+    print(f"  Protein ESM dim: {esm_dim}  (tag: {_emb_tag or 'default'})")
 
     # Model
     model_cls = {
@@ -209,8 +227,14 @@ def main():
     # Skip for gnn_only — model has no protein encoder and ignores protein_emb.
     if emb.ndim == 3 and args.model != 'gnn_only':   # full residue embeddings — precompute to avoid per-batch BiGRU
         import json as _json
-        with open(os.path.join(DATA_DIR, "protein_embeddings",
-                               f"{args.dataset}_protein_ids.json")) as f:
+        _id_fname = (f"{args.dataset}_{_emb_tag}_protein_ids.json"
+                     if _emb_tag and _emb_tag != 'esm8m' else
+                     f"{args.dataset}_protein_ids.json")
+        _id_fpath = os.path.join(DATA_DIR, "protein_embeddings", _id_fname)
+        if not os.path.exists(_id_fpath):
+            _id_fpath = os.path.join(DATA_DIR, "protein_embeddings",
+                                     f"{args.dataset}_protein_ids.json")
+        with open(_id_fpath) as f:
             all_prot_ids = _json.load(f)
         prot_id_to_idx = {pid: i for i, pid in enumerate(all_prot_ids)}
         print(f"  Pre-computing protein representations for {len(all_prot_ids)} proteins...")
@@ -224,7 +248,17 @@ def main():
         prot_cache = None
 
     # Loss, optimizer, scheduler
-    criterion = FocalLoss(**FOCAL) if args.task == 'dti' else DTALoss()
+    if args.task == 'dti':
+        if args.loss == 'weighted_bce':
+            pos_weight = float(args.ratio.split('to')[1]) if 'to' in args.ratio else 1.0
+            criterion = WeightedBCELoss(pos_weight=pos_weight)
+        else:
+            focal_cfg = dict(FOCAL)
+            if args.focal_gamma is not None:
+                focal_cfg['gamma'] = args.focal_gamma
+            criterion = FocalLoss(**focal_cfg)
+    else:
+        criterion = DTALoss()
     optimizer = optim.Adam(model.parameters(), lr=args.lr,
                            weight_decay=TRAIN['weight_decay'])
     scheduler = CosineAnnealingLR(optimizer, T_max=args.epochs, eta_min=1e-6)
@@ -235,8 +269,9 @@ def main():
     patience_cnt = 0
     history      = []
 
+    run_id    = args.run_name if args.run_name else args.model
     ckpt_path = os.path.join(CKPT_DIR,
-        f"{args.model}_{args.dataset}_{args.task}_{args.split}_fold{args.fold}_seed{args.seed}_best.pt")
+        f"{run_id}_{args.dataset}_{args.task}_{args.split}_fold{args.fold}_seed{args.seed}_best.pt")
 
     for epoch in range(1, args.epochs + 1):
         t0 = time.time()
@@ -293,7 +328,7 @@ def main():
     results = to_py(dict(args=vars(args), best_epoch=best_epoch,
                          test_metrics=test_metrics, history=history))
     log_path = os.path.join(LOG_DIR,
-        f"{args.model}_{args.dataset}_{args.task}_{args.split}_fold{args.fold}_seed{args.seed}.json")
+        f"{run_id}_{args.dataset}_{args.task}_{args.split}_fold{args.fold}_seed{args.seed}.json")
     with open(log_path, 'w') as f:
         json.dump(results, f, indent=2)
     print(f"\n  Results saved -> {log_path}")

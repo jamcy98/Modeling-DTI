@@ -1,0 +1,47 @@
+{
+  "args": {
+    "dataset": "yamanishi_e",
+    "task": "dti",
+    "split": "random",
+    "model": "hgnn_rnn_dti",
+    "seed": 1,
+    "ratio": "1to1",
+    "fold": 0,
+    "hidden_dim": 256,
+    "epochs": 2,
+    "batch_size": 32,
+    "lr": 0.0001,
+    "device": "cpu",
+    "protein_emb_tag": null,
+    "run_name": "hgnn_rnn_dti_wbce_test",
+    "loss": "weighted_bce",
+    "focal_gamma": null
+  },
+  "best_epoch": 1,
+  "test_metrics": {
+    "auroc": 0.6184807256235827,
+    "auprc": 0.5525019376840661,
+    "acc": 0.5,
+    "f1": 0.0
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.7066431719323863,
+      "val_loss": 0.6994138558705648,
+      "auroc": 0.44804318488529016,
+      "auprc": 0.46638596593987136,
+      "acc": 0.5194805194805194,
+      "f1": 0.05128205128205128
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.7010745043339937,
+      "val_loss": 0.6993531783421835,
+      "auroc": 0.41835357624831304,
+      "auprc": 0.4385731826389132,
+      "acc": 0.5064935064935064,
+      "f1": 0.6346153846153846
+    }
+  ]
+}

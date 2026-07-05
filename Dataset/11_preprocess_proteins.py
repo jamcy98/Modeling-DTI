@@ -33,6 +33,11 @@ BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
 RAW_DIR   = os.path.join(BASE_DIR, "raw")
 OUT_DIR   = os.path.join(BASE_DIR, "processed", "protein_embeddings")
 
+ESM2_MODELS = {
+    "esm8m":   ("facebook/esm2_t6_8M_UR50D",   16),   # 320-dim
+    "esm150m": ("facebook/esm2_t12_35M_UR50D",  8),    # 480-dim  (note: HF id uses 35M)
+    "esm650m": ("facebook/esm2_t33_650M_UR50D", 4),    # 1280-dim
+}
 ESM2_MODEL   = "facebook/esm2_t6_8M_UR50D"   # 8M params, 320-dim, ~50MB RAM
 MAX_SEQ_LEN  = 1200    # truncate sequences longer than this
 BATCH_SIZE   = 16      # safe with small model
@@ -236,7 +241,12 @@ MEAN_POOL_THRESHOLD = 1000
 
 # ── Main processing ───────────────────────────────────────────────────────────
 
-def process_dataset(name, protein_dict, encoder):
+def process_dataset(name, protein_dict, encoder, out_tag=None):
+    """
+    out_tag: if set (e.g. 'esm150m'), output files are named
+             {name}_{out_tag}_protein_embeddings.npy.
+             If None, uses the default {name}_protein_embeddings.npy.
+    """
     if not protein_dict:
         print(f"  No sequences loaded for {name} — skipping.")
         return
@@ -270,8 +280,9 @@ def process_dataset(name, protein_dict, encoder):
     embeddings = encoder.encode(seqs, mean_pool=mean_pool)
     print(f"  Output shape: {embeddings.shape}")
 
-    emb_path = os.path.join(OUT_DIR, f"{name}_protein_embeddings.npy")
-    id_path  = os.path.join(OUT_DIR, f"{name}_protein_ids.json")
+    prefix   = f"{name}_{out_tag}" if out_tag else name
+    emb_path = os.path.join(OUT_DIR, f"{prefix}_protein_embeddings.npy")
+    id_path  = os.path.join(OUT_DIR, f"{prefix}_protein_ids.json")
 
     np.save(emb_path, embeddings)
     with open(id_path, "w") as f:
@@ -282,28 +293,55 @@ def process_dataset(name, protein_dict, encoder):
 
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="Preprocess protein sequences to ESM-2 embeddings.")
+    parser.add_argument('--dataset', default=None,
+                        help='Process only this dataset (e.g. yamanishi_e). '
+                             'Default: all available datasets.')
+    parser.add_argument('--esm_model', default='esm8m',
+                        choices=list(ESM2_MODELS.keys()),
+                        help='ESM-2 model variant: esm8m (default), esm150m, esm650m.')
+    args = parser.parse_args()
+
+    model_name, batch_sz = ESM2_MODELS[args.esm_model]
+    out_tag = args.esm_model if args.esm_model != 'esm8m' else None
+
     print("=" * 55)
     print(" Protein Preprocessing (Sequences -> ESM-2 Embeddings)")
+    print(f" Model: {args.esm_model}  ({model_name})")
+    if out_tag:
+        print(f" Output tag: {out_tag}")
     print("=" * 55)
 
     os.makedirs(OUT_DIR, exist_ok=True)
-    encoder = ESM2Encoder()
+    encoder = ESM2Encoder(model_name=model_name)
+    encoder.tokenizer  # ensure loaded
+    # Override batch size for this model variant
+    global BATCH_SIZE
+    BATCH_SIZE = batch_sz
 
-    for name, loader_fn in DATASET_LOADERS.items():
+    datasets_to_run = (
+        {args.dataset: DATASET_LOADERS[args.dataset]}
+        if args.dataset else DATASET_LOADERS
+    )
+
+    for name, loader_fn in datasets_to_run.items():
         raw_sub   = RAW_CHECK_MAP.get(name, name)
         raw_check = os.path.join(RAW_DIR, raw_sub)
         if not os.path.isdir(raw_check) or not os.listdir(raw_check):
             print(f"\nSkipping {name} — raw data not found.")
             continue
 
-        emb_path = os.path.join(OUT_DIR, f"{name}_protein_embeddings.npy")
+        prefix   = f"{name}_{out_tag}" if out_tag else name
+        emb_path = os.path.join(OUT_DIR, f"{prefix}_protein_embeddings.npy")
         if os.path.exists(emb_path):
-            print(f"\n{name}: embeddings already exist — skipping.")
+            print(f"\n{name} [{args.esm_model}]: embeddings already exist — skipping.")
             continue
 
         try:
             proteins = loader_fn()
-            process_dataset(name, proteins, encoder)
+            process_dataset(name, proteins, encoder, out_tag=out_tag)
         except FileNotFoundError as e:
             print(f"\nSkipping {name}: {e}")
 
