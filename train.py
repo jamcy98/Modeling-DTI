@@ -238,9 +238,10 @@ def main():
             all_prot_ids = _json.load(f)
         prot_id_to_idx = {pid: i for i, pid in enumerate(all_prot_ids)}
         print(f"  Pre-computing protein representations for {len(all_prot_ids)} proteins...")
+        _prot_proj = model.prot_input_proj if esm_dim != 320 else None
         prot_cache = precompute_protein_cache(
             model.protein_encoder, emb, all_prot_ids, device,
-            batch_size=64)
+            batch_size=64, prot_proj=_prot_proj)
         print(f"  Done. Cache: {len(prot_cache)} proteins -> (hidden_dim={args.hidden_dim},)\n")
         for ds in [train_ds, val_ds, test_ds]:
             ds.set_protein_cache(prot_cache)

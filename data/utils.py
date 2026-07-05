@@ -44,14 +44,19 @@ def collate_fn(batch):
 
 
 def precompute_protein_cache(protein_encoder, emb_array, prot_ids, device,
-                             batch_size=64, max_seq_len=MAX_SEQ_LEN):
+                             batch_size=64, max_seq_len=MAX_SEQ_LEN, prot_proj=None):
     """
     Run all unique proteins through ProteinEncoder once and cache results.
     Returns: dict {prot_id: repr_tensor (hidden_dim,)}
     This makes per-batch protein lookup O(1) instead of re-running BiGRU.
+
+    prot_proj: optional nn.Module applied to raw embeddings before protein_encoder
+               (used when ESM-2 dim != 320 to project to the expected input dim).
     """
     import numpy as np
     protein_encoder.eval()
+    if prot_proj is not None:
+        prot_proj.eval()
     cache = {}
     ids   = list(prot_ids)
 
@@ -78,11 +83,15 @@ def precompute_protein_cache(protein_encoder, emb_array, prot_ids, device,
             else:
                 inp = torch.stack(batch_embs).to(device)
 
+            if prot_proj is not None:
+                inp = prot_proj(inp)
             reprs = protein_encoder(inp)          # (B, hidden_dim)
             for pid, r in zip(batch_ids, reprs.cpu()):
                 cache[pid] = r
 
     protein_encoder.train()
+    if prot_proj is not None:
+        prot_proj.train()
     return cache
 
 

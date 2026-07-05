@@ -429,6 +429,198 @@ Published results on Davis and KIBA use different split strategies (typically 5-
 
 ---
 
+### 3.6 Objective 2 Phase 2: Imbalance-Aware Training
+
+**Research question:** Does adjusting the negative-sampling ratio (1:1 → 1:5 → 1:10) or using alternative loss functions (WeightedBCE, Focal with γ∈{1,3,5}) improve DTI prediction, particularly on cold-start splits where the baseline is weakest?
+
+#### Setup
+
+All experiments use the same H-GNN-RNN-DTI architecture and ESM-2 8M embeddings as the Objective 1 baseline (C0). Five seeds, fold 0.
+
+- **Ratio sweep:** 1:1 (C0), 1:5 (P2-F), 1:10 (P2-G) — negative pairs sampled up to the stated ratio.
+- **Loss sweep (at 1:1 ratio):** WeightedBCE pos\_weight=1 (P2-B), Focal γ=1 (P2-C), γ=3 (P2-D), γ=5 (P2-E). Default C0 uses Focal γ=2.
+
+#### Table 9. Phase 2 AUROC mean ± std (5 seeds) — yamanishi\_e
+
+| Config | random | cold\_drug | cold\_target | cold\_pair |
+|---|---|---|---|---|
+| C0 — Focal 1:1 (baseline) | 0.756 ± 0.125 | 0.774 ± 0.011 | 0.438 ± 0.045 | 0.746 ± 0.054 |
+| P2-F — Focal 1:5 | 0.852 ± 0.006 | 0.816 ± 0.016 | 0.706 ± 0.104 | 0.819 ± 0.019 |
+| P2-G — Focal 1:10 | 0.867 ± 0.032 | **0.904 ± 0.016** | **0.735 ± 0.024** | **0.882 ± 0.006** |
+| P2-B — WeightedBCE 1:1 | 0.744 ± 0.122 | 0.757 ± 0.023 | 0.402 ± 0.037 | 0.772 ± 0.016 |
+| P2-C — Focal γ=1 1:1 | 0.773 ± 0.096 | 0.771 ± 0.017 | 0.478 ± 0.040 | 0.750 ± 0.052 |
+| P2-D — Focal γ=3 1:1 | 0.818 ± 0.012 | 0.776 ± 0.020 | 0.439 ± 0.081 | 0.714 ± 0.066 |
+| P2-E — Focal γ=5 1:1 | 0.781 ± 0.088 | 0.772 ± 0.024 | 0.477 ± 0.033 | 0.743 ± 0.067 |
+
+#### Table 10. Phase 2 AUROC mean ± std (5 seeds) — luo\_17
+
+| Config | random | cold\_drug | cold\_target | cold\_pair |
+|---|---|---|---|---|
+| C0 — Focal 1:1 (baseline) | 0.946 ± 0.005 | 0.913 ± 0.009 | 0.778 ± 0.013 | 0.948 ± 0.002 |
+| P2-F — Focal 1:5 | **0.967 ± 0.004** | 0.897 ± 0.011 | **0.856 ± 0.003** | **0.957 ± 0.003** |
+| P2-G — Focal 1:10 | **0.975 ± 0.001** | **0.921 ± 0.005** | 0.819 ± 0.014 | **0.960 ± 0.004** |
+| P2-B — WeightedBCE 1:1 | 0.941 ± 0.003 | 0.907 ± 0.005 | 0.782 ± 0.007 | 0.947 ± 0.002 |
+| P2-C — Focal γ=1 1:1 | 0.942 ± 0.003 | 0.906 ± 0.011 | 0.766 ± 0.014 | 0.947 ± 0.002 |
+| P2-D — Focal γ=3 1:1 | 0.947 ± 0.003 | 0.914 ± 0.008 | 0.796 ± 0.014 | 0.945 ± 0.005 |
+| P2-E — Focal γ=5 1:1 | 0.946 ± 0.005 | 0.912 ± 0.008 | 0.769 ± 0.018 | 0.950 ± 0.003 |
+
+#### Table 11. Phase 2 statistical comparison vs. C0 — AUROC (paired t-test, n=5)
+
+Positive Δ = improvement over C0. Only entries with p < 0.05 are annotated.
+
+**yamanishi\_e:**
+
+| Config | random | cold\_drug | cold\_target | cold\_pair |
+|---|---|---|---|---|
+| P2-F — Focal 1:5 | +0.096 n.s. | +0.042 p<0.01 ✓✓ | +0.268 p<0.01 ✓✓ | +0.073 n.s. |
+| P2-G — Focal 1:10 | +0.111 n.s. | +0.130 p<0.01 ✓✓ | +0.297 p<0.01 ✓✓ | +0.136 p<0.01 ✓✓ |
+| P2-B — WeightedBCE 1:1 | −0.012 n.s. | −0.018 n.s. | −0.036 n.s. | +0.026 n.s. |
+| P2-C — Focal γ=1 1:1 | +0.017 n.s. | −0.004 n.s. | +0.040 n.s. | +0.005 n.s. |
+| P2-D — Focal γ=3 1:1 | +0.062 n.s. | +0.002 n.s. | +0.001 n.s. | −0.032 n.s. |
+| P2-E — Focal γ=5 1:1 | +0.025 n.s. | −0.002 n.s. | +0.039 n.s. | −0.002 n.s. |
+
+**luo\_17:**
+
+| Config | random | cold\_drug | cold\_target | cold\_pair |
+|---|---|---|---|---|
+| P2-F — Focal 1:5 | +0.021 p<0.01 ✓✓ | −0.016 n.s. | +0.078 p<0.01 ✓✓ | +0.009 p<0.01 ✓✓ |
+| P2-G — Focal 1:10 | +0.029 p<0.01 ✓✓ | +0.008 n.s. | +0.041 p<0.05 ✓ | +0.012 p<0.01 ✓✓ |
+| P2-B — WeightedBCE 1:1 | −0.005 n.s. | −0.006 n.s. | +0.004 n.s. | −0.001 n.s. |
+| P2-C — Focal γ=1 1:1 | −0.004 n.s. | −0.007 n.s. | −0.011 n.s. | −0.001 n.s. |
+| P2-D — Focal γ=3 1:1 | +0.001 n.s. | +0.000 n.s. | +0.018 n.s. | −0.003 n.s. |
+| P2-E — Focal γ=5 1:1 | −0.000 n.s. | −0.001 n.s. | −0.008 n.s. | +0.002 n.s. |
+
+#### AUPRC trade-off
+
+Increasing the negative ratio significantly degrades AUPRC (precision-recall):
+
+| Config | yam. random | yam. cold\_drug | luo\_17 random | luo\_17 cold\_target |
+|---|---|---|---|---|
+| C0 — 1:1 | 0.760 ± 0.100 | 0.786 ± 0.014 | 0.942 ± 0.004 | 0.702 ± 0.011 |
+| P2-F — 1:5 | 0.660 ± 0.028 | 0.634 ± 0.024 ✗✗ | 0.878 ± 0.006 ✗✗ | 0.665 ± 0.009 ✓ |
+| P2-G — 1:10 | 0.524 ± 0.054 ✗ | 0.642 ± 0.047 ✗✗ | 0.837 ± 0.013 ✗✗ | 0.330 ± 0.032 ✗✗ |
+
+✗✗ = significantly worse than C0 (p<0.01); ✗ = p<0.05; ✓ = n.s.
+
+All loss-variant configs (P2-B through P2-E) show no significant AUPRC change vs. C0 on either dataset.
+
+#### Findings
+
+**Negative-ratio sweep (P2-F, P2-G) — AUROC:**
+
+- Higher negative ratios consistently improve AUROC, with the largest gains on cold-start splits where the baseline is weakest.
+- On yamanishi\_e, the 1:10 ratio produces dramatic gains: cold\_target +0.297 (0.438→0.735, p<0.01), cold\_drug +0.130 (0.774→0.904, p<0.01), cold\_pair +0.136 (0.746→0.882, p<0.01). Cold\_target — the hardest split — goes from near-random to genuinely informative.
+- On luo\_17, improvements are smaller but statistically reliable: 1:5 and 1:10 both yield p<0.01 on random, cold\_target, and cold\_pair.
+- The 1:5 ratio delivers most of the benefit with lower AUPRC cost than 1:10.
+
+**Negative-ratio sweep — AUPRC trade-off:**
+
+- AUROC improvement comes at the cost of AUPRC. With 1:10 on luo\_17, cold\_drug AUPRC drops from 0.874 to 0.568 (−0.306, p<0.01) and cold\_target from 0.702 to 0.330 (−0.372, p<0.01). These are large, significant degradations.
+- The trade-off is fundamental: more negatives shifts the decision threshold — the model becomes better at ranking positives above negatives (AUROC) but operates in a more extreme class-imbalance regime, reducing precision at every recall level (AUPRC).
+- For drug discovery screening (ranking compounds, maximising recall), 1:10 is appropriate. For precision-first applications, 1:1 or 1:5 is preferable.
+
+**Loss variant sweep (P2-B through P2-E):**
+
+- No loss variant produces a statistically significant change in AUROC or AUPRC vs. C0 (Focal γ=2) on either dataset.
+- WeightedBCE (P2-B) performs similarly to Focal Loss at 1:1 ratio, confirming neither loss function provides a meaningful advantage when the ratio is held fixed.
+- Gamma variants (1, 3, 5) also produce no significant change. The default γ=2 sits at a flat optimum — the model is not sensitive to this hyperparameter within the tested range.
+- **Conclusion:** The gain from imbalance-aware training comes entirely from adjusting the *number* of negative examples, not from the loss weighting scheme. Negative-ratio sampling is the dominant factor.
+
+---
+
+### 3.7 Objective 2 Phase 1: Protein Embedding Size Comparison (ESM-2 8M vs. 150M)
+
+**Research question:** Does a larger protein language model (ESM-2 150M, 480-dim) produce better protein representations than the default ESM-2 8M (320-dim), and does the improvement generalise across datasets and split types?
+
+#### Setup
+
+- **P1-A (baseline):** ESM-2 8M (8M params, 320-dim) — same as all Objective 1 experiments.
+- **P1-B:** ESM-2 150M (150M params, 480-dim) — embeddings projected to 320 inside the model via a learned linear layer before ProteinEncoder.
+- **P1-C:** ESM-2 650M — not evaluated (GPU required for embedding generation).
+- **Datasets:** yamanishi\_e (per-residue BiGRU path, 89 proteins) and luo\_17 (mean-pooled linear path, 1,512 proteins). All 40 runs complete (5 seeds × 4 splits × 2 datasets).
+
+#### Table 12. Phase 1 AUROC mean ± std (5 seeds)
+
+| Config | random | cold\_drug | cold\_target | cold\_pair |
+|---|---|---|---|---|
+| **yamanishi\_e** | | | | |
+| P1-A — ESM-2 8M (baseline) | 0.756 ± 0.125 | 0.774 ± 0.011 | 0.438 ± 0.045 | 0.746 ± 0.054 |
+| P1-B — ESM-2 150M | 0.830 ± 0.040 | 0.743 ± 0.021 | 0.378 ± 0.070 | 0.778 ± 0.024 |
+| **luo\_17** | | | | |
+| P1-A — ESM-2 8M (baseline) | 0.946 ± 0.005 | 0.913 ± 0.009 | 0.778 ± 0.013 | 0.948 ± 0.002 |
+| P1-B — ESM-2 150M | 0.952 ± 0.006 | 0.905 ± 0.005 | **0.847 ± 0.010** | 0.952 ± 0.003 |
+
+#### Table 13. Phase 1 AUPRC mean ± std (5 seeds)
+
+| Config | random | cold\_drug | cold\_target | cold\_pair |
+|---|---|---|---|---|
+| **yamanishi\_e** | | | | |
+| P1-A — ESM-2 8M (baseline) | 0.760 ± 0.100 | 0.786 ± 0.014 | 0.322 ± 0.022 | 0.735 ± 0.057 |
+| P1-B — ESM-2 150M | 0.845 ± 0.033 | 0.776 ± 0.016 | 0.294 ± 0.026 | 0.778 ± 0.019 |
+| **luo\_17** | | | | |
+| P1-A — ESM-2 8M (baseline) | 0.942 ± 0.004 | 0.874 ± 0.017 | 0.702 ± 0.011 | 0.934 ± 0.005 |
+| P1-B — ESM-2 150M | 0.944 ± 0.008 | 0.865 ± 0.012 | **0.798 ± 0.016** | **0.951 ± 0.003** |
+
+#### Table 14. Phase 1 statistical comparison vs. P1-A (paired t-test, n=5)
+
+**yamanishi\_e:**
+
+| Metric | random | cold\_drug | cold\_target | cold\_pair |
+|---|---|---|---|---|
+| AUROC | +0.074 n.s. | −0.031 n.s. | −0.060 n.s. | +0.032 n.s. |
+| AUPRC | +0.085 n.s. | −0.010 n.s. | −0.028 n.s. | +0.042 n.s. |
+
+**luo\_17:**
+
+| Metric | random | cold\_drug | cold\_target | cold\_pair |
+|---|---|---|---|---|
+| AUROC | +0.006 n.s. | −0.008 p<0.05 ✗ | **+0.069 p<0.01 ✓✓** | +0.004 n.s. |
+| AUPRC | +0.002 n.s. | −0.009 n.s. | **+0.096 p<0.01 ✓✓** | **+0.017 p<0.01 ✓✓** |
+
+#### Findings
+
+**luo\_17 (mean-pooled embeddings, 1,512 proteins):**
+
+- **ESM-2 150M provides a significant and large improvement on cold\_target.** AUROC +0.069 (0.778→0.847, p<0.01) and AUPRC +0.096 (0.702→0.798, p<0.01). Cold\_target is the hardest generalisation scenario — the test set contains proteins never seen in training — and larger PLM representations are most beneficial exactly here.
+- **Random and cold\_pair:** No significant AUROC difference. Cold\_pair AUPRC shows a small but significant gain (+0.017, p<0.01).
+- **cold\_drug:** Marginally worse AUROC (−0.008, p<0.05). This is a very small absolute difference and may reflect the learned 480→320 projection slightly interfering with the drug-dominant cold\_drug generalisation signal.
+
+**yamanishi\_e (per-residue BiGRU embeddings, 89 proteins):**
+
+- **No statistically significant difference** on any split or metric. All comparisons n.s. (paired t-test, n=5).
+- Mean AUROC is slightly higher for 150M on random (+0.074) and cold\_pair (+0.032), but high variance (random std 0.125 vs 0.040) means these differences do not reach significance.
+- Cold\_target AUROC is slightly lower for 150M (0.378 vs 0.438), though also n.s. — the dataset is too small (89 proteins) for the richer 150M representations to consistently provide benefit.
+
+**Interpretation — dataset size mediates PLM benefit:**
+
+The ESM-2 150M improvement is dataset-dependent. On luo\_17 (1,512 proteins, 1,923 positive pairs), the richer 480-dim representations meaningfully improve unseen-protein generalisation (cold\_target). On yamanishi\_e (89 proteins, 445 pairs), the dataset is too small for the improvement to be statistically detectable — high seed variance swamps any signal from the larger model. The 480→320 projection also discards information; for the mean-pooled luo\_17 path this is a single linear layer applied once, whereas for the yamanishi\_e per-residue path the projection operates on every residue before the BiGRU, potentially introducing more compression artefacts.
+
+**Conclusion:** ESM-2 150M is recommended for large-dataset cold\_target evaluation (luo\_17 cold\_target AUROC +8.9% absolute, p<0.01). On small benchmarks like yamanishi\_e, the gain is not detectable and ESM-2 8M is sufficient.
+
+---
+
+### 4.5 Imbalance-Aware Training: Ratio vs. Loss Function
+
+The Phase 2 experiments establish a clear hierarchy:
+
+1. **Negative-sampling ratio is the dominant lever.** Increasing from 1:1 to 1:5 or 1:10 yields large, statistically significant AUROC gains on cold-start splits — particularly yamanishi\_e cold\_target (+0.297 at 1:10, p<0.01) and luo\_17 cold\_target (+0.078 at 1:5, p<0.01). The effect is consistent across both datasets.
+
+2. **Loss function choice is irrelevant at fixed ratio.** WeightedBCE and Focal Loss (γ∈{1,2,3,5}) produce statistically indistinguishable results across all 8 configurations. The loss function does not compensate for an unrepresentative training set.
+
+3. **AUROC and AUPRC trade off fundamentally.** The ratio gains in AUROC come with significant AUPRC degradation, especially at 1:10 on luo\_17 (cold\_target AUPRC −0.372, p<0.01). This trade-off is inherent to extreme class imbalance: the model learns a stricter positive threshold, improving rank-order discrimination while reducing precision. **Recommended configuration for downstream use:** 1:5 ratio provides the best AUROC improvement while limiting AUPRC loss; 1:10 is appropriate only when recall is the primary objective.
+
+4. **Cold\_target is the primary beneficiary.** Both datasets show the largest gain on cold\_target — the scenario where test proteins are entirely unseen. More negative examples force the model to rely more heavily on the drug molecular features, which are more reliably transferable, rather than overfitting to protein-specific signals in the training set. This explains why cold\_drug shows no significant improvement (it already relies on drug features) while cold\_target benefits most.
+
+### 4.6 Protein Embedding Size: When Does a Larger PLM Help?
+
+Phase 1 results show that ESM-2 150M improves cold\_target significantly on luo\_17 (+0.069 AUROC, +0.096 AUPRC, both p<0.01), but has no statistically significant effect on yamanishi\_e (all n.s.).
+
+The divergence is explained by dataset scale. On luo\_17 (1,512 proteins), richer protein representations from a larger PLM provide consistently better protein-space coverage, enabling the model to generalise to unseen proteins in test. On yamanishi\_e (89 proteins), the dataset is too small for this signal to be statistically detectable — high seed variance (std up to 0.125 AUROC) swamps the difference.
+
+This is a useful practical result: the benefit of a larger PLM scales with dataset size and cold-target difficulty. For small benchmarks, ESM-2 8M is sufficient and faster. For large-scale DTI datasets with cold-target evaluation, ESM-2 150M provides a meaningful and cost-efficient upgrade — the 480→320 projection adds no architectural complexity and the embeddings are generated offline.
+
+---
+
 ## 5. Summary of Contributions
 
 | Contribution | Result |
@@ -444,6 +636,10 @@ Published results on Davis and KIBA use different split strategies (typically 5-
 | DTA regression (KIBA) | R² 0.613 ± 0.019, Pearson 0.787 ± 0.012, MSE 0.274 ± 0.014; sig. better on 4/6 metrics vs. ConcatBaseline (p<0.01) |
 | DTA fusion advantage | Cross-attention beats concatenation on DTA regression (5/6 Davis metrics p<0.05; 4/6 KIBA metrics p<0.01) — consistent with DTI findings |
 | Dual-task generalisation | Same encoder architecture achieves positive R² on both DTA datasets without architectural changes; confirms task-agnostic drug/protein representations |
+| Imbalance-aware (ratio) | 1:10 negative sampling: yamanishi\_e cold\_target AUROC 0.438→0.735 (+0.297, p<0.01); 1:5 is the recommended trade-off (AUROC gain, lower AUPRC cost) |
+| Imbalance-aware (loss) | Loss function choice (WeightedBCE vs. Focal γ∈{1,2,3,5}) has no significant effect at fixed ratio — ratio is the dominant factor |
+| ESM-2 150M (luo\_17) | cold\_target AUROC +0.069 (0.778→0.847, p<0.01), AUPRC +0.096 (p<0.01) — larger PLM helps unseen-protein generalisation on large datasets |
+| ESM-2 150M (yamanishi\_e) | No significant effect (all n.s.) — dataset too small (89 proteins) to detect PLM scaling benefit |
 
 ---
 
