@@ -1,14 +1,15 @@
 """
 Objective 2 -- Statistical Analysis Script
 
-Loads results for all Phase 1 and Phase 2 experiment configurations,
+Loads results for all Phase 1, Phase 2, and Phase 3 experiment configurations,
 computes mean ± std across 5 seeds, and runs paired t-tests against
 the Objective 1 baseline (C0 = hgnn_rnn_dti, focal γ=2, 1:1, ESM-2 8M).
 
 Usage:
     python compute_objective2_stats.py              # Phase 2 (all loss/ratio configs)
     python compute_objective2_stats.py --phase 1    # Phase 1 (embedding configs)
-    python compute_objective2_stats.py --phase all  # Both phases
+    python compute_objective2_stats.py --phase 3    # Phase 3 (BindingDB pretraining)
+    python compute_objective2_stats.py --phase all  # All phases
     python compute_objective2_stats.py --dataset yamanishi_e
     python compute_objective2_stats.py --metric auprc
 """
@@ -43,6 +44,12 @@ PHASE1_CONFIGS = [
     ("hgnn_rnn_dti",           "P1-A -- ESM-2 8M  (baseline)", ["yamanishi_e", "luo_17"]),
     ("hgnn_rnn_dti_esm150m",   "P1-B -- ESM-2 150M",           ["yamanishi_e", "luo_17"]),
     ("hgnn_rnn_dti_esm650m",   "P1-C -- ESM-2 650M",           ["yamanishi_e", "luo_17"]),
+]
+
+PHASE3_CONFIGS = [
+    # Baseline is reused from PHASE2_CONFIGS (same C0 run)
+    ("hgnn_rnn_dti",           "C0 -- Scratch (baseline)",      ["yamanishi_e", "luo_17"]),
+    ("hgnn_rnn_dti_phase3_ft", "P3-A -- BindingDB pretrained",  ["yamanishi_e", "luo_17"]),
 ]
 
 
@@ -135,7 +142,7 @@ def report(configs, datasets, metric):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--phase",   default="2", choices=["1", "2", "all"])
+    parser.add_argument("--phase",   default="2", choices=["1", "2", "3", "all"])
     parser.add_argument("--dataset", default=None)
     parser.add_argument("--metric",  default="auroc",
                         choices=["auroc", "auprc", "f1", "acc"])
@@ -145,9 +152,11 @@ def main():
     if args.phase in ("2", "all"):
         all_configs.extend(PHASE2_CONFIGS)
     if args.phase in ("1", "all"):
-        # avoid duplicate baseline row
         seen = {c[0] for c in all_configs}
         all_configs.extend(c for c in PHASE1_CONFIGS if c[0] not in seen)
+    if args.phase in ("3", "all"):
+        seen = {c[0] for c in all_configs}
+        all_configs.extend(c for c in PHASE3_CONFIGS if c[0] not in seen)
 
     datasets = [args.dataset] if args.dataset else ["yamanishi_e", "luo_17"]
 

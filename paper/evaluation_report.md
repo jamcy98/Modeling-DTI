@@ -599,6 +599,80 @@ The ESM-2 150M improvement is dataset-dependent. On luo\_17 (1,512 proteins, 1,9
 
 ---
 
+### 3.8 Objective 2 Phase 3: BindingDB Pretraining
+
+**Research question:** Does pretraining H-GNN-RNN-DTI on a large-scale DTI dataset (BindingDB) improve fine-tuning performance on yamanishi\_e and luo\_17, particularly on cold-start splits?
+
+#### Setup
+
+A 50,000-pair balanced subset was sampled from BindingDB (1:1 positive:negative, 47,079 unique drug SMILES extracted from 210 chunk files). After filtering to protein IDs with available ESM-2 8M embeddings, 49,499 pairs remained (24,676 positive / 24,823 negative). Split: 70/15/15 train/val/test (34,651 / 7,424 / 7,424 pairs).
+
+- **Pretraining:** H-GNN-RNN-DTI trained on the BindingDB subset from scratch (lr=1e-4, batch\_size=64, 50 epochs, CPU). Best epoch 42; test AUROC 0.728, AUPRC 0.715.
+- **Fine-tuning (P3-A):** Pretrained encoder + fusion weights loaded; task head re-initialised. Fine-tuned on yamanishi\_e and luo\_17 (all 4 splits × 5 seeds = 40 runs). Shape-mismatched parameters (prot\_input\_proj for luo\_17's 1280-dim embeddings) are re-initialised randomly.
+- **Baseline (C0):** Same architecture trained from scratch — identical to Objective 1 baseline.
+
+#### Table 15. Phase 3 AUROC mean ± std (5 seeds)
+
+| Config | random | cold\_drug | cold\_target | cold\_pair |
+|---|---|---|---|---|
+| **yamanishi\_e** | | | | |
+| C0 — Scratch (baseline) | 0.756 ± 0.125 | 0.774 ± 0.011 | 0.438 ± 0.045 | 0.746 ± 0.054 |
+| P3-A — BindingDB pretrained | 0.624 ± 0.103 | 0.646 ± 0.110 | 0.347 ± 0.048 | 0.619 ± 0.075 |
+| **luo\_17** | | | | |
+| C0 — Scratch (baseline) | 0.946 ± 0.005 | 0.913 ± 0.009 | 0.778 ± 0.013 | 0.948 ± 0.002 |
+| P3-A — BindingDB pretrained | **0.954 ± 0.007** | **0.916 ± 0.008** | **0.832 ± 0.008** | **0.956 ± 0.004** |
+
+#### Table 16. Phase 3 AUPRC mean ± std (5 seeds)
+
+| Config | random | cold\_drug | cold\_target | cold\_pair |
+|---|---|---|---|---|
+| **yamanishi\_e** | | | | |
+| C0 — Scratch (baseline) | 0.760 ± 0.100 | 0.786 ± 0.014 | 0.322 ± 0.022 | 0.735 ± 0.057 |
+| P3-A — BindingDB pretrained | 0.594 ± 0.123 | 0.647 ± 0.124 | 0.282 ± 0.016 | 0.570 ± 0.102 |
+| **luo\_17** | | | | |
+| C0 — Scratch (baseline) | 0.942 ± 0.004 | 0.874 ± 0.017 | 0.702 ± 0.011 | 0.934 ± 0.005 |
+| P3-A — BindingDB pretrained | **0.953 ± 0.008** | **0.884 ± 0.017** | **0.760 ± 0.014** | **0.945 ± 0.006** |
+
+#### Table 17. Phase 3 statistical comparison vs. C0 (paired t-test, n=5)
+
+**yamanishi\_e:**
+
+| Metric | random | cold\_drug | cold\_target | cold\_pair |
+|---|---|---|---|---|
+| AUROC | −0.132 n.s. | −0.129 n.s. | −0.091 p<0.05 ✗ | −0.127 p<0.05 ✗ |
+| AUPRC | −0.167 n.s. | −0.139 n.s. | −0.040 p<0.05 ✗ | −0.165 p<0.05 ✗ |
+
+**luo\_17:**
+
+| Metric | random | cold\_drug | cold\_target | cold\_pair |
+|---|---|---|---|---|
+| AUROC | +0.008 n.s. | +0.003 n.s. | **+0.055 p<0.01 ✓✓** | +0.009 p<0.05 ✓ |
+| AUPRC | +0.011 p<0.05 ✓ | +0.010 n.s. | **+0.059 p<0.01 ✓✓** | +0.011 n.s. |
+
+✓✓ p<0.01; ✓ p<0.05; ✗ significantly worse (p<0.05).
+
+#### Findings
+
+**luo\_17 — pretraining helps, especially cold\_target:**
+
+BindingDB pretraining significantly improves luo\_17 performance. Cold\_target shows the largest gain: AUROC +0.055 (0.778→0.832, p<0.01) and AUPRC +0.059 (0.702→0.760, p<0.01). Cold\_pair AUROC is also significantly improved (+0.009, p<0.05) and random AUPRC (+0.011, p<0.05). Cold\_drug shows modest gains (n.s.). The cold\_target improvement mirrors the pattern seen in Phase 1 (ESM-2 150M): better drug representations are most beneficial when the model must rely on transferable drug features rather than memorised protein-specific signals.
+
+**yamanishi\_e — negative transfer:**
+
+BindingDB pretraining significantly *hurts* yamanishi\_e performance on cold\_target (AUROC −0.091, p<0.05) and cold\_pair (AUROC −0.127, p<0.05; AUPRC −0.165, p<0.05). Random and cold\_drug show large negative deltas (−0.132 and −0.129 AUROC) that are not significant at n=5 due to the high baseline variance (random std=0.125). This is a clear case of negative transfer: BindingDB pretraining interferes with fine-tuning on this specialised benchmark.
+
+**Why opposite effects across datasets:**
+
+Two mechanisms explain the asymmetry:
+
+1. *Domain alignment*: BindingDB covers a broad, pharmacologically diverse chemical-protein interaction space. luo\_17 (708 drugs from DrugBank across 1,512 human proteins) has similar diversity and benefits from the pretrained drug encoder. yamanishi\_e's 68 enzyme-substrate pairs represent a narrow, specialised sub-space that is under-represented in BindingDB — the pretrained drug representations are misaligned.
+
+2. *Protein encoder mismatch*: BindingDB pretraining uses mean-pooled protein embeddings (2D input), exercising only the linear path of ProteinEncoder and leaving the BiGRU weights essentially untouched. When fine-tuning on yamanishi\_e — which uses per-residue embeddings and the BiGRU path — the model starts with a pretrained drug encoder and cross-attention biased toward BindingDB patterns, paired with a random-init BiGRU. This mismatched initialisation creates a conflicting signal: the drug encoder pushes toward BindingDB interaction patterns while the BiGRU must learn from scratch on only 726 yamanishi\_e training pairs. For luo\_17 (mean-pooled, same linear path as BindingDB), no such mismatch exists.
+
+**Dataset-size effect:** yamanishi\_e (726 training pairs) is far too small to overcome negative transfer. luo\_17 (3,115 training pairs) has enough signal to benefit from the pretrained initialisation.
+
+---
+
 ### 4.5 Imbalance-Aware Training: Ratio vs. Loss Function
 
 The Phase 2 experiments establish a clear hierarchy:
@@ -618,6 +692,18 @@ Phase 1 results show that ESM-2 150M improves cold\_target significantly on luo\
 The divergence is explained by dataset scale. On luo\_17 (1,512 proteins), richer protein representations from a larger PLM provide consistently better protein-space coverage, enabling the model to generalise to unseen proteins in test. On yamanishi\_e (89 proteins), the dataset is too small for this signal to be statistically detectable — high seed variance (std up to 0.125 AUROC) swamps the difference.
 
 This is a useful practical result: the benefit of a larger PLM scales with dataset size and cold-target difficulty. For small benchmarks, ESM-2 8M is sufficient and faster. For large-scale DTI datasets with cold-target evaluation, ESM-2 150M provides a meaningful and cost-efficient upgrade — the 480→320 projection adds no architectural complexity and the embeddings are generated offline.
+
+### 4.7 BindingDB Pretraining: When Does Transfer Help?
+
+Phase 3 reveals that large-scale pretraining is not universally beneficial — its effect depends on domain alignment and protein encoder compatibility.
+
+1. **Domain alignment is the primary determinant.** BindingDB pretraining helps luo\_17 (+0.055 AUROC cold\_target, p<0.01) because both datasets share a pharmacologically diverse interaction space. It hurts yamanishi\_e (−0.091 cold\_target, p<0.05; −0.127 cold\_pair, p<0.05) because yamanishi\_e's narrow enzyme-substrate space is misrepresented in BindingDB's diverse catalogue.
+
+2. **Protein encoder path matters for transfer.** Pretraining on mean-pooled BindingDB proteins trains only the linear path of ProteinEncoder and the drug encoder. For yamanishi\_e — which uses the BiGRU path — the fine-tuning starts with a pre-biased drug encoder but a random BiGRU, producing conflicting optimisation signals on a very small dataset. This structural mismatch is an important limitation of cross-database pretraining when source and target datasets use different protein representation paths.
+
+3. **Cold-target is the primary beneficiary on luo\_17.** Both Phase 1 (larger PLM) and Phase 3 (pretraining) most strongly improve cold\_target generalisation on luo\_17. This consistent pattern suggests that cold-target performance is the key bottleneck for this model architecture — improvements that enrich the drug encoder or protein encoder independently both help most in the scenario where protein-side memorisation is impossible (unseen test proteins).
+
+4. **Practical recommendation:** For large, pharmacologically diverse datasets, BindingDB pretraining is an effective initialisation strategy (luo\_17 cold\_target AUROC 0.832 vs. 0.778 from scratch, p<0.01). For small, specialised benchmarks, training from scratch is preferable to avoid negative transfer. A target-dataset pre-screening step — comparing BindingDB chemical/protein space overlap with the target dataset — would help practitioners decide whether pretraining is beneficial.
 
 ---
 
@@ -640,6 +726,8 @@ This is a useful practical result: the benefit of a larger PLM scales with datas
 | Imbalance-aware (loss) | Loss function choice (WeightedBCE vs. Focal γ∈{1,2,3,5}) has no significant effect at fixed ratio — ratio is the dominant factor |
 | ESM-2 150M (luo\_17) | cold\_target AUROC +0.069 (0.778→0.847, p<0.01), AUPRC +0.096 (p<0.01) — larger PLM helps unseen-protein generalisation on large datasets |
 | ESM-2 150M (yamanishi\_e) | No significant effect (all n.s.) — dataset too small (89 proteins) to detect PLM scaling benefit |
+| BindingDB pretraining (luo\_17) | cold\_target AUROC +0.055 (0.778→0.832, p<0.01), AUPRC +0.059 (p<0.01) — large-scale pretraining improves drug-representation transfer |
+| BindingDB pretraining (yamanishi\_e) | Negative transfer: cold\_target −0.091 (p<0.05), cold\_pair −0.127 (p<0.05) — domain/encoder mismatch causes degradation on small specialised benchmark |
 
 ---
 

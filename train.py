@@ -161,6 +161,9 @@ def main():
                         help='DTI loss function. focal=FocalLoss, weighted_bce=WeightedBCELoss.')
     parser.add_argument('--focal_gamma', type=float, default=None,
                         help='Focal loss gamma override (default: from config.py FOCAL).')
+    parser.add_argument('--pretrain_checkpoint', default=None,
+                        help='Path to a pretrained checkpoint. Loads encoder + fusion weights '
+                             'and reinitialises only the task head. Used for Phase 3 fine-tuning.')
     args = parser.parse_args()
 
     random.seed(args.seed)
@@ -222,6 +225,28 @@ def main():
 
     n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f"  Parameters: {n_params:,}\n")
+
+    # Load pretrained encoder + fusion weights (Phase 3 fine-tuning)
+    if args.pretrain_checkpoint:
+        print(f"  Loading pretrained weights from {args.pretrain_checkpoint}...")
+        pt_ckpt = torch.load(args.pretrain_checkpoint, map_location=device, weights_only=False)
+        pt_sd = pt_ckpt['state_dict']
+        model_sd = model.state_dict()
+        # Skip task head (fresh init for target dataset) and shape-mismatched keys
+        # (strict=False skips missing/extra keys but still errors on shape mismatches)
+        filtered = {}
+        for k, v in pt_sd.items():
+            if k.startswith('task_head'):
+                continue
+            if k in model_sd and model_sd[k].shape != v.shape:
+                print(f"    Skipping {k}: pretrain {tuple(v.shape)} != model {tuple(model_sd[k].shape)}")
+                continue
+            filtered[k] = v
+        missing, unexpected = model.load_state_dict(filtered, strict=False)
+        loaded = len(filtered)
+        print(f"  Loaded {loaded} param tensors; skipped shape-mismatch: "
+              f"{len(pt_sd) - len(filtered) - sum(1 for k in pt_sd if k.startswith('task_head'))}; "
+              f"missing in target: {len(missing)}")
 
     # Pre-cache all unique protein representations (runs BiGRU once per protein)
     # Skip for gnn_only — model has no protein encoder and ignores protein_emb.
