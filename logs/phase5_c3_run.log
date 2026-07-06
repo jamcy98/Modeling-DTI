@@ -1,0 +1,12 @@
+
+============================================================
+  Objective 2 — Phase 5: Full Ablation (C2 and C3)
+  Device: cpu   Epochs: 100
+  C2 LR: 0.001   C3 LR: 0.0001
+============================================================
+
+
+============================================================
+  C3: ESM-2 150M + 1:5 ratio + BindingDB pretrained init
+  run_name:    hgnn_rnn_dti_phase3_ft_esm150m_1to5
+  pretrain_ckpt: hgnn_rnn_dti_phase3_bindingdb_pretrain_dti_random_fold0_seed1_best.pt

@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\Users\Jamila\Modeling-DTI\run_phase5_ablation.py", line 187, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\Jamila\Modeling-DTI\run_phase5_ablation.py", line 165, in main
+    print(f"  NOTE: prot_input_proj is re-initialised (8M\u2192150M shape mismatch).")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Jamila\anaconda3\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 45: character maps to <undefined>

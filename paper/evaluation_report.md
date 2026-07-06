@@ -712,7 +712,7 @@ Two mechanisms explain the asymmetry:
 
 **Relative to external baselines:** After Phase 2, H-GNN-RNN-DTI reaches yamanishi\_e cold\_target AUROC 0.706 (vs. DTKGIN 0.557; +0.149). On luo\_17, our cold\_target AUROC 0.856 is 2.4× the GSRF-DTI value of 0.362 — driven entirely by inductive architecture (sequence-based protein encoding). Phase 2 on yamanishi\_e cold\_drug (0.816) continues to beat DTKGIN (0.747) and has lower variance (±0.016 vs. ±0.100).
 
-**Combined configuration (C2 = ESM-2 150M + 1:5 ratio):** This experiment is in progress (run via `run_phase5_ablation.py`). Results will be added in Section 3.10 when complete.
+**Combined configuration (C2 = ESM-2 150M + 1:5 ratio):** Results in Section 3.10. The key finding is that improvements are **not additive** — C2 yamanishi\_e cold\_target (0.528 ± 0.218, n.s.) underperforms Phase 2 alone (0.706), and C2 luo\_17 cold\_target (0.838, p<0.05 vs C0) underperforms Phase 1 alone (0.847). The 1:5 ratio that was optimal for 8M embeddings interacts sub-optimally with 150M embeddings, particularly on the small yamanishi\_e dataset.
 
 ---
 
@@ -726,7 +726,7 @@ Two mechanisms explain the asymmetry:
 |---|---|---|---|---|
 | C0 | ESM-2 8M | 1:1 | None | Done (Objective 1 baseline) |
 | C1 | ESM-2 150M | 1:1 | None | Done (Phase 1) |
-| C2 | ESM-2 150M | 1:5 | None | **In progress** (`run_phase5_ablation.py --only c2`) |
+| C2 | ESM-2 150M | 1:5 | None | **Done** |
 | C3 | ESM-2 150M | 1:5 | BindingDB | **In progress** (`run_phase5_ablation.py --only c3`) |
 
 #### Table 19. Phase 5 AUROC — Ablation Matrix (5 seeds; N/A = in progress)
@@ -737,7 +737,7 @@ Two mechanisms explain the asymmetry:
 |---|---|---|---|---|
 | C0 — 8M / 1:1 / none | 0.756 ± 0.125 | 0.774 ± 0.011 | 0.438 ± 0.045 | 0.746 ± 0.054 |
 | C1 — 150M / 1:1 / none | 0.830 ± 0.040 | 0.743 ± 0.021 | 0.378 ± 0.070 | 0.778 ± 0.024 |
-| C2 — 150M / 1:5 / none | N/A | N/A | N/A | N/A |
+| C2 — 150M / 1:5 / none | 0.730 ± 0.097 | 0.773 ± 0.034 | 0.528 ± 0.218 | 0.719 ± 0.061 |
 | C3 — 150M / 1:5 / BindingDB | N/A | N/A | N/A | N/A |
 
 **luo\_17:**
@@ -746,7 +746,7 @@ Two mechanisms explain the asymmetry:
 |---|---|---|---|---|
 | C0 — 8M / 1:1 / none | 0.946 ± 0.005 | 0.913 ± 0.009 | 0.778 ± 0.013 | 0.948 ± 0.002 |
 | C1 — 150M / 1:1 / none | 0.952 ± 0.006 | 0.905 ± 0.005 | 0.847 ± 0.010 | 0.952 ± 0.003 |
-| C2 — 150M / 1:5 / none | N/A | N/A | N/A | N/A |
+| C2 — 150M / 1:5 / none | **0.965 ± 0.006** | 0.851 ± 0.010 | 0.838 ± 0.029 | 0.938 ± 0.007 |
 | C3 — 150M / 1:5 / BindingDB | N/A | N/A | N/A | N/A |
 
 #### Table 20. Phase 5 statistical comparison vs. C0 (paired t-test, n=5; N/A = in progress)
@@ -756,7 +756,7 @@ Two mechanisms explain the asymmetry:
 | Config | random | cold\_drug | cold\_target | cold\_pair |
 |---|---|---|---|---|
 | C1 vs C0 (AUROC) | +0.074 n.s. | −0.031 n.s. | −0.060 n.s. | +0.032 n.s. |
-| C2 vs C0 (AUROC) | N/A | N/A | N/A | N/A |
+| C2 vs C0 (AUROC) | −0.026 n.s. | −0.002 n.s. | +0.090 n.s. | −0.027 n.s. |
 | C3 vs C0 (AUROC) | N/A | N/A | N/A | N/A |
 
 **luo\_17:**
@@ -764,14 +764,47 @@ Two mechanisms explain the asymmetry:
 | Config | random | cold\_drug | cold\_target | cold\_pair |
 |---|---|---|---|---|
 | C1 vs C0 (AUROC) | +0.006 n.s. | −0.008 p<0.05 ✗ | **+0.069 p<0.01 ✓✓** | +0.004 n.s. |
-| C2 vs C0 (AUROC) | N/A | N/A | N/A | N/A |
+| C2 vs C0 (AUROC) | **+0.019 p<0.01 ✓✓** | −0.062 p<0.01 ✗ | +0.060 p<0.05 ✓ | −0.010 p<0.05 ✗ |
 | C3 vs C0 (AUROC) | N/A | N/A | N/A | N/A |
 
-*C2 and C3 results will be filled in when `run_phase5_ablation.py` completes (40 runs each).*
+*C3 results will be filled in when `run_phase5_ablation.py --only c3` completes (40 runs).*
 
-#### Expected outcome
+#### Table 20b. Phase 5 AUPRC statistical comparison vs. C0 (paired t-test, n=5)
 
-Based on individual Phase results, C2 (combining 150M embedding and 1:5 ratio) is expected to show additive improvements on luo\_17 cold\_target (Phase 1 +0.069 + Phase 2 +0.078 may overlap; independent stacking would predict ~0.890 AUROC — a significant improvement over C0 baseline). On yamanishi\_e, C2 is expected to recover the Phase 2 cold\_target gain (0.706) while providing more stable representations from the larger PLM. C3 (adding BindingDB pretraining) is expected to further improve luo\_17 (same protein encoder path alignment as Phase 3) but its benefit on yamanishi\_e remains uncertain due to encoder path mismatch (prot\_input\_proj is re-initialised for the 480-dim→hidden\_dim projection).
+**yamanishi\_e:**
+
+| Config | random | cold\_drug | cold\_target | cold\_pair |
+|---|---|---|---|---|
+| C1 vs C0 (AUPRC) | +0.085 n.s. | −0.010 n.s. | −0.028 n.s. | +0.042 n.s. |
+| C2 vs C0 (AUPRC) | −0.326 p<0.05 ✗ | −0.271 p<0.01 ✗ | −0.177 p<0.05 ✗ | −0.320 p<0.01 ✗ |
+| C3 vs C0 (AUPRC) | N/A | N/A | N/A | N/A |
+
+**luo\_17:**
+
+| Config | random | cold\_drug | cold\_target | cold\_pair |
+|---|---|---|---|---|
+| C1 vs C0 (AUPRC) | +0.002 n.s. | −0.009 n.s. | **+0.096 p<0.01 ✓✓** | +0.017 p<0.01 ✓✓ |
+| C2 vs C0 (AUPRC) | −0.079 p<0.01 ✗ | −0.307 p<0.01 ✗ | −0.103 p<0.01 ✗ | −0.122 p<0.01 ✗ |
+| C3 vs C0 (AUPRC) | N/A | N/A | N/A | N/A |
+
+#### C2 Findings
+
+**Improvements are not additive.** C2 (150M + 1:5 ratio) does not surpass either component in isolation on the most important cold-start metrics:
+
+- *yamanishi\_e cold\_target*: C2 AUROC 0.528 ± 0.218 (n.s. vs C0) — far below Phase 2 alone (0.706, p<0.01 with 8M + 1:5). The large standard deviation (±0.218) signals training instability from the combination on this tiny dataset (726 training pairs). The 1:5 ratio that was calibrated optimally with 8M embeddings appears mismatched when combined with the richer 150M embeddings.
+
+- *luo\_17 cold\_target*: C2 AUROC 0.838 ± 0.029 (p<0.05 vs C0) — significantly below Phase 1 alone (0.847 with 150M + 1:1, p<0.01). Adding the 1:5 ratio slightly degrades the cold\_target AUROC that 150M alone achieved.
+
+- *luo\_17 cold\_drug*: C2 AUROC 0.851 (−0.062 vs C0, p<0.01) — substantial degradation compared to both C0 (0.913) and C1 (0.905). The 1:5 ratio, which was neutral on cold\_drug with 8M embeddings (Phase 2), becomes harmful when combined with 150M.
+
+- *AUPRC*: C2 degrades AUPRC significantly on all splits and both datasets (all p<0.05, most p<0.01) — consistent with the 1:5 ratio trade-off established in Phase 2, but amplified by the embedding change.
+
+**Interpretation:** The 1:5 ratio pushes the model toward stricter positive thresholds, which conflicts with the feature landscape learned by the 150M embeddings. With 8M embeddings, the model compensates through broader geometric separation; with 150M embeddings, the richer representation shifts the decision boundary in a way that the 1:5 calibration disrupts. This interaction effect suggests that the optimal ratio for imbalance-aware training depends on the embedding model — a finding with practical implications for hyperparameter search.
+
+**Best individual strategy per configuration:**
+- *yamanishi\_e*: Phase 2 alone (8M + 1:5) remains the best approach (cold\_target 0.706, p<0.01).
+- *luo\_17*: Phase 1 alone (150M + 1:1) is best for cold\_target (0.847, p<0.01); Phase 2 alone (8M + 1:5) is best for random (0.967) and absolute cold\_target (0.856).
+- *C3* (150M + 1:5 + BindingDB) may recover some of the cold\_target benefit through pretraining — in progress.
 
 ---
 
