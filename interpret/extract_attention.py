@@ -32,6 +32,7 @@ Outputs a .npz file with keys:
 """
 
 import os
+os.environ.setdefault('KMP_DUPLICATE_LIB_OK', 'TRUE')  # avoid OpenMP conflict on Windows
 import sys
 import json
 import argparse
