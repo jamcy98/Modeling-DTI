@@ -1,0 +1,7 @@
+Pair: DB00150_P19838
+Task: DTI
+Prediction: 1.0516  (prob=0.8690)
+Gate mean: 0.503  (drug context dominates)
+N atoms: 15
+Top-5 atoms (ensemble): ['C10', 'N8', 'N14', 'C4', 'C2']
+Protein residue scores available: False
