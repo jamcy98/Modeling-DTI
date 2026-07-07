@@ -87,7 +87,7 @@ class DrugEncoder(nn.Module):
 
         self.hidden_dim = hidden_dim
 
-    def forward(self, data):
+    def forward(self, data, return_node_emb=False):
         x         = self.input_proj(data.x)
         edge_index = data.edge_index
         edge_attr  = data.edge_attr if hasattr(data, 'edge_attr') else None
@@ -108,9 +108,13 @@ class DrugEncoder(nn.Module):
                 cb = cb.squeeze(1)            # (B, 768)
             cb_proj   = self.chemberta_proj(cb)
             fused     = torch.cat([graph_rep, cb_proj], dim=-1)
-            return self.output_proj(fused)
+            out = self.output_proj(fused)
+        else:
+            out = self.output_proj_no_cb(graph_rep)
 
-        return self.output_proj_no_cb(graph_rep)
+        if return_node_emb:
+            return out, x, batch  # x: (total_atoms, H), batch: atom→molecule assignment
+        return out
 
 
 # ── Protein Encoder ───────────────────────────────────────────────────────────
@@ -122,13 +126,16 @@ class AttentionPooling(nn.Module):
         super().__init__()
         self.attn = nn.Linear(dim, 1)
 
-    def forward(self, x, mask=None):
+    def forward(self, x, mask=None, return_weights=False):
         # x: (B, L, D)
         scores = self.attn(x).squeeze(-1)          # (B, L)
         if mask is not None:
             scores = scores.masked_fill(mask, -1e9)
         weights = torch.softmax(scores, dim=-1)    # (B, L)
-        return (weights.unsqueeze(-1) * x).sum(dim=1)  # (B, D)
+        pooled = (weights.unsqueeze(-1) * x).sum(dim=1)  # (B, D)
+        if return_weights:
+            return pooled, weights
+        return pooled
 
 
 class ProteinEncoder(nn.Module):
@@ -177,14 +184,17 @@ class ProteinEncoder(nn.Module):
             nn.Linear(hidden_dim * 2, hidden_dim),
         )
 
-    def forward(self, x):
+    def forward(self, x, return_attn=False):
         # x: (B, L, D) for sequence mode or (B, D) for pooled mode
         if x.dim() == 3:
             # Full residue sequence — BiGRU path
             x = self.input_norm(x)
             out, _ = self.bigru(x)             # (B, L, 2H)
+            if return_attn:
+                pooled, weights = self.attn_pool(out, return_weights=True)
+                return self.gru_proj(pooled), weights, out  # (B,H), (B,L), (B,L,2H)
             pooled = self.attn_pool(out)       # (B, 2H)
             return self.gru_proj(pooled)       # (B, H)
         else:
-            # Mean-pooled — linear projection
+            # Mean-pooled — linear projection (no per-residue weights available)
             return self.linear_path(x)        # (B, H)

@@ -61,7 +61,7 @@ class GatedCrossAttention(nn.Module):
         B = x.size(0)
         return x.view(B, self.dim)
 
-    def forward(self, drug, protein):
+    def forward(self, drug, protein, return_gate=False):
         # drug, protein: (B, dim)
         # Drug → Protein cross-attention
         q_d = self._split_heads(self.Wq_d(drug))
@@ -75,10 +75,13 @@ class GatedCrossAttention(nn.Module):
         v_p = self._split_heads(self.Wv_p(drug))
         prot_ctx = self._merge_heads(self._attn(q_p, k_p, v_p))  # (B, dim)
 
-        # Gating
+        # Gating: g→1 means drug context dominates; g→0 means protein context dominates
         g       = torch.sigmoid(self.gate(torch.cat([drug, protein], dim=-1)))  # (B, dim)
         blended = g * drug_ctx + (1 - g) * prot_ctx                             # (B, dim)
 
         # Output projection with residual
-        fused = self.out_proj(torch.cat([blended, drug + protein], dim=-1))  # (B, dim)
-        return self.norm(self.drop(fused) + drug + protein)
+        fused  = self.out_proj(torch.cat([blended, drug + protein], dim=-1))  # (B, dim)
+        result = self.norm(self.drop(fused) + drug + protein)
+        if return_gate:
+            return result, g.detach()
+        return result

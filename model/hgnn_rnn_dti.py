@@ -110,19 +110,43 @@ class HGNN_RNN_DTI(nn.Module):
 
     def get_attention_weights(self, drug_graph, protein_emb):
         """
-        XAI hook: returns GAT attention weights and cross-attention gate values.
-        Used for interpretability analysis.
+        XAI hook for Phase 1 interpretability.
+
+        Requires raw ESM-2 embeddings (B, L, esm_dim) — not pre-cached representations.
+        Protein must be in sequence mode so per-residue attention weights are available.
+
+        Returns a dict with:
+            logits          : (B, 2) DTI logits or (B, 1) DTA predictions
+            residue_weights : (B, L)      — per-residue importance from AttentionPooling
+            gate            : (B, H)      — GCA gate (mean > 0.5 → drug context dominates)
+            node_emb        : (N, H)      — per-atom embeddings after last GAT layer
+            node_batch      : (N,)        — atom → molecule index mapping
+            bigru_hidden    : (B, L, 2H)  — BiGRU hidden states per residue
         """
         if protein_emb.shape[-1] != 320:
             protein_emb = self.prot_input_proj(protein_emb)
 
-        drug_repr    = self.drug_encoder(drug_graph)
-        protein_repr = self.protein_encoder(protein_emb)
-
-        # Gate value indicates how much the model focuses on drug vs protein
-        import torch
-        gate = torch.sigmoid(
-            self.fusion.gate(torch.cat([drug_repr, protein_repr], dim=-1))
+        drug_repr, node_emb, node_batch = self.drug_encoder(
+            drug_graph, return_node_emb=True
         )
-        logits = self.head(self.fusion(drug_repr, protein_repr))
-        return logits, gate
+
+        enc_out = self.protein_encoder(protein_emb, return_attn=True)
+        if isinstance(enc_out, tuple):
+            protein_repr, residue_weights, bigru_hidden = enc_out
+        else:
+            # Fallback: mean-pooled path (no per-residue weights)
+            protein_repr = enc_out
+            residue_weights = None
+            bigru_hidden = None
+
+        fused, gate = self.fusion(drug_repr, protein_repr, return_gate=True)
+        logits = self.head(fused)
+
+        return {
+            'logits':           logits,
+            'residue_weights':  residue_weights,
+            'gate':             gate,
+            'node_emb':         node_emb,
+            'node_batch':       node_batch,
+            'bigru_hidden':     bigru_hidden,
+        }
