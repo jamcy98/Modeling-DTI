@@ -1,0 +1,40 @@
+{
+  "checkpoint": "checkpoints/hgnn_rnn_dti_phase3_ft_esm150m_1to5_luo_17_dti_cold_target_fold0_seed1_best.pt",
+  "drug_smiles": null,
+  "protein_id": "P19838",
+  "drug_methods": {
+    "random": {
+      "faithfulness_auc": 0.16942753791809084,
+      "faithfulness_advantage": 0.02033260457217695,
+      "pharmacophore_ap": 0.5833333333333334
+    },
+    "input_grad": {
+      "faithfulness_auc": 0.2262995541095734,
+      "faithfulness_advantage": 0.0772046207636595,
+      "pharmacophore_ap": 0.3273809523809524
+    },
+    "drug_cam": {
+      "faithfulness_auc": 0.15677772089838982,
+      "faithfulness_advantage": 0.007682787552475923,
+      "pharmacophore_ap": 0.4583333333333333
+    },
+    "ensemble": {
+      "faithfulness_auc": 0.25528495348989966,
+      "faithfulness_advantage": 0.10619002014398576,
+      "pharmacophore_ap": 0.42261904761904756
+    }
+  },
+  "protein_methods": {},
+  "spearman_rho": {
+    "random_vs_random": 1.0,
+    "input_grad_vs_random": -0.007142857142857141,
+    "input_grad_vs_input_grad": 1.0,
+    "drug_cam_vs_random": 0.0036885555678165863,
+    "drug_cam_vs_input_grad": -0.138320833793122,
+    "drug_cam_vs_drug_cam": 0.9999999999999998,
+    "drug_cam_vs_ensemble": 0.6215216131770949,
+    "ensemble_vs_random": -0.039285714285714285,
+    "ensemble_vs_input_grad": 0.5642857142857142,
+    "ensemble_vs_ensemble": 1.0
+  }
+}

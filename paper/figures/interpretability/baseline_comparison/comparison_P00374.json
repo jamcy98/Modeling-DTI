@@ -1,0 +1,61 @@
+{
+  "checkpoint": "checkpoints/hgnn_rnn_dti_yamanishi_e_dti_cold_drug_fold0_seed1_best.pt",
+  "drug_smiles": null,
+  "protein_id": "P00374",
+  "drug_methods": {
+    "random": {
+      "faithfulness_auc": 0.0019433287847222703,
+      "faithfulness_advantage": 0.00027378500072341994,
+      "pharmacophore_ap": 0.4257620355834641
+    },
+    "input_grad": {
+      "faithfulness_auc": 0.0016186772422357037,
+      "faithfulness_advantage": -5.08665417631466e-05,
+      "pharmacophore_ap": 0.35593929879644165
+    },
+    "drug_cam": {
+      "faithfulness_auc": 0.00026832769314448035,
+      "faithfulness_advantage": -0.0014012160908543699,
+      "pharmacophore_ap": 0.39517595499738356
+    },
+    "ensemble": {
+      "faithfulness_auc": 0.0004951354454864154,
+      "faithfulness_advantage": -0.001174408338512435,
+      "pharmacophore_ap": 0.3893413134484563
+    }
+  },
+  "protein_methods": {
+    "random": {
+      "auroc": 0.5275387263339071,
+      "precision_20": 0.16216216216216217,
+      "recall_20": 0.2857142857142857
+    },
+    "attn_pool": {
+      "auroc": 0.6130235226620769,
+      "precision_20": 0.2702702702702703,
+      "recall_20": 0.47619047619047616
+    },
+    "protein_cam": {
+      "auroc": 0.5,
+      "precision_20": 0.0,
+      "recall_20": 0.0
+    },
+    "ensemble": {
+      "auroc": 0.6130235226620769,
+      "precision_20": 0.2702702702702703,
+      "recall_20": 0.47619047619047616
+    }
+  },
+  "spearman_rho": {
+    "random_vs_random": 1.0,
+    "input_grad_vs_random": -0.1195052665865066,
+    "input_grad_vs_input_grad": 1.0,
+    "drug_cam_vs_random": 0.07180385462287171,
+    "drug_cam_vs_input_grad": 0.1025439130862282,
+    "drug_cam_vs_drug_cam": 1.0,
+    "drug_cam_vs_ensemble": 0.4951606762040472,
+    "ensemble_vs_random": -0.11816814472260165,
+    "ensemble_vs_input_grad": 0.8712805081912404,
+    "ensemble_vs_ensemble": 1.0
+  }
+}
