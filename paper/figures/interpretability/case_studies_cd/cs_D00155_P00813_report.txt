@@ -1,0 +1,24 @@
+Case Study: Adenosine vs ADA
+Drug: D00155  SMILES: C1[C@@H]([C@H](O[C@H]1N2C=NC3=C2NC=NC[C@H]3O)CO)O...
+Protein: P00813  Length: 363 aa
+PDB: 3IAR chain A ligand 3D1  cutoff=4.5A
+PDB binding residues (1-idx): [15, 17, 19, 58, 61, 62, 65, 101, 102, 103, 106, 153, 155, 183, 184, 214, 217, 238, 295, 296]
+Literature binding (1-idx): [17, 58, 59, 182, 183, 184, 214, 256, 262, 295]
+Combined binding set (0-idx): [10, 12, 14, 53, 54, 56, 57, 60, 96, 97, 98, 101, 148, 150, 177, 178, 179, 209, 212, 233]
+
+Prediction probability: 0.3782
+
+Evaluation (Ensemble attribution vs. combined binding set):
+  AUROC:   0.32645034414945917
+  N binding residues: 24 / 363
+  Random baseline P@k: 0.0661
+  k= 18 (  5%): P@k=0.000  R@k=0.000  EF=0.00x
+  k= 36 ( 10%): P@k=0.000  R@k=0.000  EF=0.00x
+  k= 54 ( 15%): P@k=0.019  R@k=0.042  EF=0.28x
+  k= 73 ( 20%): P@k=0.027  R@k=0.083  EF=0.41x
+  k= 91 ( 25%): P@k=0.022  R@k=0.083  EF=0.33x
+  k=109 ( 30%): P@k=0.028  R@k=0.125  EF=0.42x
+  k=145 ( 40%): P@k=0.034  R@k=0.208  EF=0.52x
+
+AttentionPooling AUROC: 0.35176991150442477
+Grad-CAM AUROC: 0.4528023598820059

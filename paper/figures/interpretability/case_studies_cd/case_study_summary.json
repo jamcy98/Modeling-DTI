@@ -1,0 +1,28 @@
+[
+  {
+    "name": "Methotrexate vs DHFR",
+    "drug_id": "D00142",
+    "protein_id": "P00374",
+    "prob": 0.3275950849056244,
+    "auroc": 0.6130235226620769,
+    "n_binding": 21,
+    "n_residues": 187,
+    "out_dir": "paper/figures/interpretability/case_studies_cd",
+    "precision_at_20pct": 0.2702702702702703,
+    "recall_at_20pct": 0.47619047619047616,
+    "enrichment_at_20pct": 2.406692406692407
+  },
+  {
+    "name": "Adenosine vs ADA",
+    "drug_id": "D00155",
+    "protein_id": "P00813",
+    "prob": 0.3781905472278595,
+    "auroc": 0.32645034414945917,
+    "n_binding": 24,
+    "n_residues": 363,
+    "out_dir": "paper/figures/interpretability/case_studies_cd",
+    "precision_at_20pct": 0.0273972602739726,
+    "recall_at_20pct": 0.08333333333333333,
+    "enrichment_at_20pct": 0.4143835616438356
+  }
+]
