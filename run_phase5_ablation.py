@@ -16,8 +16,11 @@ Usage:
     python run_phase5_ablation.py --device cpu --epochs 100
 """
 
-import os, sys, subprocess, time, argparse
+import os, sys, io, subprocess, time, argparse
 from pathlib import Path
+
+if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 BASE_DIR = Path(__file__).parent
 PYTHON   = sys.executable
