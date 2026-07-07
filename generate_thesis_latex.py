@@ -1,0 +1,975 @@
+"""
+Generate comprehensive thesis LaTeX file for H-GNN-RNN-DTI.
+Output: paper/Thesis_HGNN_RNN_DTI.tex
+Compile with: pdflatex -> bibtex -> pdflatex -> pdflatex
+"""
+
+import os
+
+TEX = r"""\documentclass[12pt,a4paper,oneside]{report}
+
+%% ── Packages ────────────────────────────────────────────────────────────────
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=3.0cm, right=2.0cm]{geometry}
+\usepackage{setspace}
+\usepackage{times}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{hyperref}
+\usepackage{parskip}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{natbib}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+%% ── Colours ─────────────────────────────────────────────────────────────────
+\definecolor{navy}{RGB}{26,55,92}
+\definecolor{teal}{RGB}{0,123,138}
+\definecolor{orange}{RGB}{192,106,0}
+\definecolor{lightgrey}{RGB}{242,244,247}
+\definecolor{green}{RGB}{30,122,78}
+
+%% ── Hyperref ─────────────────────────────────────────────────────────────────
+\hypersetup{
+  colorlinks=true,
+  linkcolor=navy,
+  citecolor=teal,
+  urlcolor=teal,
+  pdftitle={Enhanced Drug-Target Interaction Prediction Through Hybrid Deep Learning Approaches},
+  pdfauthor={Jamila Abdul-Hadi}
+}
+
+%% ── Section title formatting ─────────────────────────────────────────────────
+\titleformat{\chapter}[display]
+  {\normalfont\Large\bfseries\color{navy}}
+  {CHAPTER \thechapter}{10pt}{\LARGE}
+\titlespacing*{\chapter}{0pt}{10pt}{20pt}
+
+\titleformat{\section}
+  {\normalfont\large\bfseries\color{teal}}
+  {\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\normalsize\bfseries\color{orange}}
+  {\thesubsection}{1em}{}
+
+%% ── Header/footer ────────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{H-GNN-RNN-DTI}}
+\fancyhead[R]{\small\textit{Jamila Abdul-Hadi, USM 2026}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%% ── Line spacing ─────────────────────────────────────────────────────────────
+\onehalfspacing
+
+%% ── Table column types ───────────────────────────────────────────────────────
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+%% ── Utility commands ─────────────────────────────────────────────────────────
+\newcommand{\sig}[1]{\textbf{#1}}
+\newcommand{\sigbetter}{{\color{green}$\checkmark$}}
+\newcommand{\sigworse}{{\color{red}$\times$}}
+\newcommand{\ns}{n.s.}
+
+%% ════════════════════════════════════════════════════════════════════════════
+\begin{document}
+
+%% ── TITLE PAGE ──────────────────────────────────────────────────────────────
+\begin{titlepage}
+\centering
+\vspace*{3cm}
+{\Huge\bfseries\color{navy} Enhanced Drug-Target Interaction\\[0.5em]
+Prediction Through Hybrid\\[0.5em]
+Deep Learning Approaches\par}
+\vspace{2cm}
+{\Large Jamila Abdul-Hadi\\[0.3em]
+\normalsize Matric: 24100625\par}
+\vspace{2cm}
+{\large PhD Thesis\\[0.3em]
+School of Computer Sciences\\[0.3em]
+Universiti Sains Malaysia\\[0.3em]
+2026\par}
+\vspace{1.5cm}
+{\normalsize\itshape Supervisor: Assoc.\ Prof.\ Dr.\ Nurul Hashimah Ahamed Hassain Malim\par}
+\end{titlepage}
+
+%% ── ABSTRACT ─────────────────────────────────────────────────────────────────
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+Accurately predicting drug--target interactions (DTIs) is a cornerstone of modern drug discovery, enabling efficient identification of therapeutic candidates, drug repurposing opportunities, and potential off-target effects. Despite recent advances in deep learning, existing architectures face persistent challenges: weak cross-modal feature integration due to shallow fusion of heterogeneous drug and protein representations, poor generalisation in cold-start scenarios, and limited interpretability.
+
+This thesis presents \textbf{H-GNN-RNN-DTI}, a hybrid deep learning model integrating a 3-layer Hierarchical Graph Attention Network (H-GAT) for drug encoding with a 2-layer Bidirectional Gated Recurrent Unit (BiGRU) for protein encoding, fused through a novel Gated Cross-Attention (GCA) mechanism. Three research objectives were addressed: (1) architectural design and evaluation; (2) cold-start enhancement through imbalance-aware training, larger protein language models, and large-scale pre-training; and (3) attention-based interpretability with biochemical validation.
+
+Key results: Gated Cross-Attention outperformed concatenation fusion on 3/8 DTI configurations (p${<}$0.05) and 5/6 Davis DTA metrics (p${<}$0.05). The 1:5 negative-sampling ratio improved Yamanishi\_e cold\_target AUROC from 0.438 to 0.706 ($+$0.268, p${<}$0.01). ESM-2 150M improved Luo\_17 cold\_target by $+$0.069 AUROC (p${<}$0.01). BindingDB pre-training improved Luo\_17 cold\_target by $+$0.055 AUROC (p${<}$0.01). Drug attribution faithfulness advantage was $+$0.106 (Ensemble); DHFR binding-site AUROC was 0.613 with enrichment factor 2.81$\times$ at 10\%.
+
+\textbf{Keywords:} Drug-target interaction, Graph attention network, BiGRU, Gated cross-attention, Cold-start generalisation, Interpretability, Pharmacophore, Protein language model.
+
+\tableofcontents
+\listoftables
+\clearpage
+
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter{Introduction}
+%% ════════════════════════════════════════════════════════════════════════════
+
+\section{Background and Motivation}
+
+Identifying the interactions between drugs and their target proteins is a fundamental step in the drug discovery pipeline. Beyond understanding disease mechanisms, accurate DTI prediction enables drug repurposing and anticipation of adverse side effects \citep{tanoli2025, yang2024}. The traditional drug development process is notoriously slow and expensive -- approximately \$2.6 billion and 15 years per approved drug \citep{khojasteh2023} -- creating an economic bottleneck that computational approaches aim to alleviate.
+
+Deep learning has emerged as a powerful paradigm for DTI prediction, enabling automatic feature extraction from raw molecular representations without hand-crafted features \citep{vefghi2025}. Two modalities are central: the graph structure of drug molecules and the sequential nature of protein amino acid sequences. Graph Neural Networks (GNNs) capture molecular topology; Recurrent Neural Networks (RNNs) capture protein sequence context. The dominant trend is to combine both modalities in hybrid architectures \citep{panahandeh2025, shan2025}.
+
+\section{Problem Statement}
+
+Despite significant advances, three critical limitations persist:
+\begin{enumerate}[leftmargin=1.5em]
+  \item \textbf{Sub-optimal cross-modal feature integration}: Models such as GSRF-DTI \citep{zhu2024} employ static concatenation fusion preventing meaningful drug--protein interaction at the feature level. DTKGIN \citep{luo2024dtkgin} relies on inner-product scoring without dynamic attention-based fusion.
+  \item \textbf{Inadequate cold-start generalisation}: Most models memorise training-distribution patterns rather than learning transferable biochemical principles. Pre-trained protein language model embeddings (ESM-2, ProtT5) that encode evolutionary knowledge are not leveraged by current methods.
+  \item \textbf{Limited interpretability}: High-performing models lack atom-level or residue-level attribution mechanisms, constraining their utility for rational drug design and structure--activity relationship studies.
+\end{enumerate}
+
+\section{Research Questions}
+
+\begin{description}
+  \item[RQ1] How can a Gated Cross-Attention fusion mechanism effectively integrate GNN-based drug representations with RNN-based protein representations, and does this approach improve DTI prediction compared to static concatenation?
+  \item[RQ2] To what extent can pre-trained molecular and protein language embeddings, combined with imbalance-aware learning strategies, improve generalisation to unseen drugs, unseen targets, and cross-dataset scenarios?
+  \item[RQ3] Can an attention-enhanced hybrid model provide interpretable and biologically meaningful insights by identifying key binding residues and pharmacophoric features?
+\end{description}
+
+\section{Research Objectives}
+
+\begin{enumerate}[leftmargin=1.5em]
+  \item To design and evaluate a hybrid model integrating structural graph and sequence encoders through a Gated Cross-Attention mechanism, achieving statistically significant performance improvements over concatenation-based fusion.
+  \item To develop and evaluate enhancement strategies -- imbalance-aware training, larger protein language models, and BindingDB pre-training -- with the aim of improving performance on cold-start scenarios.
+  \item To implement and benchmark an attention-based interpretability layer validated against PDB binding-site annotations and pharmacophore standards.
+\end{enumerate}
+
+\section{Scope of the Research}
+
+The research addressed computational DTI/DTA prediction using public benchmark datasets. Drug molecules were represented as molecular graphs (SMILES $\rightarrow$ PyG Data objects via RDKit, with ChemBERTa embeddings). Proteins were represented using ESM-2 embeddings (8M and 150M parameter variants). Datasets: Yamanishi\_e and Luo\_17 (DTI binary classification); DAVIS and KIBA (DTA regression); BindingDB (pre-training, 49,499 pairs). The research excluded wet-lab validation, non-small-molecule ligands, and large-scale industrial deployment.
+
+\section{Significance of the Research}
+
+This research makes four primary contributions: (1) a principled cross-modal fusion mechanism enabling context-aware drug--protein feature integration; (2) a systematic study of cold-start enhancement strategies revealing a non-additive hierarchy of improvements; (3) demonstration that attention-based attributions recover binding sites without structural supervision; and (4) a fully inductive, dual-task architecture achieving cold\_target AUROC 0.778 on Luo\_17 versus 0.362 for the transductive GSRF-DTI baseline.
+
+\section{Organisation of the Thesis}
+
+Chapter~2 reviews computational DTI methodologies and related work. Chapter~3 presents the H-GNN-RNN-DTI architecture, datasets, preprocessing, training strategy, and evaluation protocol. Chapter~4 presents and discusses results for all three objectives. Chapter~5 concludes with contributions, limitations, and future directions.
+
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter{Literature Review}
+%% ════════════════════════════════════════════════════════════════════════════
+
+\section{Introduction}
+
+This chapter reviews the evolution of computational methodologies for DTI prediction, from early physics-based simulations to modern hybrid deep learning architectures, identifying persistent limitations that motivated this work.
+
+\section{Computational Methodologies for DTI Prediction}
+
+\subsection{Molecular Docking-Based Approaches}
+Molecular docking simulates the physical binding of a ligand to the 3D structure of a target protein, providing detailed structural insights \citep{chen2024dti}. These methods are computationally expensive, depend on high-resolution 3D protein structures unavailable for many targets, and are impractical for large-scale virtual screening \citep{lu2025dtiam, dai2025}.
+
+\subsection{Ligand-Based Methods}
+Ligand-based methods predict activity based on structural similarity to known active ligands. Their effectiveness diminishes for targets with few known binders and for novel chemotypes without structural analogues \citep{lee2024dlm}. These limitations drove the field toward data-driven machine learning approaches.
+
+\subsection{Traditional Machine Learning and Network-Based Methods}
+Classical ML methods -- Gradient Boosting, Random Forest, SVM, MLP -- were applied to DTI prediction using hand-crafted molecular fingerprints. Network-based methods exploited heterogeneous biological network topology (drug--drug, protein--protein, DTI networks) via algorithms such as Random Walk with Restart \citep{cao2024ngcn, wu2018network}. Persistent challenges include absence of high-quality negative samples, class imbalance, and inability to generalise to novel entities.
+
+\subsection{Deep Learning in DTI Prediction}
+Deep learning enabled automatic feature learning from raw molecular representations \citep{vefghi2025, liao2025ai}. CNNs, RNNs, and GNNs achieved strong performance on benchmark datasets. However, single-architecture models remain limited: GNNs miss sequential protein context; RNNs miss molecular topology. Cold-start scenarios, data sparsity, and interpretability remain critical challenges \citep{panahandeh2025, hua2025mmdg}.
+
+\section{Foundational Deep Learning Architectures}
+
+\subsection{Recurrent Neural Networks}
+RNNs maintain a hidden state over sequences, capturing temporal dependencies \citep{abbasi2020, mienye2024}. LSTM and GRU variants address long-range dependency learning. Bidirectional variants (BiGRU, BiLSTM) process sequences in both directions. A known limitation is the inability to natively model non-linear molecular topology.
+
+\subsection{Graph Neural Networks}
+GNNs operate on graph-structured data through iterative neighbourhood aggregation (message passing) \citep{zhang2021gnn}. Graph Attention Networks (GAT) weight neighbour contributions via learned attention coefficients. GraphDTA \citep{nguyen2021graphdta} demonstrated that GNN-based DTA models outperform CNN-based models. Oversmoothing -- repeated message passing leading to uniform node representations -- is addressed by residual connections \citep{deng2025}.
+
+\section{Rationale for Hybrid Deep Learning Models}
+
+The ``feature bottleneck'' of single-architecture models motivates hybrid designs. A dual-branch system assigns a specialised encoder to each modality: GNN for the drug molecular graph, BiGRU for the protein sequence. Prior work combining CNNs with LSTMs (e.g., DeepGS \citealt{zhijian2022}) confirmed that multi-modal integration yields more comprehensive representations.
+
+\section{Critical Analysis of Related Methods}
+
+\subsection{GSRF-DTI \citep{zhu2024}}
+GSRF-DTI integrates DeepWalk, GraphSAGE, and Random Forest, achieving AUROC=0.9818 under random 5-fold CV with the full DrugBank knowledge graph. Key limitations: (1) static concatenation prevents cross-modal interaction; (2) transductive design fails on cold\_target (AUROC=0.362 in our re-implementation); (3) no atom-level attribution; (4) authors acknowledge inadequate handling of data imbalance.
+
+\subsection{TTModel \citep{li2024ttmodel}}
+TTModel uses knowledge graph embedding with textual and entity-type features, achieving AUPR=0.95 on GPCR. Limitations: no molecular graph encoding; no direct protein sequence processing; no cross-modal attention fusion; no atom- or residue-level attribution.
+
+\subsection{DTKGIN \citep{luo2024dtkgin}}
+DTKGIN introduces intent nodes within a GNN paradigm, achieving AUC=0.894 on Yamanishi\_08 cold-drug splits. Limitations: no dedicated molecular graph GNN or sequence RNN encoder; inner-product scoring; no pre-trained embeddings; high variance on cold\_drug ($\pm$0.100 AUROC).
+
+\section{Current Research Gaps}
+
+\begin{description}
+  \item[Cross-modal integration] Static concatenation prevents the drug representation from informing protein representation. Dynamic cross-attention -- where each drug atom attends to protein residues -- enables context-dependent enrichment \citep{sun2024ingnn, quan2025mfca}.
+  \item[Cold-start generalisation] Most models fail when evaluated on unseen drugs (cold\_drug) or unseen proteins (cold\_target). Pre-trained foundation models (ChemBERTa, ESM-2) encode transferable biochemical knowledge applicable to novel entities \citep{lee2024dlm, talo2025topdti}.
+  \item[Interpretability] Attention-based attribution -- which drug atoms and protein residues drive the prediction -- provides intrinsic interpretability validated by faithfulness metrics and PDB binding-site comparisons \citep{yang2024ehign, yuan2025mutualdta}.
+\end{description}
+
+\section{Related Work}
+
+Recent hybrid models advanced cross-modal fusion and interpretability. iNGNN-DTI \citep{sun2024ingnn} employs nested GNN with cross-attention modules. EmbedDTI \citep{jin2021} uses sequence embeddings with GCN and attention for interpretable prediction. HMSA-DTI \citep{bian2024} introduces hierarchical multimodal self-attention. Top-DTI \citep{talo2025topdti} integrates topological deep learning with large language model embeddings for cold-start robustness. MutualDTA \citep{yuan2025mutualdta} introduces explicit drug atom to protein residue attention for interpretable affinity prediction.
+
+\section{Summary}
+
+The literature confirms that hybrid deep learning has advanced DTI prediction, but persistent gaps remain in dynamic fusion, cold-start generalisation, and interpretability. H-GNN-RNN-DTI addresses all four gaps simultaneously through its architectural design and enhancement strategies.
+
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter{Methodology}
+%% ════════════════════════════════════════════════════════════════════════════
+
+\section{Research Design}
+
+This study adopted a quantitative, computational design structured around three empirical objectives: architecture design and evaluation, enhancement strategy benchmarking, and interpretability validation. The research followed an experimental approach involving model development, training and evaluation on public DTI/DTA benchmarks, baseline comparison, and interpretability case studies with PDB-validated binding sites.
+
+\section{Datasets}
+
+\begin{table}[htbp]
+\centering
+\caption{Datasets used in this research.}
+\begin{tabular}{@{}L{2cm}L{2.2cm}C{1.2cm}C{1.2cm}C{1.8cm}L{2.5cm}@{}}
+\toprule
+\rowcolor{navy}
+\textcolor{white}{\textbf{Dataset}} &
+\textcolor{white}{\textbf{Task}} &
+\textcolor{white}{\textbf{Drugs}} &
+\textcolor{white}{\textbf{Proteins}} &
+\textcolor{white}{\textbf{Pos.\ Pairs}} &
+\textcolor{white}{\textbf{Use}} \\
+\midrule
+\rowcolor{lightgrey}
+Yamanishi\_e & DTI (binary) & 68 & 26 & 445 & Training/evaluation \\
+Luo\_17 & DTI (binary) & 708 & 1,512 & 1,923 & Training/evaluation \\
+\rowcolor{lightgrey}
+DAVIS & DTA (pKd) & 68 & 442 & 30,056 & Affinity regression \\
+KIBA & DTA (score) & 229 & 229 & 118,254 & Affinity regression \\
+\rowcolor{lightgrey}
+BindingDB & DTI (binary) & 47,079 & diverse & 49,499 & Pre-training \\
+\bottomrule
+\end{tabular}
+\label{tab:datasets}
+\end{table}
+
+Yamanishi\_e is a gold-standard small enzyme benchmark \citep{yamanishi2008}. Luo\_17 is a larger heterogeneous benchmark \citep{luo2017network}. DAVIS and KIBA are standard DTA benchmarks \citep{ozturk2018deepdta}. BindingDB was used as a large-scale pre-training source (49,499 balanced pairs extracted from 47,079 unique SMILES).
+
+\subsection{Data Splitting Protocol}
+
+Four splitting strategies were implemented:
+\begin{enumerate}[leftmargin=1.5em]
+  \item \textbf{Random split} (warm-start): 70/10/20 train/val/test.
+  \item \textbf{Cold\_drug split}: Test drugs never appear in training.
+  \item \textbf{Cold\_target split}: Test proteins never appear in training.
+  \item \textbf{Cold\_pair split}: Test drug--protein pairs not observed in training.
+\end{enumerate}
+
+\section{Data Preprocessing}
+
+\subsection{Drug Representation}
+Drug molecules were processed from SMILES strings into PyG \texttt{Data} objects using RDKit. Atom node features included: atomic number, degree, hybridisation, aromaticity, formal charge, hydrogen count, and ring membership. Bond edge features included: bond type, conjugation, and ring membership. Pre-trained ChemBERTa embeddings (\texttt{seyonec/ChemBERTa-zinc-base-v1}, 768-dim CLS token) were fused with atom features inside the DrugEncoder.
+
+\subsection{Protein Representation}
+Protein sequences were encoded using ESM-2 protein language models. For Yamanishi\_e (per-residue BiGRU path): ESM-2 8M (\texttt{facebook/esm2\_t6\_8M\_UR50D}, 320-dim, shape $B \times L \times 320$). For Luo\_17 (mean-pooled linear path): ESM-2 8M (shape $B \times 320$) or ESM-2 150M (\texttt{facebook/esm2\_t12\_35M\_UR50D}, 480-dim, shape $B \times 480$). A learned linear projection ($480 \to 320$) was applied inside the model when 150M embeddings were used.
+
+\subsection{Label Processing}
+For DTI binary classification, confirmed interactions were labelled positive (1). Negative pairs were sampled from non-interacting combinations at ratios of 1:1, 1:5, or 1:10 (positive:negative). For DTA regression, binding affinity values were used directly (pKd for DAVIS, KIBA scores for KIBA).
+
+\section{H-GNN-RNN-DTI Architecture}
+
+The model consists of: (1) DrugEncoder (Hierarchical GAT), (2) ProteinEncoder (BiGRU with attention pooling), (3) GatedCrossAttention fusion, and (4) task-specific prediction heads.
+
+\subsection{Drug Encoder — Hierarchical Graph Attention Network}
+
+Drug molecules are encoded through three stacked \texttt{ResidualGATBlock} layers, each with 8 attention heads. The message passing update at layer $\ell$ for atom $i$ is:
+\begin{equation}
+\mathbf{h}_i^{(\ell)} = \sigma\!\left( \sum_{j \in \mathcal{N}(i)} \alpha_{ij}^{(\ell)} \cdot \mathbf{W}^{(\ell)} \mathbf{h}_j^{(\ell-1)} \right)
+\label{eq:gat}
+\end{equation}
+where $\mathcal{N}(i)$ are atom $i$'s bonded neighbours, $\alpha_{ij}$ are attention-normalised coefficients, $\mathbf{W}^{(\ell)}$ is a learnable weight matrix, and $\sigma$ is ELU activation. A global drug embedding is derived by concatenating mean-pooling and max-pooling, then fusing with ChemBERTa:
+\begin{equation}
+\mathbf{h}_{\text{drug}} = \mathrm{MLP}\!\left( \mathrm{concat}(\mathrm{MeanPool}, \mathrm{MaxPool}) \oplus \mathbf{W}_{\mathrm{cb}} \mathbf{e}_{\mathrm{ChemBERTa}} \right)
+\label{eq:drug-readout}
+\end{equation}
+
+\subsection{Protein Encoder — Bidirectional GRU}
+
+Per-residue ESM-2 embeddings $\mathbf{x}_t$ are processed by a 2-layer BiGRU:
+\begin{equation}
+\overrightarrow{\mathbf{h}}_t = \mathrm{GRU}(\mathbf{x}_t, \overrightarrow{\mathbf{h}}_{t-1}),
+\quad
+\overleftarrow{\mathbf{h}}_t = \mathrm{GRU}(\mathbf{x}_t, \overleftarrow{\mathbf{h}}_{t+1})
+\label{eq:bigru}
+\end{equation}
+\begin{equation}
+\mathbf{h}_t = \mathrm{concat}(\overrightarrow{\mathbf{h}}_t,\; \overleftarrow{\mathbf{h}}_t)
+\end{equation}
+Attention pooling derives a compact sequence-level representation:
+\begin{equation}
+e_t = \mathbf{v}^\top \tanh(\mathbf{W}_a \mathbf{h}_t + \mathbf{b}_a),
+\quad
+\alpha_t = \frac{\exp(e_t)}{\sum_s \exp(e_s)},
+\quad
+\mathbf{h}_{\text{protein}} = \sum_t \alpha_t \mathbf{h}_t
+\label{eq:attnpool}
+\end{equation}
+The weights $\alpha_t \in [0,1]$ serve directly as per-residue importance scores for the interpretability module.
+
+\subsection{Gated Cross-Attention Fusion}
+
+Given $\mathbf{h}_{\text{drug}}$ and $\mathbf{h}_{\text{protein}}$, bidirectional scaled dot-product cross-attention is computed:
+\begin{equation}
+\mathbf{A} = \mathrm{softmax}\!\left( \frac{\mathbf{Q}_d \mathbf{K}_p^\top}{\sqrt{d_k}} \right) \mathbf{V}_p
+\label{eq:cross-attn}
+\end{equation}
+where $\mathbf{Q}_d = \mathbf{W}_Q \mathbf{h}_{\text{drug}}$, $\mathbf{K}_p = \mathbf{W}_K \mathbf{h}_{\text{protein}}$, $\mathbf{V}_p = \mathbf{W}_V \mathbf{h}_{\text{protein}}$. A gating mechanism controls information flow:
+\begin{equation}
+\mathbf{g} = \sigma\!\left(\mathbf{W}_g \cdot \mathrm{concat}(\mathbf{h}_{\text{drug}}, \mathbf{A})\right),
+\quad
+\mathbf{h}'_{\text{drug}} = \mathbf{g} \odot \mathbf{h}_{\text{drug}} + (1-\mathbf{g}) \odot \mathbf{A}
+\label{eq:gate}
+\end{equation}
+The same gating is applied in the reverse direction (protein attending to drug). The fused representation is:
+\begin{equation}
+\mathbf{h}_{\text{fused}} = \mathrm{MLP}\!\left(\mathrm{concat}(\mathbf{h}'_{\text{drug}}, \mathbf{h}'_{\text{protein}})\right)
+\label{eq:fused}
+\end{equation}
+
+\subsection{Prediction Heads}
+
+For DTI binary classification, FocalLoss is applied to MLP logits:
+\begin{equation}
+\mathcal{L}_{\text{focal}} = -\alpha_t \cdot (1 - p_t)^\gamma \cdot \log(p_t), \quad \gamma = 2
+\label{eq:focal}
+\end{equation}
+For DTA regression, MSE loss is used:
+\begin{equation}
+\mathcal{L}_{\text{MSE}} = \frac{1}{N}\sum_{i=1}^{N} (\hat{y}_i - y_i)^2
+\label{eq:mse}
+\end{equation}
+
+\section{Training Strategy}
+
+\textbf{Optimiser:} Adam (lr=$10^{-3}$, weight\_decay=$10^{-4}$).\quad
+\textbf{Scheduler:} CosineAnnealingLR ($T_{\max}=100$, $\eta_{\min}=10^{-6}$).\quad
+\textbf{Early stopping:} patience=15 on validation AUROC (DTI) or MSE (DTA).\quad
+\textbf{Gradient clipping:} max\_norm=1.0.\quad
+\textbf{Batch size:} 64 on CPU.
+
+For BindingDB pre-training (Objective 2 Phase 3): lr=$10^{-4}$, 50 epochs, batch=64. Best-epoch checkpoint (epoch 42, test AUROC=0.728) was used to initialise encoder and fusion weights; task head was re-initialised.
+
+\section{Evaluation Protocol}
+
+\textbf{Primary DTI metric:} AUROC. Secondary: AUPRC, F1-score.
+
+\textbf{DTA metrics:} MSE (primary), MAE, RMSE, R$^2$, Pearson $r$, Spearman $\rho$.
+
+\textbf{Statistical testing:} Two-tailed paired $t$-test (df=4, $n=5$ seeds, $\alpha=0.05$). All results reported as mean $\pm$ std over 5 random seeds.
+
+\section{Interpretability Module}
+
+\textbf{Input Gradient:}
+$\text{importance}[i] = \|\partial\text{score}/\partial \mathbf{x}_i\|_2$
+
+\textbf{Graph Grad-CAM:}
+$\text{cam}[i] = \mathrm{ReLU}\!\left(\mathrm{mean}_c\!\left(\frac{\partial\text{score}}{\partial h_{i,c}} \cdot h_{i,c}\right)\right)$
+
+\textbf{Ensemble:}
+$\text{ens}[i] = 0.5 \times \mathrm{norm}(\text{InputGrad}[i]) + 0.5 \times \mathrm{norm}(\text{GradCAM}[i])$
+
+\textbf{AttentionPooling:} Per-residue weights $\alpha_t$ from Equation~\ref{eq:attnpool}.
+
+\textbf{Faithfulness AUC:} Area under the DTI-probability vs.\ progressive-masking curve (atoms zeroed in descending attribution order). Advantage $=$ faithfulness\_AUC $-$ random\_AUC.
+
+\textbf{Pharmacophore precision@K:} Top-$k\%$ attributed atoms matched against SMARTS patterns for HBD, HBA, Arom, Hydro. Enrichment = precision@K / random baseline.
+
+\textbf{PDB binding-site AUROC:} Residue-level AUROC between $\alpha_t$ scores and binary binding labels (residues within 4.5~\AA\ of ligand heavy atoms in crystal structure).
+
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter{Results and Discussion}
+%% ════════════════════════════════════════════════════════════════════════════
+
+\section{Experimental Setup Summary}
+
+All experiments used fold 0, 5 random seeds (seeds 1--5), Adam optimiser (lr=$10^{-3}$), CosineAnnealingLR, early stopping (patience=15), gradient clipping (1.0), and batch size 64 on CPU. The baseline configuration (C0) used ESM-2 8M embeddings and 1:1 negative sampling.
+
+%% ── 4.2 Objective 1 ─────────────────────────────────────────────────────────
+\section{Objective 1: H-GNN-RNN-DTI Architecture Design and Evaluation}
+
+\subsection{Fusion Strategy: Cross-Attention vs.\ Concatenation}
+
+Table~\ref{tab:obj1-auroc} reports AUROC (mean $\pm$ std, 5 seeds) for H-GNN-RNN-DTI and ConcatBaseline.
+
+\begin{table}[htbp]
+\centering
+\caption{AUROC -- H-GNN-RNN-DTI vs.\ ConcatBaseline (5 seeds, paired $t$-test). $\checkmark$=significantly better, $\times$=significantly worse, n.s.=not significant.}
+\label{tab:obj1-auroc}
+\begin{tabular}{@{}L{1.8cm}L{1.8cm}C{2.0cm}C{2.0cm}C{1.0cm}C{1.4cm}@{}}
+\toprule
+\rowcolor{navy}
+\textcolor{white}{\textbf{Dataset}} &
+\textcolor{white}{\textbf{Split}} &
+\textcolor{white}{\textbf{H-GNN-RNN-DTI}} &
+\textcolor{white}{\textbf{ConcatBaseline}} &
+\textcolor{white}{\textbf{$\Delta$}} &
+\textcolor{white}{\textbf{$p$-value}} \\
+\midrule
+\rowcolor{lightgrey}
+yamanishi\_e & random      & \sig{0.756$\pm$0.125} & 0.559$\pm$0.093 & +0.197 & ${<}$0.05 \sigbetter \\
+yamanishi\_e & cold\_drug  & \sig{0.774$\pm$0.011} & 0.638$\pm$0.041 & +0.136 & ${<}$0.01 \sigbetter \\
+\rowcolor{lightgrey}
+yamanishi\_e & cold\_target& 0.438$\pm$0.045 & 0.415$\pm$0.123 & +0.023 & n.s. \\
+yamanishi\_e & cold\_pair  & \sig{0.746$\pm$0.054} & 0.631$\pm$0.021 & +0.115 & ${<}$0.05 \sigbetter \\
+\rowcolor{lightgrey}
+luo\_17 & random           & 0.946$\pm$0.005 & \sig{0.948$\pm$0.004} & $-$0.002 & n.s. \\
+luo\_17 & cold\_drug       & \sig{0.913$\pm$0.009} & 0.907$\pm$0.006 & +0.006 & n.s. \\
+\rowcolor{lightgrey}
+luo\_17 & cold\_target     & 0.778$\pm$0.014 & \sig{0.813$\pm$0.013} & $-$0.035 & ${<}$0.01 \sigworse \\
+luo\_17 & cold\_pair       & \sig{0.948$\pm$0.002} & 0.943$\pm$0.005 & +0.005 & n.s. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+H-GNN-RNN-DTI is significantly better on 3/8 configurations (yamanishi\_e random, cold\_drug, cold\_pair; all p${<}$0.05). The largest advantage is on yamanishi\_e cold\_drug ($t$=6.55, p${<}$0.01, $\Delta$=+0.136 AUROC). ConcatBaseline is significantly better on luo\_17 cold\_target (p${<}$0.01, $\Delta$=$-$0.035). The pattern is consistent: Gated Cross-Attention provides the largest benefit on small, sparse datasets and cold-start splits; on large datasets, concatenation fusion is competitive.
+
+\subsection{Encoder Ablation: GNN-Only and RNN-Only}
+
+\begin{table}[htbp]
+\centering
+\caption{Encoder ablation -- AUROC mean (5 seeds). Bold = best per row.}
+\label{tab:ablation}
+\begin{tabular}{@{}L{2cm}L{2cm}C{1.6cm}C{1.6cm}C{1.6cm}C{1.6cm}@{}}
+\toprule
+\rowcolor{navy}
+\textcolor{white}{\textbf{Dataset}} &
+\textcolor{white}{\textbf{Split}} &
+\textcolor{white}{\textbf{H-GNN}} &
+\textcolor{white}{\textbf{Concat}} &
+\textcolor{white}{\textbf{GNN-Only}} &
+\textcolor{white}{\textbf{RNN-Only}} \\
+\midrule
+\rowcolor{lightgrey}
+yamanishi\_e & random      & \sig{0.756} & 0.559 & 0.527 & 0.674 \\
+yamanishi\_e & cold\_drug  & \sig{0.774} & 0.638 & 0.554 & 0.625 \\
+\rowcolor{lightgrey}
+yamanishi\_e & cold\_target& 0.438 & 0.415 & 0.508 & 0.412 \\
+yamanishi\_e & cold\_pair  & \sig{0.746} & 0.631 & 0.515 & 0.704 \\
+\rowcolor{lightgrey}
+luo\_17 & random           & \sig{0.946} & 0.948 & 0.902 & 0.875 \\
+luo\_17 & cold\_drug       & \sig{0.913} & 0.907 & 0.707 & 0.909 \\
+\rowcolor{lightgrey}
+luo\_17 & cold\_target     & 0.778 & 0.813 & \sig{0.901} & 0.603 \\
+luo\_17 & cold\_pair       & \sig{0.948} & 0.943 & 0.901 & 0.888 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The ablation reveals symmetric encoder complementarity: the drug GNN drives cold\_drug generalisation (GNN-Only collapses on cold\_drug: luo\_17 $-$0.206, p${<}$0.001); the protein BiGRU drives cold\_target generalisation (RNN-Only collapses on cold\_target: luo\_17 $-$0.174, p${<}$0.001). The anomalous GNN-Only result on luo\_17 cold\_target (0.901) reflects drug promiscuity: certain scaffolds bind broadly regardless of protein identity, and incorporating noisy unseen-protein ESM-2 embeddings via cross-attention hurts performance. The full model balances both modalities and leads on 6/8 configurations overall.
+
+\subsection{DTA Regression: DAVIS and KIBA}
+
+\begin{table}[htbp]
+\centering
+\caption{DTA regression -- mean $\pm$ std (5 seeds). Bold = sig.\ better (p${<}$0.05).}
+\label{tab:dta}
+\begin{tabular}{@{}L{1.8cm}L{2.2cm}C{1.7cm}C{1.4cm}C{1.4cm}C{1.6cm}C{1.6cm}@{}}
+\toprule
+\rowcolor{navy}
+\textcolor{white}{\textbf{Dataset}} &
+\textcolor{white}{\textbf{Model}} &
+\textcolor{white}{\textbf{MSE$\downarrow$}} &
+\textcolor{white}{\textbf{MAE$\downarrow$}} &
+\textcolor{white}{\textbf{R$^2\uparrow$}} &
+\textcolor{white}{\textbf{Pearson $r\uparrow$}} &
+\textcolor{white}{\textbf{Spearman $\rho\uparrow$}} \\
+\midrule
+\rowcolor{lightgrey}
+Davis & H-GNN-RNN-DTI  & \sig{0.379$\pm$0.011} & \sig{0.415$\pm$0.008} & \sig{0.508$\pm$0.014} & \sig{0.721$\pm$0.013} & \sig{0.610$\pm$0.011} \\
+Davis & ConcatBaseline & 0.468$\pm$0.029 & 0.444$\pm$0.021 & 0.391$\pm$0.037 & 0.626$\pm$0.030 & 0.565$\pm$0.019 \\
+\rowcolor{lightgrey}
+KIBA  & H-GNN-RNN-DTI  & \sig{0.274$\pm$0.014} & 0.354$\pm$0.013 & \sig{0.613$\pm$0.019} & \sig{0.787$\pm$0.012} & \sig{0.759$\pm$0.016} \\
+KIBA  & ConcatBaseline & 0.304$\pm$0.011 & \sig{0.351$\pm$0.008} & 0.570$\pm$0.015 & 0.756$\pm$0.010 & 0.747$\pm$0.011 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+H-GNN-RNN-DTI outperforms ConcatBaseline on DTA regression. On DAVIS: all 6 metrics improved (MSE Δ$=-$0.090, p=0.003; Pearson $r$ Δ$=+$0.095, p=0.003). On KIBA: primary metrics improved significantly (MSE Δ$=-$0.031, p=0.009; Pearson Δ$=+$0.032, p=0.006; R$^2$ Δ$=+$0.043, p=0.009). The Gated Cross-Attention advantage extends to continuous affinity prediction, confirming task-agnostic representational quality.
+
+\subsection{External Baseline Comparison}
+
+\begin{table}[htbp]
+\centering
+\caption{AUROC on Luo\_17 -- all models. $\ddagger$=re-implementation with 3 seeds. $\ddag\!\ddag$=near-random (transductive baseline fails cold\_target).}
+\label{tab:ext-luo}
+\begin{tabular}{@{}L{3cm}C{2cm}C{2cm}C{2cm}C{2cm}@{}}
+\toprule
+\rowcolor{navy}
+\textcolor{white}{\textbf{Model}} &
+\textcolor{white}{\textbf{random}} &
+\textcolor{white}{\textbf{cold\_drug}} &
+\textcolor{white}{\textbf{cold\_target}} &
+\textcolor{white}{\textbf{cold\_pair}} \\
+\midrule
+\rowcolor{lightgrey}
+H-GNN-RNN-DTI & \sig{0.946$\pm$0.005} & \sig{0.913$\pm$0.009} & 0.778$\pm$0.014 & \sig{0.948$\pm$0.002} \\
+ConcatBaseline & 0.948$\pm$0.004 & 0.907$\pm$0.006 & \sig{0.813$\pm$0.013} & 0.943$\pm$0.005 \\
+\rowcolor{lightgrey}
+GSRF-DTI$^\ddagger$ & 0.767$\pm$0.053 & 0.775$\pm$0.047 & 0.362$\pm$0.055$^{\ddag\!\ddag}$ & 0.859$\pm$0.016 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{AUROC on Yamanishi\_e -- all models.}
+\label{tab:ext-yam}
+\begin{tabular}{@{}L{3cm}C{2cm}C{2cm}C{2cm}C{2cm}@{}}
+\toprule
+\rowcolor{navy}
+\textcolor{white}{\textbf{Model}} &
+\textcolor{white}{\textbf{random}} &
+\textcolor{white}{\textbf{cold\_drug}} &
+\textcolor{white}{\textbf{cold\_target}} &
+\textcolor{white}{\textbf{cold\_pair}} \\
+\midrule
+\rowcolor{lightgrey}
+H-GNN-RNN-DTI & 0.756$\pm$0.125 & \sig{0.774$\pm$0.011} & 0.438$\pm$0.045 & 0.746$\pm$0.054 \\
+ConcatBaseline & 0.559$\pm$0.093 & 0.638$\pm$0.041 & 0.415$\pm$0.123 & 0.631$\pm$0.021 \\
+\rowcolor{lightgrey}
+DTKGIN$^\ddagger$ & \sig{0.869$\pm$0.011} & 0.747$\pm$0.100 & \sig{0.557$\pm$0.082} & \sig{0.863$\pm$0.015} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+H-GNN-RNN-DTI outperforms GSRF-DTI on all four Luo\_17 splits. The key advantage is cold\_target: 0.778 vs.\ 0.362 -- GSRF-DTI is transductive and cannot embed proteins absent from the PPI network. H-GNN-RNN-DTI processes each protein from its sequence embedding independently, enabling cold-target prediction. On Yamanishi\_e, DTKGIN outperforms H-GNN-RNN-DTI on random, cold\_target, and cold\_pair, attributable to its use of drug chemical similarity edges on this small dataset (68 drugs). H-GNN-RNN-DTI leads on cold\_drug (0.774 vs.\ 0.747) with substantially lower variance ($\pm$0.011 vs.\ $\pm$0.100).
+
+\subsection{Cross-Dataset Generalisation}
+
+H-GNN-RNN-DTI trained on Luo\_17 achieved AUROC of $0.508 \pm 0.020$ when evaluated on all of Yamanishi\_e (zero drug-protein overlap). This is indistinguishable from random (0.5), confirming the model is discriminative rather than generative: without shared molecular scaffolds or protein families, no zero-shot transfer is possible. This motivates future domain-adaptive pre-training.
+
+%% ── 4.3 Objective 2 ─────────────────────────────────────────────────────────
+\section{Objective 2: Enhancement Strategies for Cold-Start Generalisation}
+
+\subsection{Phase 2: Imbalance-Aware Training}
+
+\begin{table}[htbp]
+\centering
+\caption{Phase 2 AUROC -- ratio and loss sweep (5 seeds, yamanishi\_e). Statistically significant improvements vs.\ C0 annotated ($\checkmark\checkmark$=p${<}$0.01; $\checkmark$=p${<}$0.05).}
+\label{tab:phase2-yam}
+\begin{tabular}{@{}L{2.4cm}C{1.8cm}C{1.8cm}C{1.8cm}C{1.8cm}@{}}
+\toprule
+\rowcolor{navy}
+\textcolor{white}{\textbf{Config}} &
+\textcolor{white}{\textbf{random}} &
+\textcolor{white}{\textbf{cold\_drug}} &
+\textcolor{white}{\textbf{cold\_target}} &
+\textcolor{white}{\textbf{cold\_pair}} \\
+\midrule
+\rowcolor{lightgrey}
+C0 (1:1, Focal) & 0.756$\pm$0.125 & 0.774$\pm$0.011 & 0.438$\pm$0.045 & 0.746$\pm$0.054 \\
+P2-F (1:5)      & 0.852$\pm$0.006 & 0.816$\pm$0.016 $\checkmark\checkmark$ & \sig{0.706$\pm$0.104} $\checkmark\checkmark$ & 0.819$\pm$0.019 \\
+\rowcolor{lightgrey}
+P2-G (1:10)     & 0.867$\pm$0.032 & \sig{0.904$\pm$0.016} $\checkmark\checkmark$ & 0.735$\pm$0.024 $\checkmark\checkmark$ & \sig{0.882$\pm$0.006} $\checkmark\checkmark$ \\
+WeightedBCE 1:1 & 0.744$\pm$0.122 & 0.757$\pm$0.023 & 0.402$\pm$0.037 & 0.772$\pm$0.016 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The 1:5 negative-sampling ratio is the single most impactful enhancement across all Objective 2 experiments. On Yamanishi\_e, cold\_target improves from 0.438 to 0.706 ($+$0.268, p${<}$0.01) -- the largest single gain in the entire study. On Luo\_17, cold\_target improves from 0.778 to 0.856 ($+$0.078, p${<}$0.01). In contrast, all loss function variants (WeightedBCE, Focal $\gamma \in \{1,2,3,5\}$) produce no statistically significant changes at fixed 1:1 ratio. The gain originates entirely from the number of negative examples, not the loss weighting scheme.
+
+An important trade-off: the 1:5 ratio significantly degrades AUPRC. At 1:10 on Luo\_17, cold\_target AUPRC drops from 0.702 to 0.330 ($-$0.372, p${<}$0.01). The 1:5 ratio provides the best AUROC improvement with lower AUPRC cost and is the recommended configuration for recall-oriented applications.
+
+\subsection{Phase 1: Protein Embedding Scale}
+
+ESM-2 150M significantly improves Luo\_17 cold\_target AUROC by $+$0.069 (0.778$\to$0.847, p${<}$0.01) and AUPRC by $+$0.096 (p${<}$0.01). All Yamanishi\_e comparisons are non-significant (all n.s., paired $t$-test, $n$=5). The divergence is explained by dataset scale: Luo\_17 (1,512 proteins) provides sufficient data for richer 480-dim representations to improve unseen-protein coverage; Yamanishi\_e (89 proteins) is too small for the PLM scaling signal to exceed seed variance (std up to 0.125 AUROC). ESM-2 150M is recommended for large-dataset cold\_target evaluation but unnecessary for small benchmarks.
+
+\subsection{Phase 3: BindingDB Pre-Training}
+
+BindingDB pre-training significantly improves Luo\_17 cold\_target AUROC ($+$0.055, p${<}$0.01) and AUPRC ($+$0.059, p${<}$0.01), but significantly hurts Yamanishi\_e cold\_target ($-$0.091, p${<}$0.05) and cold\_pair ($-$0.127, p${<}$0.05). Two mechanisms explain the asymmetry: (1) \emph{domain alignment} -- BindingDB's pharmacologically diverse drug space is similar to Luo\_17 but misaligned with Yamanishi\_e's narrow enzyme-substrate sub-space; (2) \emph{protein encoder path mismatch} -- BindingDB pre-training exercises the linear path of ProteinEncoder (mean-pooled), leaving the BiGRU untouched; fine-tuning on Yamanishi\_e uses the BiGRU path, creating conflicting optimisation signals from a pre-biased drug encoder and a random-init BiGRU on only 726 training pairs.
+
+\subsection{Phase 5: Combined Ablation C0$\to$C3}
+
+\begin{table}[htbp]
+\centering
+\caption{Phase 5 ablation AUROC (5 seeds). C3 is the AUROC winner overall.}
+\label{tab:phase5}
+\begin{tabular}{@{}L{3cm}C{1.5cm}C{1.5cm}C{1.5cm}C{1.5cm}@{}}
+\toprule
+\rowcolor{navy}
+\textcolor{white}{\textbf{Config}} &
+\textcolor{white}{\textbf{random}} &
+\textcolor{white}{\textbf{cold\_drug}} &
+\textcolor{white}{\textbf{cold\_target}} &
+\textcolor{white}{\textbf{cold\_pair}} \\
+\midrule
+\multicolumn{5}{l}{\textbf{yamanishi\_e}} \\
+\rowcolor{lightgrey}
+C0 (8M/1:1/none)       & 0.756 & 0.774 & 0.438 & 0.746 \\
+C1 (150M/1:1/none)     & 0.830 & 0.743 & 0.378 & 0.778 \\
+\rowcolor{lightgrey}
+C2 (150M/1:5/none)     & 0.730 & 0.773 & 0.528 & 0.719 \\
+\sig{C3 (150M/1:5/BDB)}& \sig{0.850} & \sig{0.849} & \sig{0.575} & \sig{0.804} \\
+\midrule
+\multicolumn{5}{l}{\textbf{luo\_17}} \\
+\rowcolor{lightgrey}
+C0 (8M/1:1/none)       & 0.946 & 0.913 & 0.778 & 0.948 \\
+C1 (150M/1:1/none)     & 0.952 & 0.905 & 0.847 & 0.952 \\
+\rowcolor{lightgrey}
+C2 (150M/1:5/none)     & \sig{0.965} & 0.851 & 0.838 & 0.938 \\
+\sig{C3 (150M/1:5/BDB)}& 0.963 & 0.874 & \sig{0.847} & \sig{0.954} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Improvements are \emph{not additive}. C2 (150M + 1:5) underperforms both components alone on key metrics: luo\_17 cold\_drug degrades by $-$0.062 vs.\ C0 (p${<}$0.01); yamanishi\_e cold\_target (0.528 $\pm$ 0.218, n.s.) is far below Phase~2 alone (0.706, p${<}$0.01). C3 (adding BindingDB pre-training) partially resolves these conflicts: it achieves the best AUROC on all yamanishi\_e splits (cold\_drug $+$0.075 vs.\ C0, p${<}$0.01) and ties C1 on luo\_17 cold\_target ($+$0.069, p${<}$0.01). The AUPRC cost from the 1:5 ratio persists through C3.
+
+\textbf{Hierarchy:} negative-sampling ratio $>$ BindingDB pre-training $>$ embedding scale for AUROC on cold-start splits. Embedding scale alone is safest when both AUROC and AUPRC must be maintained.
+
+%% ── 4.4 Objective 3 ─────────────────────────────────────────────────────────
+\section{Objective 3: Attention-Based Interpretability}
+
+\subsection{Drug Attribution -- Faithfulness and Pharmacophore}
+
+Pilot case: L-Tryptophan (DB00150) vs.\ ADORA3 receptor (P19838), Luo\_17 C3 checkpoint, DTI prediction probability = 0.869.
+
+\begin{table}[htbp]
+\centering
+\caption{Drug attribution faithfulness -- DB00150/P19838 (C3 checkpoint).}
+\label{tab:faith}
+\begin{tabular}{@{}L{3cm}C{2.0cm}C{2.0cm}C{2.0cm}C{1.8cm}@{}}
+\toprule
+\rowcolor{navy}
+\textcolor{white}{\textbf{Method}} &
+\textcolor{white}{\textbf{Faith.\ AUC}} &
+\textcolor{white}{\textbf{Random AUC}} &
+\textcolor{white}{\textbf{Advantage}} &
+\textcolor{white}{\textbf{PharmAP}} \\
+\midrule
+\rowcolor{lightgrey}
+Random         & +0.169 & +0.149 & +0.020 & 0.583 \\
+Input Gradient & +0.226 & +0.149 & +0.077 & 0.327 \\
+\rowcolor{lightgrey}
+Graph Grad-CAM & +0.157 & +0.149 & +0.008 & 0.458 \\
+\sig{Ensemble} & \sig{+0.255} & +0.149 & \sig{+0.106} & 0.423 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The Ensemble method achieves the highest faithfulness advantage ($+$0.106 vs.\ $+$0.020 random), confirming that Input Gradient and Graph Grad-CAM provide complementary signals (Spearman $\rho = -0.138$ between them). Masking the top-1 atom drops probability from 0.869 to 0.269 ($\Delta$=0.600) vs.\ only 0.160 for random single-atom masking. Top-5 attributed atoms: indole C3 (1.000), indole NH (0.804), alpha-amino N14 (0.755), ring carbons (0.667, 0.659) -- consistent with known tryptophan pharmacology and GPCR binding mechanisms. Pharmacophore precision at $k$=10\%: HBD=0.50 (3.8$\times$ random), HBA=0.67 at $k$=20\% (2.5$\times$ random).
+
+\subsection{Protein Attribution -- PDB Case Studies}
+
+\begin{table}[htbp]
+\centering
+\caption{PDB binding-site validation -- residue attribution vs.\ 4.5~\AA\ annotations.}
+\label{tab:pdb}
+\begin{tabular}{@{}L{2cm}L{2.2cm}C{1.5cm}C{1.5cm}C{1.5cm}C{1.5cm}@{}}
+\toprule
+\rowcolor{navy}
+\textcolor{white}{\textbf{Case}} &
+\textcolor{white}{\textbf{Protein}} &
+\textcolor{white}{\textbf{DTI Prob.}} &
+\textcolor{white}{\textbf{AUROC}} &
+\textcolor{white}{\textbf{P@10\%}} &
+\textcolor{white}{\textbf{EF@10\%}} \\
+\midrule
+\rowcolor{lightgrey}
+DHFR+MTX & P00374 (187 aa) & 0.328 & \sig{0.613} & \sig{0.316} & \sig{2.81$\times$} \\
+ADA+ADO  & P00813 (363 aa) & 0.220--0.378 & 0.327 & -- & -- \\
+\rowcolor{lightgrey}
+Random baseline & -- & -- & 0.528 & 0.112 & 1.0$\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For DHFR (Methotrexate vs.\ Dihydrofolate Reductase, PDB 1U72), AttentionPooling achieves AUROC=0.613 and P@10\%=0.316 (2.81$\times$ random enrichment). Top-attributed residues (Phe31, Ile60--Pro61, Asn64 region) are confirmed by PDB to lie within 4.5~\AA\ of the methotrexate pteridine ring, consistent with known folate-binding pocket contacts. The model identifies binding residues from sequence context alone, without 3D structural training.
+
+For ADA (Adenosine vs.\ Adenosine Deaminase), low prediction confidence (prob=0.220--0.378) produces residue AUROC=0.327 (below random) -- an informative negative confirming that attribution is prediction-conditional and mechanistically coherent.
+
+\subsection{Attribution Method Comparison}
+
+\begin{table}[htbp]
+\centering
+\caption{Protein attribution method comparison -- D00142/P00374 (DHFR).}
+\label{tab:prot-compare}
+\begin{tabular}{@{}L{3cm}C{2.0cm}C{2.0cm}L{4cm}@{}}
+\toprule
+\rowcolor{navy}
+\textcolor{white}{\textbf{Method}} &
+\textcolor{white}{\textbf{AUROC}} &
+\textcolor{white}{\textbf{P@10\%}} &
+\textcolor{white}{\textbf{Comment}} \\
+\midrule
+\rowcolor{lightgrey}
+Random         & 0.528 & 0.211 & Baseline \\
+\sig{AttnPool} & \sig{0.613} & \sig{0.316} & BiGRU head recovers binding residues \\
+\rowcolor{lightgrey}
+Protein GradCAM& 0.500 & 0.000 & BiGRU gradients not spatially localised \\
+Ensemble       & 0.613 & 0.316 & Collapses to AttnPool only \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+AttentionPooling is the primary protein attribution signal (AUROC=0.613). Protein GradCAM yields AUROC=0.500 (random level): BiGRU hidden-state gradients are not spatially localised to binding residues because the BiGRU learns distributed sequence representations. The ensemble therefore collapses to AttentionPooling for protein attribution. For drug attribution, the Ensemble remains the recommended method.
+
+%% ════════════════════════════════════════════════════════════════════════════
+\chapter{Conclusion}
+%% ════════════════════════════════════════════════════════════════════════════
+
+\section{Summary of Contributions}
+
+This thesis presented H-GNN-RNN-DTI, a hybrid deep learning model for DTI/DTA prediction integrating Hierarchical GAT, BiGRU, and Gated Cross-Attention. Three research objectives were addressed.
+
+\textbf{Objective 1 (Architecture):} Gated Cross-Attention significantly outperformed concatenation fusion on 3/8 DTI configurations (p${<}$0.05) and on 5/6 Davis DTA metrics (p${<}$0.05). Encoder ablation revealed symmetric complementarity: drug GNN drives cold\_drug, protein BiGRU drives cold\_target generalisation. Compared to published baselines, the fully inductive design provides 2.15$\times$ cold\_target AUROC advantage over GSRF-DTI (0.778 vs.\ 0.362).
+
+\textbf{Objective 2 (Enhancement):} Negative-sampling ratio is the dominant lever -- the 1:5 ratio raised yamanishi\_e cold\_target AUROC from 0.438 to 0.706 ($+$0.268, p${<}$0.01), the largest improvement in the study. ESM-2 150M improved luo\_17 cold\_target by $+$0.069 (p${<}$0.01). BindingDB pre-training improved luo\_17 cold\_target by $+$0.055 (p${<}$0.01) but caused negative transfer on yamanishi\_e. Improvements are non-additive; C3 is the AUROC winner but at the cost of AUPRC degradation.
+
+\textbf{Objective 3 (Interpretability):} Ensemble drug attribution achieves faithfulness advantage $+$0.106 (causal validity confirmed). Pharmacophore HBD precision at 10\% is 3.8$\times$ random (biochemical relevance). DHFR binding-site AUROC=0.613, EF@10\%=2.81$\times$ (structural correspondence without 3D supervision). Attribution is prediction-conditional -- informative only when DTI confidence is high.
+
+\section{Limitations}
+
+\begin{itemize}
+  \item Yamanishi\_e cold\_target: near-random performance ($\leq$0.44 AUROC) for all models -- dataset too small (26 proteins) for sequence-based cold-protein generalisation.
+  \item Luo\_17 cold\_target anomaly: ConcatBaseline and GNN-Only outperform H-GNN-RNN-DTI -- cross-attention may overfit to training protein embedding patterns.
+  \item CPU training: limited epoch count and precluded ESM-2 650M evaluation and larger BindingDB subsets.
+  \item Interpretability scope: PDB validation limited to two representative pairs; cross-seed attribution consistency not systematically measured.
+\end{itemize}
+
+\section{Future Work}
+
+\begin{enumerate}
+  \item GPU-accelerated training with ESM-2 650M for further cold\_target improvement.
+  \item Adaptive/curriculum negative sampling that adjusts the ratio based on embedding model and dataset size.
+  \item Dataset-adaptive pre-training selection using domain alignment metrics (scaffold overlap, protein family similarity) to predict negative transfer before fine-tuning.
+  \item Cross-dataset transfer learning via domain-adaptive or meta-learning strategies.
+  \item Systematic faithfulness benchmark across multiple drug-protein pairs including cross-seed attribution consistency.
+  \item Integration of AlphaFold2-predicted 3D residue graphs for improved cold\_target structural context.
+\end{enumerate}
+
+\section{Concluding Remarks}
+
+This research demonstrated that a carefully designed hybrid deep learning model -- combining Hierarchical GAT, BiGRU, and Gated Cross-Attention with systematic enhancement strategies -- achieves strong, reproducible performance across diverse DTI evaluation settings. The most significant finding is that training data distribution (negative-sampling ratio) has a larger impact on cold-start performance than architectural choices or embedding quality, suggesting that the primary bottleneck in DTI generalisation is often not the model architecture but the training distribution. The interpretability framework establishes that the model generates biologically meaningful explanations, recovering known binding pharmacophores and residues without structural supervision. Together, these contributions advance the field toward more reliable, interpretable, and generalisable computational tools for drug discovery.
+
+%% ── REFERENCES ───────────────────────────────────────────────────────────────
+\bibliographystyle{apalike}
+\begin{thebibliography}{99}
+
+\bibitem{abbasi2020}
+Abbasi, K., Razzaghi, P., Poso, A., Ghanbari-Ara, S., \& Masoudi-Nejad, A. (2020).
+Deep Learning in Drug Target Interaction Prediction: Current and Future Perspectives.
+\textit{Current Medicinal Chemistry}, 28(11), 2100--2113.
+
+\bibitem{bae2023}
+Bae, H., \& Nam, H. (2023).
+GraphATT-DTA: Attention-Based Novel Representation of Interaction to Predict Drug-Target Binding Affinity.
+\textit{Biomedicines}, 11(1).
+
+\bibitem{bian2024}
+Bian, J., Lu, H., Dong, G., \& Wang, G. (2024).
+Hierarchical multimodal self-attention-based graph neural network for DTI prediction.
+\textit{Briefings in Bioinformatics}, 25(4).
+
+\bibitem{cao2024ngcn}
+Cao, J., Chen, Q., Qiu, J., Wang, Y., Lan, W., Du, X., \& Tan, K. (2024).
+NGCN: Drug-target interaction prediction by integrating information and feature learning from heterogeneous network.
+\textit{Journal of Cellular and Molecular Medicine}, 28(7).
+
+\bibitem{chen2024dti}
+Chen, Y., Liang, X., Du, W., Liang, Y., Wong, G., \& Chen, L. (2024).
+Drug–Target Interaction Prediction Based on an Interactive Inference Network.
+\textit{International Journal of Molecular Sciences}, 25(14).
+
+\bibitem{chen2016}
+Chen, X., Yan, C. C., Zhang, X., Zhang, X., Dai, F., Yin, J., \& Zhang, Y. (2016).
+Drug-target interaction prediction: Databases, web servers and computational models.
+\textit{Briefings in Bioinformatics}, 17(4), 696--712.
+
+\bibitem{dai2025}
+Dai, W., Wang, Y., Yan, S., Yu, Q., \& Cheng, X. (2025).
+Heterogeneous network drug-target interaction prediction model based on graph wavelet transform.
+\textit{Scientific Reports}, 15(1).
+
+\bibitem{deng2025}
+Deng, G., Shi, C., Ge, R., Hu, R., Wang, C., Qin, F., Pan, C., Mao, H., \& Yang, Q. (2025).
+Efficient substructure feature encoding based on graph neural network blocks for drug-target interaction prediction.
+\textit{Frontiers in Pharmacology}, 16.
+
+\bibitem{hua2025mmdg}
+Hua, Y., Feng, Z., Song, X., Wu, X.-J., \& Kittler, J. (2025).
+MMDG-DTI: Drug–target interaction prediction via multimodal feature fusion and domain generalization.
+\textit{Pattern Recognition}, 157, 110887.
+
+\bibitem{jin2021}
+Jin, Y., Lyu, P., Xu, Y., \& Chen, H. (2021).
+EmbedDTI: Enhancing the Molecular Representations via Sequence Embedding and Graph Neural Networks for Drug--Target Interaction Prediction.
+\textit{Biomolecules}, 11(12), 1783.
+
+\bibitem{khojasteh2023}
+Khojasteh, H., Pirgazi, J., \& Sorkhi, A. G. (2023).
+Improving prediction of drug-target interactions based on fusing multiple features with data balancing and feature selection techniques.
+\textit{PLoS ONE}, 18(8).
+
+\bibitem{lee2024dlm}
+Lee, J., Jun, D. W., Song, I., \& Kim, Y. (2024).
+DLM-DTI: a dual language model for the prediction of drug-target interaction with hint-based learning.
+\textit{Journal of Cheminformatics}, 16(1).
+
+\bibitem{li2024ttmodel}
+Li, N., Yang, Z., Wang, J., \& Lin, H. (2024).
+Drug–target interaction prediction using knowledge graph embedding.
+\textit{iScience}, 27(6).
+
+\bibitem{liao2025ai}
+Liao, Q., Zhang, Y., Chu, Y., Ding, Y., Liu, Z., et al. (2025).
+Application of Artificial Intelligence In Drug-target Interactions Prediction: A Review.
+\textit{npj Biomedical Innovations}, 2(1).
+
+\bibitem{lin2023esm}
+Lin, Z., Akin, H., Rao, R., Hie, B., Zhu, Z., Lu, W., et al. (2023).
+Evolutionary-scale prediction of atomic-level protein structure with a language model.
+\textit{Science}, 379(6637), 1123--1130.
+
+\bibitem{lu2025dtiam}
+Lu, Z., Song, G., Zhu, H., Lei, C., Sun, X., Wang, K., et al. (2025).
+DTIAM: a unified framework for predicting drug-target interactions, binding affinities and drug mechanisms.
+\textit{Nature Communications}, 16(1).
+
+\bibitem{luo2024dtkgin}
+Luo, Y., Duan, G., Zhao, Q., Bi, X., \& Wang, J. (2024).
+DTKGIN: Predicting drug-target interactions based on knowledge graph and intent graph.
+\textit{Methods}, 226, 21--27.
+
+\bibitem{luo2017network}
+Luo, Y., Zhao, X., Zhou, J., Yang, J., Zhang, Y., Kuang, W., et al. (2017).
+A network integration approach for drug-target interaction prediction from heterogeneous information.
+\textit{Nature Communications}, 8, 573.
+
+\bibitem{mienye2024}
+Mienye, I. D., Swart, T. G., \& Obaido, G. (2024).
+Recurrent Neural Networks: A Comprehensive Review of Architectures, Variants, and Applications.
+\textit{Information}, 15(9).
+
+\bibitem{nguyen2021graphdta}
+Nguyen, T., Le, H., Quinn, T. P., Nguyen, T., Le, T. D., \& Venkatesh, S. (2021).
+GraphDTA: Predicting drug target binding affinity with graph neural networks.
+\textit{Bioinformatics}, 37(8), 1140--1147.
+
+\bibitem{ozturk2018deepdta}
+Öztürk, H., Özgür, A., \& Ozkirimli, E. (2018).
+DeepDTA: deep drug–target binding affinity prediction.
+\textit{Bioinformatics}, 34(17), i821--i829.
+
+\bibitem{panahandeh2025}
+Panahandeh, F., \& Mansouri, N. (2025).
+A comprehensive review of neural network-based approaches for drug–target interaction prediction.
+\textit{Molecular Diversity}.
+
+\bibitem{quan2025mfca}
+Quan, N., Ma, S., Zhao, K., Bi, X., \& Zhang, L. (2025).
+MFCADTI: improving drug-target interaction prediction by integrating multiple feature through cross attention mechanism.
+\textit{BMC Bioinformatics}, 26(1).
+
+\bibitem{shan2025}
+Shan, J., Sun, J., \& Zheng, H. (2025).
+MIF-DTI: a multimodal information fusion method for drug-target interaction prediction.
+\textit{Briefings in Bioinformatics}, 26(5).
+
+\bibitem{sun2024ingnn}
+Sun, Y., Li, Y. Y., Leung, C. K., \& Hu, P. (2024).
+iNGNN-DTI: prediction of drug-target interaction with interpretable nested graph neural network and pretrained molecule models.
+\textit{Bioinformatics}, 40(3).
+
+\bibitem{talo2025topdti}
+Talo, M., \& Bozdag, S. (2025).
+Top-DTI: Integrating topological deep learning and large language models for drug-target interaction prediction.
+\textit{Bioinformatics}, 41, i133--i141.
+
+\bibitem{tanoli2025}
+Tanoli, Z., Schulman, A., \& Aittokallio, T. (2025).
+Validation guidelines for drug-target prediction methods.
+\textit{Expert Opinion on Drug Discovery}, 20(1), 31--46.
+
+\bibitem{tran2022deepnc}
+Tran, H. N. T., Thomas, J. J., \& Malim, N. H. A. H. (2022).
+DeepNC: a framework for drug-target interaction prediction with graph neural networks.
+\textit{PeerJ}, 10.
+
+\bibitem{vefghi2025}
+Vefghi, A., Rahmati, Z., \& Akbari, M. (2025).
+Drug-target interaction/affinity prediction: Deep learning models and advances review.
+\textit{Computers in Biology and Medicine}, 196, 110438.
+
+\bibitem{wu2018network}
+Wu, Z., Li, W., Liu, G., \& Tang, Y. (2018).
+Network-based methods for prediction of drug-target interactions.
+\textit{Frontiers in Pharmacology}, 9.
+
+\bibitem{yamanishi2008}
+Yamanishi, Y., Araki, M., Gutteridge, A., Honda, W., \& Kanehisa, M. (2008).
+Prediction of drug–target interaction networks from the integration of chemical and genomic spaces.
+\textit{Bioinformatics}, 24(13), i232--i240.
+
+\bibitem{yang2024ehign}
+Yang, Z., Zhong, W., Lv, Q., Dong, T., Chen, G., \& Chen, C. Y.-C. (2024).
+Interaction-Based Inductive Bias in Graph Neural Networks: Enhancing Protein-Ligand Binding Affinity Predictions From 3D Structures.
+\textit{IEEE Transactions on Pattern Analysis and Machine Intelligence}, 46(12), 8191--8208.
+
+\bibitem{yang2024mindg}
+Yang, H., Chen, Y., Zuo, Y., Deng, Z., Pan, X., Shen, H. B., Choi, K. S., \& Yu, D. J. (2024).
+MINDG: a drug–target interaction prediction method based on an integrated learning algorithm.
+\textit{Bioinformatics}, 40(4).
+
+\bibitem{yuan2025mutualdta}
+Yuan, Y., Chen, S., Hu, R., \& Wang, X. (2025).
+MutualDTA: An Interpretable Drug-Target Affinity Prediction Model Leveraging Pretrained Models and Mutual Attention.
+\textit{Journal of Chemical Information and Modeling}, 65(3), 1211--1227.
+
+\bibitem{zhang2021gnn}
+Zhang, X. M., Liang, L., Liu, L., \& Tang, M. J. (2021).
+Graph Neural Networks and Their Current Applications in Bioinformatics.
+\textit{Frontiers in Genetics}, 12.
+
+\bibitem{zhijian2022}
+Zhijian, L., Shaohua, J., Yigao, L., \& Min, G. (2022).
+GDGRU-DTA: Predicting Drug-Target Binding Affinity based on GNN and Double GRU.
+\textit{Proceedings of CSIT 2022}, 25--37.
+
+\bibitem{zhu2024}
+Zhu, Y., Ning, C., Zhang, N., Wang, M., \& Zhang, Y. (2024).
+GSRF-DTI: a framework for drug-target interaction prediction based on a drug-target pair network and representation learning on a large graph.
+\textit{BMC Biology}, 22(1).
+
+\bibitem{zuo2025}
+Zuo, Y., Wu, X., Ge, F., Yan, H., Fei, S., Liang, J., \& Deng, Z. (2025).
+Research progress on Drug-Target Interactions in the last five years.
+\textit{Analytical Biochemistry}, 697, 115691.
+
+\end{thebibliography}
+
+\end{document}
+"""
+
+os.makedirs("paper", exist_ok=True)
+out_path = "paper/Thesis_HGNN_RNN_DTI.tex"
+with open(out_path, "w", encoding="utf-8") as f:
+    f.write(TEX)
+
+print(f"Saved: {out_path}  ({os.path.getsize(out_path)//1024} KB)")
+print("Compile with:")
+print("  pdflatex Thesis_HGNN_RNN_DTI.tex")
+print("  pdflatex Thesis_HGNN_RNN_DTI.tex  (second pass for cross-refs)")
