@@ -1,0 +1,24 @@
+Case Study: Methotrexate vs DHFR
+Drug: D00142  SMILES: CN(CC1=CN=C2C(=N1)C(=NC(=N2)N)N)C3=CC=C(C=C3)C(=O)N[C@@H](CC...
+Protein: P00374  Length: 187 aa
+PDB: 1U72 chain A ligand MTX  cutoff=4.5A
+PDB binding residues (1-idx): [7, 8, 9, 22, 30, 31, 32, 34, 35, 56, 59, 60, 61, 64, 67, 70, 115, 121, 136]
+Literature binding (1-idx): [21, 22, 30, 31, 60, 61, 67, 94, 136]
+Combined binding set (0-idx): [6, 7, 8, 20, 21, 29, 30, 31, 33, 34, 55, 58, 59, 60, 63, 66, 69, 93, 114, 120]
+
+Prediction probability: 0.1898
+
+Evaluation (Ensemble attribution vs. combined binding set):
+  AUROC:   0.5963855421686747
+  N binding residues: 21 / 187
+  Random baseline P@k: 0.1123
+  k=  9 (  5%): P@k=0.000  R@k=0.000  EF=0.00x
+  k= 19 ( 10%): P@k=0.105  R@k=0.095  EF=0.94x
+  k= 28 ( 15%): P@k=0.179  R@k=0.238  EF=1.59x
+  k= 37 ( 20%): P@k=0.216  R@k=0.381  EF=1.93x
+  k= 47 ( 25%): P@k=0.234  R@k=0.524  EF=2.08x
+  k= 56 ( 30%): P@k=0.196  R@k=0.524  EF=1.75x
+  k= 75 ( 40%): P@k=0.147  R@k=0.524  EF=1.31x
+
+AttentionPooling AUROC: 0.6130235226620769
+Grad-CAM AUROC: 0.5020080321285141

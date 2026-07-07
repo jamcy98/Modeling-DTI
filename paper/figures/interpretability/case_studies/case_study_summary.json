@@ -1,0 +1,15 @@
+[
+  {
+    "name": "Adenosine vs ADA",
+    "drug_id": "D00155",
+    "protein_id": "P00813",
+    "prob": 0.22051052749156952,
+    "auroc": 0.34685349065880045,
+    "n_binding": 24,
+    "n_residues": 363,
+    "out_dir": "paper/figures/interpretability/case_studies",
+    "precision_at_20pct": 0.0273972602739726,
+    "recall_at_20pct": 0.08333333333333333,
+    "enrichment_at_20pct": 0.4143835616438356
+  }
+]
