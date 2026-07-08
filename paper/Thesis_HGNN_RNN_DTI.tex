@@ -19,6 +19,7 @@
 \usepackage{caption}
 \usepackage{microtype}
 \usepackage{fancyhdr}
+\setlength{\headheight}{14.5pt}
 \usepackage{titlesec}
 \usepackage{natbib}
 \usepackage{algorithm}
@@ -121,7 +122,7 @@ Key results: Gated Cross-Attention outperformed concatenation fusion on 3/8 DTI 
 
 \section{Background and Motivation}
 
-Identifying the interactions between drugs and their target proteins is a fundamental step in the drug discovery pipeline. Beyond understanding disease mechanisms, accurate DTI prediction enables drug repurposing and anticipation of adverse side effects \citep{tanoli2025, yang2024}. The traditional drug development process is notoriously slow and expensive -- approximately \$2.6 billion and 15 years per approved drug \citep{khojasteh2023} -- creating an economic bottleneck that computational approaches aim to alleviate.
+Identifying the interactions between drugs and their target proteins is a fundamental step in the drug discovery pipeline. Beyond understanding disease mechanisms, accurate DTI prediction enables drug repurposing and anticipation of adverse side effects \citep{tanoli2025, yang2024mindg}. The traditional drug development process is notoriously slow and expensive -- approximately \$2.6 billion and 15 years per approved drug \citep{khojasteh2023} -- creating an economic bottleneck that computational approaches aim to alleviate.
 
 Deep learning has emerged as a powerful paradigm for DTI prediction, enabling automatic feature extraction from raw molecular representations without hand-crafted features \citep{vefghi2025}. Two modalities are central: the graph structure of drug molecules and the sequential nature of protein amino acid sequences. Graph Neural Networks (GNNs) capture molecular topology; Recurrent Neural Networks (RNNs) capture protein sequence context. The dominant trend is to combine both modalities in hybrid architectures \citep{panahandeh2025, shan2025}.
 
@@ -500,7 +501,7 @@ KIBA  & ConcatBaseline & 0.304$\pm$0.011 & \sig{0.351$\pm$0.008} & 0.570$\pm$0.0
 \end{tabular}
 \end{table}
 
-H-GNN-RNN-DTI outperforms ConcatBaseline on DTA regression. On DAVIS: all 6 metrics improved (MSE Δ$=-$0.090, p=0.003; Pearson $r$ Δ$=+$0.095, p=0.003). On KIBA: primary metrics improved significantly (MSE Δ$=-$0.031, p=0.009; Pearson Δ$=+$0.032, p=0.006; R$^2$ Δ$=+$0.043, p=0.009). The Gated Cross-Attention advantage extends to continuous affinity prediction, confirming task-agnostic representational quality.
+H-GNN-RNN-DTI outperforms ConcatBaseline on DTA regression. On DAVIS: all 6 metrics improved (MSE $\Delta=-$0.090, p=0.003; Pearson $r$ $\Delta=+$0.095, p=0.003). On KIBA: primary metrics improved significantly (MSE $\Delta=-$0.031, p=0.009; Pearson $\Delta=+$0.032, p=0.006; R$^2$ $\Delta=+$0.043, p=0.009). The Gated Cross-Attention advantage extends to continuous affinity prediction, confirming task-agnostic representational quality.
 
 \subsection{External Baseline Comparison}
 
@@ -758,7 +759,6 @@ This thesis presented H-GNN-RNN-DTI, a hybrid deep learning model for DTI/DTA pr
 This research demonstrated that a carefully designed hybrid deep learning model -- combining Hierarchical GAT, BiGRU, and Gated Cross-Attention with systematic enhancement strategies -- achieves strong, reproducible performance across diverse DTI evaluation settings. The most significant finding is that training data distribution (negative-sampling ratio) has a larger impact on cold-start performance than architectural choices or embedding quality, suggesting that the primary bottleneck in DTI generalisation is often not the model architecture but the training distribution. The interpretability framework establishes that the model generates biologically meaningful explanations, recovering known binding pharmacophores and residues without structural supervision. Together, these contributions advance the field toward more reliable, interpretable, and generalisable computational tools for drug discovery.
 
 %% ── REFERENCES ───────────────────────────────────────────────────────────────
-\bibliographystyle{apalike}
 \begin{thebibliography}{99}
 
 \bibitem{abbasi2020}
