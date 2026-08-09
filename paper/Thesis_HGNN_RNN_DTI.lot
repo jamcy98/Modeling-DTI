@@ -1,0 +1,16 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Datasets used in this research.}}{11}{table.caption.4}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces AUROC -- H-GNN-RNN-DTI vs.\ ConcatBaseline (5 seeds, paired $t$-test). $\text {$\mathsurround \z@ \mathchar "458$}$=significantly better, $\times $=significantly worse, n.s.=not significant.}}{15}{table.caption.5}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Encoder ablation -- AUROC mean (5 seeds). Bold = best per row.}}{16}{table.caption.6}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces DTA regression -- mean $\pm $ std (5 seeds). Bold = sig.\ better (p${<}$0.05).}}{16}{table.caption.7}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces AUROC on Luo\_17 -- all models. $\ddagger $=re-implementation with 3 seeds. $\ddag \!\ddag $=near-random (transductive baseline fails cold\_target).}}{17}{table.caption.8}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces AUROC on Yamanishi\_e -- all models.}}{17}{table.caption.9}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces Phase 2 AUROC -- ratio and loss sweep (5 seeds, yamanishi\_e). Statistically significant improvements vs.\ C0 annotated ($\text {$\mathsurround \z@ \mathchar "458$}\text {$\mathsurround \z@ \mathchar "458$}$=p${<}$0.01; $\text {$\mathsurround \z@ \mathchar "458$}$=p${<}$0.05).}}{18}{table.caption.10}%
+\contentsline {table}{\numberline {4.7}{\ignorespaces Phase 5 ablation AUROC (5 seeds). C3 is the AUROC winner overall.}}{19}{table.caption.11}%
+\contentsline {table}{\numberline {4.8}{\ignorespaces Drug attribution faithfulness -- DB00150/P19838 (C3 checkpoint).}}{20}{table.caption.12}%
+\contentsline {table}{\numberline {4.9}{\ignorespaces PDB binding-site validation -- residue attribution vs.\ 4.5~\r A\ annotations.}}{20}{table.caption.13}%
+\contentsline {table}{\numberline {4.10}{\ignorespaces Protein attribution method comparison -- D00142/P00374 (DHFR).}}{21}{table.caption.14}%
+\addvspace {10\p@ }

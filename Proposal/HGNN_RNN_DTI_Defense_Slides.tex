@@ -1,0 +1,658 @@
+% H-GNN-RNN-DTI PhD Proposal Defense — LaTeX Beamer deck
+% Auto-generated from slide_content.mjs — do not hand-edit generated equations/bullets there; edit the source and rebuild.
+%
+% SPEAKER NOTES: every frame carries \note{...} talking points (hidden by default).
+% To compile a presenter-view PDF with notes shown beside each slide, uncomment the two
+% lines below and recompile:
+% \usepackage{pgfpages}
+% \setbeameroption{show notes on second screen=right}
+
+\documentclass[aspectratio=169,10pt]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+
+\definecolor{DTInavy}{HTML}{0B2545}
+\definecolor{DTIteal}{HTML}{0E7C7B}
+\definecolor{DTIgold}{HTML}{C9962C}
+\definecolor{DTIslate}{HTML}{20293A}
+\definecolor{DTIgray}{HTML}{667085}
+\definecolor{DTIpanel}{HTML}{EEF2F6}
+\definecolor{DTIred}{HTML}{B3261E}
+\definecolor{DTIlteal}{HTML}{E3F2F1}
+\definecolor{DTIlred}{HTML}{FBEAEA}
+
+\usetheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{frametitle}{bg=DTInavy, fg=white}
+\setbeamerfont{frametitle}{size=\large\bfseries}
+\setbeamercolor{framesubtitle}{fg=DTIgold}
+\setbeamercolor{structure}{fg=DTIteal}
+\setbeamercolor{itemize item}{fg=DTIgold}
+\setbeamercolor{itemize subitem}{fg=DTIteal}
+\setbeamertemplate{itemize item}{\textcolor{DTIgold}{\scriptsize\ensuremath{\blacksquare}}}
+\setbeamertemplate{itemize subitem}{\textcolor{DTIteal}{--}}
+\setbeamercolor{normal text}{fg=DTIslate}
+\setbeamertemplate{footline}{%
+  \leavevmode
+  \hbox{\begin{beamercolorbox}[wd=\paperwidth,ht=2.6ex,dp=1ex,leftskip=.4cm,rightskip=.4cm]{normal text}
+    {\footnotesize\color{DTIgray}\textit{H-GNN-RNN-DTI --- PhD Proposal Defense}\hfill{\footnotesize\color{DTInavy}\bfseries\insertframenumber\,/\,\inserttotalframenumber}}
+  \end{beamercolorbox}}
+}
+
+\title{Enhanced Drug-Target Interaction Prediction Through Hybrid Deep Learning Approaches}
+\author{Jamila Abdul-Hadi}
+\institute{School of Computer Sciences, Universiti Sains Malaysia}
+\date{}
+
+\begin{document}
+
+{\setbeamercolor{background canvas}{bg=DTInavy}
+\begin{frame}[plain,c]
+\begin{center}
+{\color{DTIgold}\rule{0.9\linewidth}{1.2pt}}\\[10pt]
+{\small\color{white}\MakeUppercase{Universiti Sains Malaysia}}\\[2pt]
+{\footnotesize\color{DTIgold!70!white}School of Computer Sciences, Universiti Sains Malaysia}\\[14pt]
+{\bfseries\small\color{DTIgold}\MakeUppercase{PhD Research Proposal Defense --- Semester 2, 2025/2026}}\\[16pt]
+{\Large\bfseries\color{white}Enhanced Drug-Target Interaction Prediction Through Hybrid Deep Learning Approaches}\\[22pt]
+\begin{tcolorbox}[colback=DTInavy, colframe=DTIgold, coltext=white, width=0.72\linewidth, arc=3pt, boxrule=0.8pt]
+\centering
+\textbf{Jamila Abdul-Hadi}\\[2pt]
+{\footnotesize Matric No. 24100625}\\[2pt]
+{\footnotesize Supervisor: Assoc. Prof. Dr. Nurul Hashimah Ahamed Hassain Malim}
+\end{tcolorbox}
+\vspace{10pt}
+{\color{DTIgold}\rule{0.9\linewidth}{1.2pt}}
+\end{center}
+\note{Welcome the panel. State your name, matric number, program (PhD), and supervisor. Give the title once, clearly and slowly --- it is dense ("hybrid deep learning", "drug-target interaction") so let it land. One-sentence framing before you advance: "Today I will walk through the problem motivating this work, the three research objectives, and --- in most depth --- the methodology I am proposing, including the mathematical formulation of the model." This tells the panel your talk is methodology-heavy on purpose, so they calibrate their expectations and questions accordingly. Keep this slide on screen for no more than 45-60 seconds.}
+\end{frame}
+}
+
+\begin{frame}{Presentation Outline}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Overview}}}
+{\normalsize
+\begin{itemize}
+\item 1. Motivation \& Problem Statement
+\item 2. Research Questions and Objectives
+\item 3. Scope of the Research
+\item 4. Research Design --- Three Pillars
+\item 5. Methodology: Data Collection \& Preprocessing
+\item 6. Methodology: The H-GNN-RNN-DTI Architecture (mathematical formulation)
+\item 7. Methodology: Training Strategy
+\item 8. Methodology: Evaluation Protocol
+\item 9. Methodology: Interpretability Framework
+\item 10. Expected Outcomes, Timeline \& Summary
+\end{itemize}
+}
+\note{Tell the panel explicitly that items 5-9 (all methodology) are the bulk of the talk, consistent with the "Chapter 3" emphasis of a proposal defense --- this is the chapter examiners scrutinize hardest, because it is the chapter that has not been executed yet and is the basis on which they will judge feasibility. Signpost that you will slow down for the architecture and speed through items 1-4 since they are largely uncontested background. If your defense has a strict time budget (e.g., 20 minutes), mention it here and say you will keep to it, which reassures the panel you have rehearsed pacing.}
+\end{frame}
+
+\begin{frame}{Motivation --- The Drug Discovery Bottleneck}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Introduction}}}
+{\normalsize
+\begin{itemize}
+\item A single new chemistry-based drug costs \(\sim\)US\$2.6 billion and \(\sim\)15 years to reach approval (Khojasteh et al., 2023)
+\item PubChem alone lists tens of millions of candidate compounds --- exhaustive wet-lab testing against all targets is physically and economically infeasible
+\item Wet-lab assays and physics-based docking are accurate but slow, expensive, and require 3D target structures that are often unavailable
+\item Computational DTI prediction reframes discovery as a data-driven pattern-recognition problem --- enabling virtual screening at scale
+\item Deep learning models drugs as molecular graphs and proteins as biological sequences --- a natural fit for GNNs and RNNs respectively
+\end{itemize}
+}
+\note{Open with the economic hook --- \$2.6B / 15 years --- because it is the single number that justifies the entire thesis to a non-specialist panel member. Then pivot to the technical framing: two heterogeneous data modalities (graph-structured drugs, sequence-structured proteins) is the crux that motivates a hybrid architecture rather than a single-paradigm model. If asked "why not just use a Transformer for everything," your answer is: SMILES-as-text throws away explicit bond topology that a graph encoder recovers for free, and a molecular graph representation has been repeatedly shown (GraphDTA, MGraphDTA) to outperform sequence-only drug encodings. Keep this slide brief --- under 90 seconds --- it is scene-setting, not the contribution.}
+\end{frame}
+
+\begin{frame}{Problem Statement --- Four Persistent Gaps}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Introduction}}}
+{\normalsize
+\begin{itemize}
+\item Weak cross-modal feature integration --- GSRF-DTI, TTModel use static, late concatenation; no iterative drug\(\leftrightarrow\)protein interaction before prediction
+\item Limited multimodal representation learning --- network/KG-level features substitute for direct GNN + RNN encoding of raw structure and sequence
+\item Poor cold-start generalization --- models memorize seen drug/target patterns rather than learning transferable biochemical principles
+\item Black-box interpretability --- Random Forest / KG-embedding backbones give no atom- or residue-level attribution for predictions
+\item Unaddressed class imbalance --- confirmed interactions are vastly outnumbered by unlabeled/negative pairs, biasing training (Zhu et al. 2024, explicit future-work gap)
+\end{itemize}
+}
+\note{These five items map directly onto Objectives 1-3 in the next slides --- say so explicitly ("Gap 1 motivates Objective 1; Gaps 2-3 motivate Objective 2; Gap 4 motivates Objective 3; Gap 5 is addressed as a training-strategy component across all objectives"). This is the single most important framing move in the whole talk: it shows the panel your objectives were derived from a gap analysis, not chosen arbitrarily. Cite that Zhu et al. (2024) --- the GSRF-DTI authors themselves --- flagged data imbalance as unresolved future work; using the original authors' own admission is more persuasive than your own critique of their paper.}
+\end{frame}
+
+\begin{frame}{Why Existing Hybrid Models Fall Short}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Introduction}}}
+{\footnotesize
+\renewcommand{\arraystretch}{1.35}
+\begin{center}
+\begin{tabular}{p{2.6cm} p{4.0cm} p{4.9cm}}
+\rowcolor{DTInavy}
+\textcolor{white}{\textbf{Model}} & \textcolor{white}{\textbf{Fusion Strategy}} & \textcolor{white}{\textbf{Key Limitation}} \\
+\rowcolor{white}
+\textcolor{DTIteal}{\textbf{GSRF-DTI (Zhu et al. 2024)}} & DeepWalk features \(\rightarrow\) concatenation \(\rightarrow\) Random Forest & No GNN/RNN encoders; static late fusion; no interpretability beyond feature importance \\
+\rowcolor{DTIpanel}
+\textcolor{DTIteal}{\textbf{TTModel (Li et al. 2024)}} & Knowledge-graph + textual/type embeddings & Ignores molecular graph topology and raw protein sequence entirely \\
+\rowcolor{white}
+\textcolor{DTIteal}{\textbf{DTKGIN (Luo et al. 2024)}} & Intent-graph representation & Best cold-start baseline, but no dynamic attention fusion between structure and sequence \\
+\end{tabular}
+\end{center}
+}
+\note{This slide is your literature-positioning move --- use it to pre-empt the inevitable "how is this different from X" question. Walk left to right per row: what they fused, why it caps performance. Land on DTKGIN specifically since it is your strongest baseline (best cold-start results in the field) --- acknowledge that directly ("DTKGIN is the state of the art we most need to beat") rather than letting an examiner surface it as a gotcha. Your architecture's distinguishing claim is the *combination* --- GNN + RNN + dynamic gated cross-attention + pretrained embeddings + intrinsic interpretability --- no existing model has all five simultaneously.}
+\end{frame}
+
+\begin{frame}{Research Questions}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Introduction}}}
+{\normalsize
+\begin{itemize}
+\item RQ1 --- How can a Gated Cross-Attention fusion mechanism effectively integrate GNN-based drug and RNN-based protein representations, and how does this improve DTI prediction over static concatenation?
+\item RQ2 --- To what extent do pre-trained molecular/protein language embeddings combined with imbalance-aware learning improve generalization to unseen drugs, targets, and cross-dataset scenarios?
+\item RQ3 --- Can an attention-enhanced hybrid model provide interpretable, biologically meaningful insight into key binding residues and pharmacophoric features?
+\end{itemize}
+}
+\note{Read each RQ once, slowly --- do not paraphrase live, since the wording is precise and was likely scrutinized by your supervisor already. After RQ1, note it is answerable quantitatively (AUROC/AUPR delta vs. concatenation ablation --- a controlled, isolatable comparison). After RQ2, note "generalization" is operationalized later via four explicit train/test split protocols, not left vague. After RQ3, flag that interpretability will be validated against real crystal-structure binding sites, not just visually inspected --- this pre-empts "how do you know the attention maps mean anything" questions.}
+\end{frame}
+
+\begin{frame}{Research Aim \& Objectives}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Introduction}}}
+{\normalsize
+\begin{itemize}
+\item Aim --- Design an enhanced hybrid deep learning model combining GNNs and RNNs through a novel dynamic cross-modal fusion mechanism to improve DTI prediction, addressing the four identified gaps.
+\item O1 --- Design and evaluate a hybrid model with an advanced cross-modal fusion mechanism, achieving statistically significant improvement over concatenation-based fusion baselines.
+\item O2 --- Develop an imbalance-aware, foundation-model-pretrained representation learning strategy that measurably improves performance on unseen drugs, unseen targets, and cross-dataset transfer (cold-start).
+\item O3 --- Implement and benchmark an attention-based interpretability layer producing quantitative and visual explanations, validated against known binding sites, to support SAR studies.
+\end{itemize}
+}
+\note{Emphasize the word "statistically significant" in O1 and "measurably" in O2 --- these are falsifiable, testable claims, not aspirational language, and a good proposal defense rewards objectives that can fail a hypothesis test. Preview here (one sentence) that your evaluation protocol later includes 5-seed runs with paired significance testing specifically to make O1 and O2 checkable, not just "the numbers went up." This is the slide to slow down on if you sense the panel is not yet oriented --- everything after this slide is in service of these three objectives.}
+\end{frame}
+
+\begin{frame}{Scope of the Research}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Introduction}}}
+\begin{columns}[t]
+\begin{column}{0.49\linewidth}
+\begin{tcolorbox}[colback=DTIlteal, colframe=DTIteal, coltitle=white, colbacktitle=DTIteal, title=In Scope, fonttitle=\bfseries, arc=2pt, boxrule=0.6pt]
+{\footnotesize
+\begin{itemize}
+\item Binary DTI classification + continuous DTA regression (pKd/pKi/pIC50)
+\item SMILES \(\rightarrow\) molecular graphs (RDKit); FASTA \(\rightarrow\) ESM-2 embeddings
+\item Benchmarks: BindingDB, DAVIS, KIBA, DrugBank, ChEMBL, Luo\_17, Yamanishi\_08
+\item H-GAT + BiLSTM/BiGRU + Gated Cross-Attention architecture
+\item Cold-start evaluation (unseen drug / target / pair) + cross-dataset transfer
+\item Attention-based interpretability with case-study validation
+\end{itemize}
+}
+\end{tcolorbox}
+\end{column}
+\begin{column}{0.49\linewidth}
+\begin{tcolorbox}[colback=DTIlred, colframe=DTIred, coltitle=white, colbacktitle=DTIred, title=Out of Scope, fonttitle=\bfseries, arc=2pt, boxrule=0.6pt]
+{\footnotesize
+\begin{itemize}
+\item Wet-lab / experimental validation of predicted interactions
+\item Non-small-molecule ligands (e.g., peptide or antibody therapeutics)
+\item Large-scale industrial / production deployment
+\item 3D structure-based docking simulation
+\end{itemize}
+}
+\end{tcolorbox}
+\end{column}
+\end{columns}
+\note{State the out-of-scope list with confidence, not apology --- a well-bounded scope is a strength in a proposal defense, not a weakness. If asked "why not validate experimentally," the honest and sufficient answer is: this is a computational methods PhD, wet-lab validation would require a different supervisory team, budget, and ethics approval, and the interpretability case studies (against PDB crystal structures) provide a proxy validation that is standard practice in this subfield (cite EHIGN, GraphATT-DTA as precedent).}
+\end{frame}
+
+\begin{frame}{Research Design --- Three Pillars}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Research Design}}}
+{\normalsize
+\begin{itemize}
+\item Quantitative, computational, experimental design --- build, train, benchmark, ablate, interpret
+\item Pillar 1 (\(\rightarrow\) O1): Dynamic cross-modal feature integration --- H-GAT drug encoder + BiGRU protein encoder + Gated Cross-Attention
+\item Pillar 2 (\(\rightarrow\) O2): Transfer learning for cold-start generalization --- pretrained embeddings + imbalance-aware training + rigorous split protocols
+\item Pillar 3 (\(\rightarrow\) O3): Intrinsic explainability --- attention attribution + Grad-CAM-style visualization + case-study validation
+\item Pipeline: Data Collection \(\rightarrow\) Preprocessing \(\rightarrow\) Encoders \(\rightarrow\) Fusion \(\rightarrow\) Prediction Head \(\rightarrow\) Training \(\rightarrow\) Evaluation \(\rightarrow\) Interpretability
+\end{itemize}
+}
+\note{This is the map you will keep returning to. Say explicitly: "Everything from this point forward in the methodology section is organized around these three pillars." The pipeline bullet is the flowchart from the proposal (Fig. 3.1) condensed to one line --- if you have the actual flowchart figure, show it here instead of/alongside the text. Keep this slide to under a minute; it is a table of contents for the methodology, not new content.}
+\end{frame}
+
+\begin{frame}{Data Collection --- Benchmark Datasets}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Data}}}
+{\footnotesize
+\renewcommand{\arraystretch}{1.35}
+\begin{center}
+\begin{tabular}{p{2.2cm} p{2.6cm} p{2.6cm} p{2.6cm}}
+\rowcolor{DTInavy}
+\textcolor{white}{\textbf{Dataset}} & \textcolor{white}{\textbf{Scale}} & \textcolor{white}{\textbf{Task}} & \textcolor{white}{\textbf{Key Feature}} \\
+\rowcolor{white}
+\textcolor{DTIteal}{\textbf{BindingDB}} & Large & DTI / DTA & Extensive Ki, Kd, IC50 affinity data across diverse targets \\
+\rowcolor{DTIpanel}
+\textcolor{DTIteal}{\textbf{DAVIS}} & Medium & DTA & Kinase-focused affinity regression benchmark \\
+\rowcolor{white}
+\textcolor{DTIteal}{\textbf{KIBA}} & Medium & DTA & Composite KIBA-score affinity regression benchmark \\
+\rowcolor{DTIpanel}
+\textcolor{DTIteal}{\textbf{DrugBank}} & Supplementary & DTI / pretraining & Generalizability testing and self-supervised pretraining source \\
+\rowcolor{white}
+\textcolor{DTIteal}{\textbf{ChEMBL}} & Large & DTI \& DTA & Comprehensive bioactivity database; supports both tasks \\
+\rowcolor{DTIpanel}
+\textcolor{DTIteal}{\textbf{Luo\_17}} & Large & DTI (binary) & Heterogeneous network with drug-drug / protein-protein relations \\
+\rowcolor{white}
+\textcolor{DTIteal}{\textbf{Yamanishi\_08}} & Small & DTI (binary) & Gold-standard curated set --- enzyme, ion channel, GPCR, nuclear receptor \\
+\end{tabular}
+\end{center}
+}
+\note{Do not read every cell --- group verbally instead: "DAVIS and KIBA give us the regression/affinity side of the work; Luo\_17 and Yamanishi\_08 give us the classification side and are the datasets used by our three main baselines, GSRF-DTI, TTModel and DTKGIN, which lets us compare like-for-like; BindingDB and ChEMBL are large enough to support the cold-start and cross-dataset transfer experiments; DrugBank additionally supplies unlabeled molecules for self-supervised pretraining." That one sentence turns a dry table into a rationale.}
+\end{frame}
+
+\begin{frame}{Preprocessing I --- Drug Representation}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Data}}}
+{\small
+\begin{itemize}
+\item SMILES strings parsed with RDKit; duplicates removed; molecules mapped to dataset identifiers
+\item Atom (node) features: atomic number, degree, hybridization, aromaticity, formal charge
+\item Bond (edge) features: bond type, conjugation, ring membership
+\item Pre-trained ChemBERTa embeddings (seyonec/ChemBERTa-zinc-base-v1) fused in as additional node/molecule features for transfer learning
+\end{itemize}
+}
+\vspace{2mm}
+\begin{tcolorbox}[colback=DTIpanel, colframe=DTIgold, boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt]
+\begin{gather*}
+\mathcal{G}_d = (V, E), \qquad V = \text{atoms},\; E = \text{bonds}
+\end{gather*}
+\end{tcolorbox}
+\note{Keep this fast --- this is standard cheminformatics pipeline, low examiner risk. The one thing worth pausing on: ChemBERTa fusion is not just "extra features," it is the transfer-learning lever for Objective 2 (cold-start) --- a molecule's ChemBERTa embedding encodes chemical semantics learned from \(\sim\)77M SMILES strings, so even a drug never seen during DTI training has a meaningful representation. Say that sentence explicitly since it is the bridge to the cold-start story two objectives later.}
+\end{frame}
+
+\begin{frame}{Preprocessing II --- Protein Representation}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Data}}}
+{\normalsize
+\begin{itemize}
+\item FASTA amino-acid sequences tokenized and embedded via pre-trained ESM-2 (facebook/esm2\_t6\_8M\_UR50D, 320-dim; 650M/1280-dim variant for Luo\_17)
+\item Residue-level contextual embeddings capture local chemistry and long-range evolutionary dependencies from large-scale unsupervised pretraining
+\item Sequences padded/truncated to a fixed maximum length (e.g., 1200 residues) for batch processing
+\item Two operating modes: full residue sequence (B,L,320) for the BiGRU path, or mean-pooled (B,320) for a lightweight linear-projection path
+\end{itemize}
+}
+\note{Explain the two-mode design as an engineering necessity, not an inconsistency: some datasets/experiments need the full sequential signal for the BiGRU, others (ablations, faster iteration) use the cheaper mean-pooled projection --- the encoder auto-selects based on input tensor shape. If asked why ESM-2 over ProtT5 or a simple one-hot/BLOSUM encoding: ESM-2 is self-supervised on hundreds of millions of sequences and has been repeatedly shown to transfer well to downstream structure/function tasks, which is precisely the property needed for cold-start generalization to unseen proteins (Objective 2).}
+\end{frame}
+
+\begin{frame}{Preprocessing III --- Labels \& Data Splitting}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Data}}}
+{\normalsize
+\begin{itemize}
+\item Positive labels = experimentally validated interactions; negatives via unknown-negative sampling to minimize false-negative contamination
+\item Stratified negative sampling ratios (e.g., 1:1, 1:10) + imbalance-aware losses (weighted BCE, focal loss)
+\item Regression targets standardized via -log10 transform: Kd/Ki/IC50 \(\rightarrow\) pKd/pKi/pIC50
+\item Warm-start: random 10-fold CV  \(\cdot\)  Cold-drug: drug-disjoint  \(\cdot\)  Cold-target: target-disjoint  \(\cdot\)  Cold-pair: pair-disjoint  \(\cdot\)  Cross-dataset: train on one benchmark, test on another
+\end{itemize}
+}
+\note{This slide quietly sets up the entire evaluation-protocol section --- flag that explicitly ("the four split protocols listed here are the same four you will see again in the evaluation section, applied consistently across every experiment"). On negative sampling: be ready for "how do you know your negatives are true negatives" --- the honest answer is you don't, absolutely; you use the field-standard mitigation (unknown-negative sampling with careful ratio control) and this is exactly the kind of label noise that motivates using focal loss / weighted BCE rather than plain BCE.}
+\end{frame}
+
+\begin{frame}{H-GNN-RNN-DTI --- System Overview}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Architecture}}}
+{\normalsize
+\begin{itemize}
+\item Symmetric dual-branch network: structural drug branch \(\Vert\) sequential protein branch
+\item Component 1 --- Modality-specific encoders: Hierarchical GAT (drug) and BiGRU (protein)
+\item Component 2 --- Gated Cross-Attention Fusion: dynamic, bidirectional drug\(\leftrightarrow\)protein interaction
+\item Component 3 --- Task-specific prediction heads: DTI classification (sigmoid/softmax) and DTA regression (linear)
+\item End-to-end differentiable --- trained jointly, not as separately-tuned stages
+\end{itemize}
+}
+\note{Show the architecture diagram here if available (Fig. 3.3 in the proposal). This is the slide where you say "I will now walk through each of these three components in detail, with the mathematical formulation, over the next several slides" --- an explicit verbal signpost matters because the next 8-9 slides are dense and the panel needs to know they are still inside one coherent explanation, not jumping topics. Point out the symmetry deliberately: the drug and protein branches are structurally parallel (encode \(\rightarrow\) attend \(\rightarrow\) gate \(\rightarrow\) pool), which is a design choice, not an accident --- it keeps the fusion mechanism well-defined in both directions.}
+\end{frame}
+
+\begin{frame}{Drug Encoder (I) --- Graph Attention Message Passing}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Drug Encoder}}}
+{\small
+\begin{itemize}
+\item Node initialization fuses physicochemical descriptors with ChemBERTa semantics
+\item Hierarchical GAT: 3 stacked layers, 8 attention heads per layer
+\item At each layer, every atom aggregates a learned, attention-weighted message from its bonded neighbors
+\end{itemize}
+}
+\vspace{2mm}
+\begin{tcolorbox}[colback=DTIpanel, colframe=DTIgold, boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt]
+\begin{gather*}
+h_i^{(0)} = W_0\,[x_i \,\Vert\, c_i] + b_0 \\
+e_{ij}^{(l,k)} = \mathrm{LeakyReLU}\!\left(a_k^{\top}\big[W_k h_i^{(l)} \,\Vert\, W_k h_j^{(l)} \,\Vert\, W_e b_{ij}\big]\right) \\
+\alpha_{ij}^{(l,k)} = \dfrac{\exp\!\big(e_{ij}^{(l,k)}\big)}{\sum_{u \in \mathcal{N}(i)} \exp\!\big(e_{iu}^{(l,k)}\big)} \\
+h_i^{(l+1)} = \mathop{\Big\Vert}\limits_{k=1}^{K} \sigma\!\left(\sum_{j \in \mathcal{N}(i)\cup\{i\}} \alpha_{ij}^{(l,k)} W_k^{(l)} h_j^{(l)}\right)
+\end{gather*}
+\end{tcolorbox}
+\note{Walk the four equations top to bottom as a story, not a wall of symbols: (1) each atom starts with a feature vector that is chemistry-plus-ChemBERTa; (2) for every bonded neighbor pair we score how relevant that neighbor is, conditioned on bond features b\_ij --- this is why it's a *graph attention* network and not plain message passing; (3) that score is normalized with softmax over the neighborhood so attention weights sum to 1; (4) the new atom representation is the attention-weighted sum of neighbor messages, computed independently across K=8 heads and concatenated --- multi-head so the model can attend to different chemical relationships (e.g., one head tracks aromaticity, another tracks charge) simultaneously. Stacking 3 layers means information from a 3-bond neighborhood reaches every atom, which is enough to capture functional groups and small rings without over-smoothing.}
+\end{frame}
+
+\begin{frame}{Drug Encoder (II) --- Hierarchical Readout}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Drug Encoder}}}
+{\small
+\begin{itemize}
+\item After L=3 message-passing layers, atom-level states are aggregated into one molecule-level vector
+\item Mean pooling captures overall composition; max pooling captures the single most salient substructure
+\item Both are concatenated with a molecule-level ChemBERTa embedding before a final MLP projection
+\end{itemize}
+}
+\vspace{2mm}
+\begin{tcolorbox}[colback=DTIpanel, colframe=DTIgold, boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt]
+\begin{gather*}
+z_{\text{mean}} = \frac{1}{|V|}\sum_{i \in V} h_i^{(L)} \\
+z_{\text{max}} = \max_{i \in V} h_i^{(L)} \\
+z_d = \mathrm{MLP}\big([z_{\text{mean}} \,\Vert\, z_{\text{max}} \,\Vert\, c_{\text{mol}}]\big)
+\end{gather*}
+\end{tcolorbox}
+\note{The rationale for combining mean AND max pooling (not just one): mean pooling is a smooth summary that reflects the whole molecule's composition, but a small binding-relevant motif (e.g. one halogen substituent) can get diluted by averaging over a large molecule --- max pooling preserves that single strongest signal per feature dimension. This dual-pooling-plus-pretrained-embedding readout is what CLAUDE.md/config.py calls the "mean/max pooling + ChemBERTa fusion" drug encoder design --- if asked for an ablation, note that GNN-only vs. full-model comparisons in your evaluation protocol will directly test whether this fusion adds value over the GAT layers alone.}
+\end{frame}
+
+\begin{frame}{Protein Encoder (I) --- Bidirectional GRU}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Protein Encoder}}}
+{\small
+\begin{itemize}
+\item Input: ESM-2 contextual embeddings per residue, x\_t \(\in\) \(\mathbb{R}\)\textasciicircum{}320 (or \(\mathbb{R}\)\textasciicircum{}1280 \(\rightarrow\) projected for Luo\_17)
+\item 2 stacked layers, forward and backward GRU passes combined at every position
+\item Captures both N-to-C and C-to-N contextual dependencies --- binding-relevant residues can depend on either direction
+\end{itemize}
+}
+\vspace{2mm}
+\begin{tcolorbox}[colback=DTIpanel, colframe=DTIgold, boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt]
+\begin{gather*}
+r_t = \sigma\!\left(W_r x_t + U_r \overrightarrow{h}_{t-1} + b_r\right) \\
+u_t = \sigma\!\left(W_u x_t + U_u \overrightarrow{h}_{t-1} + b_u\right) \\
+\hat{h}_t = \tanh\!\left(W_h x_t + U_h(r_t \odot \overrightarrow{h}_{t-1}) + b_h\right) \\
+\overrightarrow{h}_t = (1-u_t)\odot \overrightarrow{h}_{t-1} + u_t \odot \hat{h}_t \qquad (\text{backward } \overleftarrow{h}_t \text{ symmetric}) \\
+h_t = \big[\overrightarrow{h}_t \,\Vert\, \overleftarrow{h}_t\big]
+\end{gather*}
+\end{tcolorbox}
+\note{You do not need to derive the GRU gates from scratch live --- say "this is the standard GRU update, reset gate r\_t and update gate u\_t, run in both directions" and spend your time on WHY bidirectional matters here: a residue's role in binding is influenced by residues on both sides of it in the folded structure's local context, and BiGRU is a lightweight way to approximate that without full 3D structure. If asked "why GRU not LSTM": GRU has fewer parameters, trains faster, and prior DTI literature (Zhijian et al. 2022) shows comparable performance to LSTM for protein sequence modeling at lower cost --- your config also supports BiLSTM as a swappable variant for the ablation study.}
+\end{frame}
+
+\begin{frame}{Protein Encoder (II) --- Attention Pooling}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Protein Encoder}}}
+{\small
+\begin{itemize}
+\item All T residue-level hidden states are combined into one protein-level vector
+\item A learned attention vector scores each position's relevance before weighted summation
+\item Down-weights padding/low-information residues; up-weights residues near probable binding regions
+\end{itemize}
+}
+\vspace{2mm}
+\begin{tcolorbox}[colback=DTIpanel, colframe=DTIgold, boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt]
+\begin{gather*}
+u_t = \tanh(W_p h_t + b_p) \\
+\beta_t = \dfrac{\exp(u_t^{\top} v_p)}{\sum_{\tau=1}^{T} \exp(u_\tau^{\top} v_p)} \\
+z_p = \sum_{t=1}^{T} \beta_t\, h_t
+\end{gather*}
+\end{tcolorbox}
+\note{This attention-pooling weight \(\beta\)\_t is not decorative --- it is reused later, verbatim, as part of the interpretability layer in Objective 3: high-\(\beta\) residues are exactly the residues you will visualize as candidate binding-relevant positions in the case studies. Make that forward-reference explicit here so when interpretability comes up nine slides later, the panel already has the mechanism in mind rather than seeing it as a bolt-on afterthought.}
+\end{frame}
+
+\begin{frame}{Gated Cross-Attention (I) --- Bidirectional Cross-Modal Attention}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Fusion}}}
+{\small
+\begin{itemize}
+\item Core architectural contribution --- replaces static concatenation with dynamic, learned interaction
+\item Atom-level states H\_d \(\in\) \(\mathbb{R}\)\textasciicircum{}(n\(\times\)d) and residue-level states H\_p \(\in\) \(\mathbb{R}\)\textasciicircum{}(m\(\times\)d) attend to each other directly
+\item Scaled dot-product attention, computed in both directions simultaneously
+\end{itemize}
+}
+\vspace{2mm}
+\begin{tcolorbox}[colback=DTIpanel, colframe=DTIgold, boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt]
+\begin{gather*}
+Q_d = H_d W_Q^{d}, \quad K_p = H_p W_K^{p}, \quad V_p = H_p W_V^{p} \\
+A_{d\to p} = \mathrm{softmax}\!\left(\dfrac{Q_d K_p^{\top}}{\sqrt{d_k}}\right) V_p \\
+Q_p = H_p W_Q^{p}, \quad K_d = H_d W_K^{d}, \quad V_d = H_d W_V^{d} \\
+A_{p\to d} = \mathrm{softmax}\!\left(\dfrac{Q_p K_d^{\top}}{\sqrt{d_k}}\right) V_d
+\end{gather*}
+\end{tcolorbox}
+\note{This is the slide to slow down the most --- it is the answer to RQ1 and the core of Objective 1. Say explicitly: "In GSRF-DTI and TTModel, drug and protein features never interact until they are concatenated right before the classifier --- there is no mechanism for a drug atom to 'ask' which protein residues are relevant to it. Here, every drug atom computes a query against every protein residue's key, producing an attention-weighted mixture A\_\{d\(\rightarrow\)p\} of protein information most relevant to that atom --- and symmetrically for A\_\{p\(\rightarrow\)d\}." This bidirectionality is what "dynamic" and "cross-modal" mean concretely, not just as buzzwords --- be ready to write Q,K,V on a whiteboard if asked.}
+\end{frame}
+
+\begin{frame}{Gated Cross-Attention (II) --- Adaptive Gating}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Fusion}}}
+{\small
+\begin{itemize}
+\item A sigmoid gate learns, per feature dimension, how much cross-modal signal to trust vs. preserve
+\item Prevents the cross-attention output from overwriting informative but modality-specific features
+\item Applied symmetrically to both drug and protein branches
+\end{itemize}
+}
+\vspace{2mm}
+\begin{tcolorbox}[colback=DTIpanel, colframe=DTIgold, boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt]
+\begin{gather*}
+g_d = \sigma\!\left(W_g^{d}\,[H_d \,\Vert\, A_{d\to p}] + b_g^{d}\right) \\
+H_d' = g_d \odot H_d + (1-g_d)\odot A_{d\to p} \\
+g_p = \sigma\!\left(W_g^{p}\,[H_p \,\Vert\, A_{p\to d}] + b_g^{p}\right) \\
+H_p' = g_p \odot H_p + (1-g_p)\odot A_{p\to d}
+\end{gather*}
+\end{tcolorbox}
+\note{Why gate instead of just using the cross-attention output directly? Because not every atom has a meaningful protein-side counterpart --- e.g. a methyl group governing solubility may have no specific residue relevance --- and forcing every atom's representation to be entirely replaced by cross-modal information would inject noise. The gate is a learned, per-dimension interpolation between "trust my own modality" and "trust the cross-modal signal," conditioned on both. This is the specific mechanism that justifies the word "Gated" in Gated Cross-Attention, and it is the ablation-testable difference versus a plain cross-attention-only variant.}
+\end{frame}
+
+\begin{frame}{Global Fusion \& Joint Representation}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Fusion}}}
+{\small
+\begin{itemize}
+\item Gated atom/residue states are pooled back to single drug and protein vectors
+\item A second, global-level gate fuses the two into one joint drug-target representation
+\end{itemize}
+}
+\vspace{2mm}
+\begin{tcolorbox}[colback=DTIpanel, colframe=DTIgold, boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt]
+\begin{gather*}
+z_d' = \mathrm{READOUT}(H_d'), \qquad z_p' = \mathrm{READOUT}(H_p') \\
+g = \sigma\!\left(W_f\,[z_d' \,\Vert\, z_p'] + b_f\right) \\
+z = g \odot z_d' + (1-g)\odot z_p'
+\end{gather*}
+\end{tcolorbox}
+\note{One sentence is enough here: "the local, fine-grained gating from the previous slide happens at the atom/residue level; this global gate happens once more at the pooled molecule/protein level, so the model can additionally decide, per drug-target pair, whether the interaction is more drug-driven or more protein-driven." z is the single vector that everything downstream --- both prediction heads --- consumes.}
+\end{frame}
+
+\begin{frame}{Prediction Head --- Multi-Task Output}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Prediction}}}
+{\small
+\begin{itemize}
+\item Shared MLP trunk with dropout and residual connections for stability
+\item Task-specific output layer: classification head (DTI) or regression head (DTA)
+\item Same underlying architecture serves both prediction tasks in the study scope
+\end{itemize}
+}
+\vspace{2mm}
+\begin{tcolorbox}[colback=DTIpanel, colframe=DTIgold, boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt]
+\begin{gather*}
+h_1 = \mathrm{Dropout}\big(\mathrm{ReLU}(W_1 z + b_1)\big), \qquad h_2 = \mathrm{ReLU}(W_2 h_1 + b_2) \\
+\text{DTI:}\quad \hat{y} = \mathrm{softmax}(W_o h_2 + b_o) \in \mathbb{R}^2 \\
+\text{DTA:}\quad \hat{y} = W_o h_2 + b_o \in \mathbb{R}
+\end{gather*}
+\end{tcolorbox}
+\note{Emphasize "shared trunk, swapped head" --- this is a deliberate design economy: the expensive part of the model (encoders + fusion) is task-agnostic, and only the last layer changes between the classification and regression objectives named in the Scope slide. This closes the architecture walkthrough --- pause here and ask if there are questions before moving into Training Strategy, since this is a natural chapter break.}
+\end{frame}
+
+\begin{frame}{Training Strategy (I) --- Self-Supervised Pretraining}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Training}}}
+{\small
+\begin{itemize}
+\item Drug and protein encoders optionally pretrained on large unlabeled corpora (e.g., DrugBank) before DTI fine-tuning
+\item Contrastive learning and masked-feature prediction objectives learn transferable structure without requiring interaction labels
+\item Directly targets Objective 2 --- cold-start generalization to drugs/targets with few or no labeled interactions
+\end{itemize}
+}
+\vspace{2mm}
+\begin{tcolorbox}[colback=DTIpanel, colframe=DTIgold, boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt]
+\begin{gather*}
+\mathcal{L}_{\text{contrastive}} = -\log \dfrac{\exp(\mathrm{sim}(z_i, z_i^{+})/\tau)}{\sum_{j} \exp(\mathrm{sim}(z_i, z_j)/\tau)}
+\end{gather*}
+\end{tcolorbox}
+\note{Frame this as the second lever for cold-start (the first being ChemBERTa/ESM-2 initialization already covered in preprocessing). The logic chain: labeled DTI data is comparatively small and biased toward well-studied drugs/targets; unlabeled molecular/protein data is abundant; self-supervised pretraining on the abundant unlabeled data teaches the encoders general biochemical structure before they ever see a single interaction label, so at DTI fine-tuning time the model already "understands" a novel drug's chemistry even if it never saw that exact drug in training.}
+\end{frame}
+
+\begin{frame}{Training Strategy (II) --- Imbalance-Aware Losses}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Training}}}
+{\small
+\begin{itemize}
+\item Focal loss down-weights easy negatives, focusing gradient on hard/ambiguous pairs
+\item Weighted BCE offered as an alternative/ablation baseline for classification
+\item DTA regression trained with standard MSE on the standardized affinity targets
+\end{itemize}
+}
+\vspace{2mm}
+\begin{tcolorbox}[colback=DTIpanel, colframe=DTIgold, boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt]
+\begin{gather*}
+\mathrm{FL}(p_t) = -\alpha_t (1-p_t)^{\gamma} \log(p_t) \\
+\mathcal{L}_{\text{wbce}} = -\big[w_1\, y \log(\hat{y}) + w_0 (1-y) \log(1-\hat{y})\big] \\
+\mathcal{L}_{\text{mse}} = \frac{1}{N}\sum_{i=1}^{N} (y_i - \hat{y}_i)^2
+\end{gather*}
+\end{tcolorbox}
+\note{Explain \(\gamma\) and \(\alpha\)\_t concretely: \(\gamma\) (the focusing parameter) exponentially shrinks the loss contribution of well-classified examples --- so once the model is confidently correct on an easy negative, that example essentially stops contributing gradient, freeing capacity to focus on ambiguous drug-target pairs near the decision boundary. \(\alpha\)\_t is the standard class-balance term compensating for the 1:10 (or worse) positive:negative sampling ratio. This is one of the ablation axes in your evaluation protocol --- you compare focal loss vs. weighted BCE directly, not just assume focal loss is better.}
+\end{frame}
+
+\begin{frame}{Training Strategy (III) --- Optimization \& Regularization}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Training}}}
+{\small
+\begin{itemize}
+\item AdamW optimizer with decoupled weight decay, trained end-to-end
+\item Cosine learning-rate schedule with warmup; early stopping on validation loss
+\item Dropout regularization throughout; 10-fold cross-validation + held-out test set
+\item Ablation studies isolate each component: GNN-only, RNN-only, concatenation-fusion, no-pretraining variants
+\end{itemize}
+}
+\vspace{2mm}
+\begin{tcolorbox}[colback=DTIpanel, colframe=DTIgold, boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt]
+\begin{gather*}
+\theta^{*} = \arg\min_{\theta} \; \mathbb{E}_{(x,y)\sim\mathcal{D}}\big[\mathcal{L}(f_\theta(x), y)\big] + \lambda\lVert\theta\rVert^2 \\
+\eta_t = \eta_{\min} + \tfrac{1}{2}(\eta_{\max}-\eta_{\min})\big(1+\cos(t\pi/T)\big)
+\end{gather*}
+\end{tcolorbox}
+\note{Keep this practical and brisk --- this is standard modern deep-learning training hygiene, low examiner scrutiny, but the ablation list at the bottom is important: name it as the mechanism by which O1's "statistically significant improvement over concatenation" claim gets tested (the concatenation-fusion variant IS the ablation baseline for that exact claim). This slide is your evidence that the training protocol is not ad hoc.}
+\end{frame}
+
+\begin{frame}{Evaluation Protocol (I) --- Performance Metrics}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Evaluation}}}
+{\small
+\begin{itemize}
+\item Classification (DTI): threshold-independent metrics preferred given class imbalance
+\item Regression (DTA): standard error and correlation metrics on the continuous affinity scale
+\end{itemize}
+}
+\vspace{2mm}
+\begin{tcolorbox}[colback=DTIpanel, colframe=DTIgold, boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt]
+\begin{gather*}
+\mathrm{AUC\text{-}ROC} = \int_0^1 \mathrm{TPR}\, d(\mathrm{FPR}), \qquad \mathrm{AUPR} = \int_0^1 \mathrm{Precision}\, d(\mathrm{Recall}) \\
+\mathrm{RMSE} = \sqrt{\tfrac{1}{N}\sum (y_i-\hat{y}_i)^2}, \qquad \mathrm{MAE} = \tfrac{1}{N}\sum |y_i-\hat{y}_i| \\
+\mathrm{PCC} = \dfrac{\sum (y_i-\bar{y})(\hat{y}_i-\bar{\hat{y}})}{\sqrt{\sum (y_i-\bar{y})^2 \sum (\hat{y}_i-\bar{\hat{y}})^2}}
+\end{gather*}
+\end{tcolorbox}
+\note{If pressed on "why not accuracy" for classification: accuracy is misleading under class imbalance (a trivial always-negative classifier scores high accuracy but is useless) --- AUC-ROC and especially AUPR are the field-standard choice because AUPR is more sensitive to performance on the minority (positive-interaction) class, which is exactly what matters for virtual screening. State that you will report AUPR as the primary metric and AUC-ROC as secondary/comparative.}
+\end{frame}
+
+\begin{frame}{Evaluation Protocol (II) --- Cold-Start Splits}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Evaluation}}}
+{\footnotesize
+\renewcommand{\arraystretch}{1.35}
+\begin{center}
+\begin{tabular}{p{2.6cm} p{4.0cm} p{4.9cm}}
+\rowcolor{DTInavy}
+\textcolor{white}{\textbf{Setting}} & \textcolor{white}{\textbf{Definition}} & \textcolor{white}{\textbf{What it Tests}} \\
+\rowcolor{white}
+\textcolor{DTIteal}{\textbf{S1 --- Warm-start}} & Random split, 10-fold CV; drugs \& targets may repeat across train/test & Baseline performance (upper bound) \\
+\rowcolor{DTIpanel}
+\textcolor{DTIteal}{\textbf{S2 --- Cold-drug}} & Drug-disjoint split; test drugs never seen in training & Generalization to novel compounds \\
+\rowcolor{white}
+\textcolor{DTIteal}{\textbf{S3 --- Cold-target}} & Target-disjoint split; test proteins never seen in training & Generalization to novel targets \\
+\rowcolor{DTIpanel}
+\textcolor{DTIteal}{\textbf{S4 --- Cold-pair}} & Pair-disjoint split; individual drugs/targets may repeat, but not the pair & Generalization to novel interaction patterns \\
+\end{tabular}
+\end{center}
+}
+\note{Present S1\(\rightarrow\)S4 explicitly as increasing difficulty, in that order, and say so: "S1 is the easiest and most optimistic setting --- most of the deep learning DTI literature over-reports on S1 alone. S2 and S3 are the true cold-start tests this thesis is built around. S4 is the hardest and most realistic: in real virtual screening you are almost always asking about a pair you've never seen." This directly operationalizes RQ2/Objective 2, and it is the natural place to mention cross-dataset transfer (train on one benchmark, e.g. BindingDB, test on another, e.g. DAVIS) as an even more stringent generalization test beyond these four.}
+\end{frame}
+
+\begin{frame}{Evaluation Protocol (III) --- Ablation \& Statistical Rigor}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Evaluation}}}
+{\small
+\begin{itemize}
+\item Ablation variants: GNN-only, RNN-only, concatenation-fusion, no-pretraining, alternative pooling strategies
+\item Cross-dataset transfer: train on one benchmark (e.g. BindingDB), evaluate on another (e.g. DAVIS)
+\item Every configuration run across multiple random seeds; report mean \(\pm\) standard deviation
+\item Paired significance testing (e.g. paired t-test) against baselines --- not point-estimate comparison alone
+\end{itemize}
+}
+\vspace{2mm}
+\begin{tcolorbox}[colback=DTIpanel, colframe=DTIgold, boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt]
+\begin{gather*}
+t = \dfrac{\bar{d}}{s_d/\sqrt{n}}, \qquad d_i = \text{metric}_{\text{hgnn},i} - \text{metric}_{\text{baseline},i}
+\end{gather*}
+\end{tcolorbox}
+\note{This slide is your defense against "your numbers might just be noise/seed luck." Say explicitly that every headline comparison in the thesis will be backed by multi-seed mean\(\pm\)std and a paired test on per-seed differences (d\_i), not a single lucky run --- this is what turns O1's "statistically significant improvement" from a slogan into an actual, checkable claim with a p-value. If you already have preliminary ablation numbers from pilot runs, this is the moment to mention them briefly as evidence the protocol is already implemented and working, not just planned.}
+\end{frame}
+
+\begin{frame}{Interpretability \& Explainability Framework}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Methodology \(\cdot\) Interpretability}}}
+{\small
+\begin{itemize}
+\item Attention-based attribution: cross-attention weights double as an atom/residue importance signal, at no extra training cost
+\item Visualization: heatmaps + graph-based Grad-CAM overlays on molecular graphs and protein sequences
+\item Validation: predicted binding hotspots compared against known crystal structures (Protein Data Bank) in case studies
+\end{itemize}
+}
+\vspace{2mm}
+\begin{tcolorbox}[colback=DTIpanel, colframe=DTIgold, boxrule=0.6pt, arc=2pt, left=8pt, right=8pt, top=5pt, bottom=5pt]
+\begin{gather*}
+I(v) = \sum_{r} A_{d\to p}[v,r], \qquad I(r) = \sum_{v} A_{d\to p}[v,r] \\
+L_c^{\text{Grad-CAM}} = \mathrm{ReLU}\Big(\sum_k \alpha_k^c A^k\Big), \qquad \alpha_k^c = \tfrac{1}{Z}\sum_{i,j} \frac{\partial y^c}{\partial A_{ij}^k}
+\end{gather*}
+\end{tcolorbox}
+\note{This answers RQ3 and delivers Objective 3. The key sentence: "Interpretability here is intrinsic, not post-hoc --- the same attention matrix A\_\{d\(\rightarrow\)p\} that performs the fusion is directly summed to produce atom and residue importance scores, so there is no separate, potentially unfaithful surrogate explainer bolted on afterward." Grad-CAM adds a gradient-weighted refinement on top for sharper, class-discriminative localization. Close with the validation strategy: pick 2-3 well-characterized drug-target complexes with known crystal structures (e.g. a kinase-inhibitor pair), show that the model's attention hotspots overlap with the experimentally known binding pocket --- this is your answer to "how do you know the attention weights are meaningful and not just noise."}
+\end{frame}
+
+\begin{frame}{Expected Outcomes \& Contributions}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Outcomes}}}
+{\normalsize
+\begin{itemize}
+\item A robust hybrid GNN-RNN model with a dynamic, gated cross-modal fusion mechanism (methodological contribution)
+\item Statistically significant predictive improvement over GSRF-DTI, TTModel, DTKGIN and single-modality baselines, including in cold-start settings (empirical contribution)
+\item An intrinsically interpretable DTI framework producing biologically meaningful, case-study-validated explanations (translational contribution)
+\item A fully reproducible pipeline --- public source code, trained models, and experimental configurations (open-science contribution)
+\end{itemize}
+}
+\note{Map each bullet back to O1/O2/O3 one more time in one breath --- repetition here is intentional, it is the last chance to reinforce that every objective has a concrete, checkable deliverable. If your program expects publications, mention target venues/timing briefly (e.g., an architecture paper after Pillar 1 is validated, a cold-start/generalization paper after Pillar 2).}
+\end{frame}
+
+\begin{frame}{Research Timeline (Illustrative)}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Outcomes}}}
+{\normalsize
+\begin{itemize}
+\item Phase 1 --- Literature synthesis, data acquisition \& preprocessing pipeline, baseline reproduction
+\item Phase 2 --- H-GAT + BiGRU encoders implemented and unit-validated independently (\(\rightarrow\) Objective 1 groundwork)
+\item Phase 3 --- Gated Cross-Attention fusion integrated; full-model training, ablations, cold-start evaluation (\(\rightarrow\) Objectives 1 \& 2)
+\item Phase 4 --- Interpretability layer, case-study validation, cross-dataset transfer experiments (\(\rightarrow\) Objective 3)
+\item Phase 5 --- Manuscript preparation, thesis writing, and defense
+\end{itemize}
+}
+\note{IMPORTANT --- this slide is deliberately phase-based, not calendar-dated, because the exact semester/year Gantt chart lives in Figure 3.5 of the written proposal and was not available as extractable text for this deck. Before presenting, replace this slide's bullets with (or overlay them on) your actual Gantt chart image from the proposal document so the dates match exactly what the panel already has in front of them in the written document --- consistency between the slide and the proposal document is something examiners do check.}
+\end{frame}
+
+\begin{frame}{Summary --- Key Takeaways}
+\framesubtitle{\textcolor{DTIgold}{\MakeUppercase{Summary}}}
+{\normalsize
+\begin{itemize}
+\item Gap: cross-modal fusion is shallow, cold-start generalization is weak, interpretability is absent
+\item Response: H-GNN-RNN-DTI --- H-GAT drug encoder + BiGRU protein encoder + novel Gated Cross-Attention fusion
+\item Rigor: cold-start/cross-dataset evaluation, multi-seed statistical testing, ablation-isolated claims
+\item Payoff: measurable accuracy gains, principled generalization, and biologically grounded interpretability
+\end{itemize}
+}
+\note{This is your closing thesis statement, delivered in four beats: problem, solution, how you will prove it, why it matters. Say it slowly and make eye contact with the panel --- this is the sentence you want them to remember when they write their evaluation. Then transition directly to the Q\&A slide.}
+\end{frame}
+
+{\setbeamercolor{background canvas}{bg=DTInavy}
+\begin{frame}[plain,c]
+\begin{center}
+{\Huge\bfseries\color{white}Thank You}\\[10pt]
+{\Large\color{DTIgold}Questions \& Discussion}\\[18pt]
+{\color{DTIgold}\rule{0.5\linewidth}{1pt}}\\[14pt]
+{\bfseries\color{white}Jamila Abdul-Hadi}\\[2pt]
+{\footnotesize\color{DTIgold!70!white}Assoc. Prof. Dr. Nurul Hashimah Ahamed Hassain Malim}\\[2pt]
+{\footnotesize\color{white!70!DTInavy}School of Computer Sciences, Universiti Sains Malaysia}
+\end{center}
+\note{Thank the panel. Before opening the floor, it is worth having quick, rehearsed answers ready for the most likely questions: (1) "How does this differ from GraphDTA/DeepDTA/MolTrans?" --- those use single-modality or shallow fusion; this proposal's contribution is the bidirectional gated cross-attention specifically. (2) "What if the Gated Cross-Attention doesn't beat concatenation?" --- that is precisely why the ablation is pre-registered as part of the methodology; a null result on O1 is still a defensible, publishable finding if rigorously tested. (3) "Compute budget / feasibility?" --- name the hardware (A100 GPU) and note the encoders can be validated independently before full joint training, de-risking the schedule. (4) "How do you pick negative samples reliably?" --- restate the unknown-negative sampling strategy and that this is a field-wide open problem, not unique to this work. Stay calm, refer back to the relevant slide number when answering rather than re-explaining from scratch.}
+\end{frame}
+}
+
+\end{document}

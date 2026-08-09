@@ -1,0 +1,65 @@
+\contentsline {chapter}{Abstract}{1}{chapter*.1}%
+\contentsline {chapter}{\numberline {1}Introduction}{5}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Background and Motivation}{5}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Problem Statement}{5}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Research Questions}{6}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Research Objectives}{6}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Scope of the Research}{6}{section.1.5}%
+\contentsline {section}{\numberline {1.6}Significance of the Research}{6}{section.1.6}%
+\contentsline {section}{\numberline {1.7}Organisation of the Thesis}{7}{section.1.7}%
+\contentsline {chapter}{\numberline {2}Literature Review}{8}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Introduction}{8}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Computational Methodologies for DTI Prediction}{8}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Molecular Docking-Based Approaches}{8}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Ligand-Based Methods}{8}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Traditional Machine Learning and Network-Based Methods}{8}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Deep Learning in DTI Prediction}{8}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.3}Foundational Deep Learning Architectures}{9}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Recurrent Neural Networks}{9}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Graph Neural Networks}{9}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Rationale for Hybrid Deep Learning Models}{9}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Critical Analysis of Related Methods}{9}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}GSRF-DTI \citep {zhu2024}}{9}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}TTModel \citep {li2024ttmodel}}{9}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.3}DTKGIN \citep {luo2024dtkgin}}{10}{subsection.2.5.3}%
+\contentsline {section}{\numberline {2.6}Current Research Gaps}{10}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Related Work}{10}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Summary}{10}{section.2.8}%
+\contentsline {chapter}{\numberline {3}Methodology}{11}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Research Design}{11}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Datasets}{11}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Data Splitting Protocol}{11}{subsection.3.2.1}%
+\contentsline {section}{\numberline {3.3}Data Preprocessing}{12}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Drug Representation}{12}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Protein Representation}{12}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Label Processing}{12}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}H-GNN-RNN-DTI Architecture}{12}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Drug Encoder — Hierarchical Graph Attention Network}{12}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Protein Encoder — Bidirectional GRU}{13}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Gated Cross-Attention Fusion}{13}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.4}Prediction Heads}{13}{subsection.3.4.4}%
+\contentsline {section}{\numberline {3.5}Training Strategy}{14}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Evaluation Protocol}{14}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Interpretability Module}{14}{section.3.7}%
+\contentsline {chapter}{\numberline {4}Results and Discussion}{15}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Experimental Setup Summary}{15}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Objective 1: H-GNN-RNN-DTI Architecture Design and Evaluation}{15}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Fusion Strategy: Cross-Attention vs.\ Concatenation}{15}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Encoder Ablation: GNN-Only and RNN-Only}{16}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}DTA Regression: DAVIS and KIBA}{16}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}External Baseline Comparison}{17}{subsection.4.2.4}%
+\contentsline {subsection}{\numberline {4.2.5}Cross-Dataset Generalisation}{17}{subsection.4.2.5}%
+\contentsline {section}{\numberline {4.3}Objective 2: Enhancement Strategies for Cold-Start Generalisation}{17}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Phase 2: Imbalance-Aware Training}{17}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Phase 1: Protein Embedding Scale}{18}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Phase 3: BindingDB Pre-Training}{18}{subsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.3.4}Phase 5: Combined Ablation C0$\to $C3}{19}{subsection.4.3.4}%
+\contentsline {section}{\numberline {4.4}Objective 3: Attention-Based Interpretability}{19}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Drug Attribution -- Faithfulness and Pharmacophore}{19}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Protein Attribution -- PDB Case Studies}{20}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Attribution Method Comparison}{20}{subsection.4.4.3}%
+\contentsline {chapter}{\numberline {5}Conclusion}{22}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Summary of Contributions}{22}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Limitations}{22}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Future Work}{23}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Concluding Remarks}{23}{section.5.4}%
