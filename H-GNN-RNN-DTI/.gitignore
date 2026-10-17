@@ -1,0 +1,30 @@
+# Data & artifacts (keep structure, ignore contents)
+data/raw/*
+data/processed/*
+data/embeddings/*
+data/splits/*
+!**/.gitkeep
+experiments/logs/*
+experiments/checkpoints/*
+experiments/results/*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Large model / weights
+*.ckpt
+*.pt
+*.pth
+*.safetensors

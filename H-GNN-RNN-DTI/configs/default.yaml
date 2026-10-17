@@ -1,0 +1,74 @@
+# ============================================================================
+# H-GNN-RNN-DTI — default configuration
+# Objective 1: isolate the bidirectional Gated Cross-Attention (GCA) fusion
+# mechanism. Features are held at a FIXED reference config; only `fusion.type`
+# varies across the ablation. See docs/objective1_analysis.md §2.1.
+# ============================================================================
+
+seed: 42
+task: classification            # classification | regression
+
+# ---- Objective 1 reference feature configuration (HELD CONSTANT) ----
+# Light by default so the pipeline runs without secured compute. Enrichment
+# (ChemBERTa / ESM-2 / SS / physicochemical) is Objective 2's variable, not
+# Objective 1's. Flip these only in Objective 2 experiments.
+features:
+  drug:
+    rdkit_graph: true           # atom/bond features from RDKit (C1 baseline)
+    chemberta: false            # Obj2
+  protein:
+    basic_sequence: true        # learned embedding over amino-acid tokens (C1 baseline)
+    esm2: false                 # Obj2
+    esm2_variant: facebook/esm2_t12_35M_UR50D   # used only when esm2: true
+    secondary_structure: false  # Obj2
+    physicochemical: false      # Obj2
+  precompute_embeddings: true   # cache LM embeddings to data/embeddings/ (see §3)
+  max_protein_length: 1000      # truncate/window long sequences (memory of n x m attention)
+
+data:
+  dataset: davis                # davis | kiba | bindingdb | yamanishi_08 | luo_17
+  root: data
+  negative_sampling: after_split   # construct candidate negatives AFTER splitting (leakage control)
+
+split:
+  protocol: S1_warm             # S1_warm | S2_cold_drug | S3_cold_target | cold_pair | cross_dataset
+  val_fraction: 0.1
+  test_fraction: 0.1
+
+model:
+  latent_dim: 128               # common latent dim d after projection
+  drug_encoder:
+    type: hgat
+    layers: 3
+    heads: 4
+  protein_encoder:
+    type: bilstm
+    layers: 2
+    hidden: 128
+  fusion:
+    type: gca                   # gca | concat | flat_gate | ungated_xattn  <-- the Obj1 variable
+    attention_dim: 128          # d_k
+    gated: true                 # gca only
+  pooling: masked_mean          # masked_mean | attention
+  head:
+    hidden: [256, 128]
+    dropout: 0.2
+
+train:
+  epochs: 100
+  batch_size: 32
+  lr: 1.0e-3
+  weight_decay: 1.0e-5
+  loss: focal                   # focal (primary, imbalance-aware) | bce | mse(regression)
+  focal_gamma: 2.0
+  focal_alpha: 0.25             # positive-class weight in focal loss
+  early_stopping_patience: 15
+  grad_clip: 1.0
+
+eval:
+  classification_metrics: [auroc, aupr]
+  regression_metrics: [rmse, mae, pcc]
+  repeated_runs: 3              # repeat with different seeds for mean ± std
+
+logging:
+  out_dir: experiments

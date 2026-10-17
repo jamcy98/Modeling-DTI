@@ -1,0 +1,40 @@
+# Core DL
+torch>=2.2
+torch-geometric>=2.5
+
+# Cheminformatics / graph construction
+rdkit>=2023.9
+
+# Pretrained language models (ChemBERTa, ESM-2)
+transformers>=4.40
+tokenizers>=0.19
+
+# Protein sequence / structure
+biopython>=1.83
+fair-esm>=2.0            # alternative ESM-2 loader (optional; HF transformers also provides ESM-2)
+
+# Dataset acquisition (benchmarks: DAVIS, KIBA, BindingDB, ...)
+# Pin to 0.4.1: PyTDC >=1.x pulls in `tiledbsoma`, which fails to build on Windows.
+PyTDC==0.4.1
+# PyTDC 0.4.1 imports pkg_resources, removed from setuptools >=81. Pin below that.
+setuptools<81
+
+# Experiment management
+optuna>=3.6
+pyyaml>=6.0
+omegaconf>=2.3
+
+# Metrics / science
+scikit-learn>=1.4
+scipy>=1.12
+numpy>=1.26
+pandas>=2.2
+
+# Utilities
+tqdm>=4.66
+matplotlib>=3.8
+seaborn>=0.13
+
+# NOTE: secondary-structure prediction (PSIPRED / equivalent) is an external tool,
+# installed separately. For Objective 1's fixed reference config, SS features are
+# OFF by default (see configs/default.yaml and docs/objective1_analysis.md §2.1).
