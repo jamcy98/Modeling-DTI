@@ -12,7 +12,17 @@ physicochemical enrichment is Objective 2 and is not applied here.
 from __future__ import annotations
 
 import numpy as np
-from rdkit import Chem
+
+# RDKit is only needed to FEATURIZE SMILES (preprocessing). The runtime path
+# (loading pre-saved graphs for training/ablation) does not need it, so the
+# import is optional — this lets the model run in minimal environments (e.g. a
+# Colab GPU box) without installing RDKit.
+try:
+    from rdkit import Chem
+    _HAS_RDKIT = True
+except ImportError:  # pragma: no cover
+    Chem = None
+    _HAS_RDKIT = False
 
 # --- atom vocabulary --------------------------------------------------------
 ATOM_SYMBOLS = [
@@ -24,33 +34,43 @@ ATOM_SYMBOLS = [
 DEGREES = list(range(11))
 NUM_HS = list(range(9))
 IMPLICIT_VALENCE = list(range(7))
-HYBRIDIZATIONS = [
-    Chem.rdchem.HybridizationType.SP,
-    Chem.rdchem.HybridizationType.SP2,
-    Chem.rdchem.HybridizationType.SP3,
-    Chem.rdchem.HybridizationType.SP3D,
-    Chem.rdchem.HybridizationType.SP3D2,
-    "other",
-]
-BOND_TYPES = [
-    Chem.rdchem.BondType.SINGLE,
-    Chem.rdchem.BondType.DOUBLE,
-    Chem.rdchem.BondType.TRIPLE,
-    Chem.rdchem.BondType.AROMATIC,
-]
-BOND_STEREO = [
-    Chem.rdchem.BondStereo.STEREONONE,
-    Chem.rdchem.BondStereo.STEREOANY,
-    Chem.rdchem.BondStereo.STEREOZ,
-    Chem.rdchem.BondStereo.STEREOE,
-]
+# Enum-valued vocabularies need RDKit; built only when it is available. The
+# fixed category COUNTS below drive the feature dims, so dims are defined even
+# without RDKit (and stay byte-identical when RDKit is present).
+if _HAS_RDKIT:
+    HYBRIDIZATIONS = [
+        Chem.rdchem.HybridizationType.SP,
+        Chem.rdchem.HybridizationType.SP2,
+        Chem.rdchem.HybridizationType.SP3,
+        Chem.rdchem.HybridizationType.SP3D,
+        Chem.rdchem.HybridizationType.SP3D2,
+        "other",
+    ]
+    BOND_TYPES = [
+        Chem.rdchem.BondType.SINGLE,
+        Chem.rdchem.BondType.DOUBLE,
+        Chem.rdchem.BondType.TRIPLE,
+        Chem.rdchem.BondType.AROMATIC,
+    ]
+    BOND_STEREO = [
+        Chem.rdchem.BondStereo.STEREONONE,
+        Chem.rdchem.BondStereo.STEREOANY,
+        Chem.rdchem.BondStereo.STEREOZ,
+        Chem.rdchem.BondStereo.STEREOE,
+    ]
+else:  # pragma: no cover
+    HYBRIDIZATIONS = BOND_TYPES = BOND_STEREO = None
+
+_N_HYBRIDIZATION = 6   # len(HYBRIDIZATIONS)
+_N_BOND_TYPE = 4       # len(BOND_TYPES)
+_N_BOND_STEREO = 4     # len(BOND_STEREO)
 
 # Feature dimensions (consumed by the drug encoder, step 4)
 ATOM_FEATURE_DIM = (
     len(ATOM_SYMBOLS) + len(DEGREES) + len(NUM_HS) + len(IMPLICIT_VALENCE)
-    + len(HYBRIDIZATIONS) + 3  # formal charge, radical electrons, is_aromatic
+    + _N_HYBRIDIZATION + 3  # formal charge, radical electrons, is_aromatic
 )
-BOND_FEATURE_DIM = len(BOND_TYPES) + len(BOND_STEREO) + 2  # conjugated, in_ring
+BOND_FEATURE_DIM = _N_BOND_TYPE + _N_BOND_STEREO + 2  # conjugated, in_ring
 
 
 def _one_hot(value, choices):
@@ -99,6 +119,8 @@ def smiles_to_graph(smiles: str) -> dict | None:
     Edges are stored bidirectionally (both (i,j) and (j,i)). Returns None if
     RDKit cannot parse the SMILES, so the caller can drop the pair.
     """
+    if not _HAS_RDKIT:
+        raise ImportError("RDKit is required to featurize SMILES (install `rdkit`).")
     mol = Chem.MolFromSmiles(smiles)
     if mol is None or mol.GetNumAtoms() == 0:
         return None

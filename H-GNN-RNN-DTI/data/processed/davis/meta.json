@@ -1,0 +1,26 @@
+{
+  "dataset": "davis",
+  "value_col": "Kd_nM",
+  "threshold": 30.0,
+  "direction": "le",
+  "split": "S1",
+  "seed": 42,
+  "n_pairs": 25772,
+  "n_drugs": 68,
+  "n_targets": 379,
+  "class_balance": {
+    "n": 25772,
+    "positives": 1063,
+    "negatives": 24709,
+    "positive_rate": 0.04124631382896166
+  },
+  "split_sizes": {
+    "train": 20618,
+    "val": 2577,
+    "test": 2577
+  },
+  "atom_feature_dim": 80,
+  "bond_feature_dim": 10,
+  "protein_vocab_size": 22,
+  "max_protein_length": 1000
+}

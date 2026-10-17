@@ -27,34 +27,37 @@ cells = [
        "DAVIS (S1 warm-start), 3 seeds each, reporting AUROC/AUPR mean±std + a paired "
        "significance test.",
        "",
+       "The **preprocessed DAVIS dataset is bundled in the repo**, so there is nothing to "
+       "download and no RDKit / PyTDC to install - only `torch-geometric` on top of Colab's "
+       "stock PyTorch. That keeps 'Run all' reliable.",
+       "",
        "**Before running:** `Runtime -> Change runtime type -> Hardware accelerator = GPU (T4)`, "
        "then `Runtime -> Run all`.",
        "",
        "If the `git clone` cell fails, the code hasn't been pushed to the branch yet - push "
-       f"`{BRANCH}` to `{REPO_URL}`, or upload a zip of the `H-GNN-RNN-DTI/` folder and `%cd` into it."),
+       f"`{BRANCH}` to `{REPO_URL}`, or upload the `H-GNN-RNN-DTI/` folder and `%cd` into it."),
     md("## 1. Check the GPU"),
     code("!nvidia-smi -L",
          "import torch; print('torch', torch.__version__, '| CUDA available:', torch.cuda.is_available())"),
-    md("## 2. Get the code"),
+    md("## 2. Get the code (+ bundled preprocessed data)"),
     code(f"REPO_URL = '{REPO_URL}'",
          f"BRANCH = '{BRANCH}'",
          "!git clone --depth 1 --branch $BRANCH $REPO_URL",
-         "%cd Modeling-DTI/H-GNN-RNN-DTI"),
+         "%cd Modeling-DTI/H-GNN-RNN-DTI",
+         "# sanity: the bundled processed DAVIS data should be present",
+         "import os; assert os.path.exists('data/processed/davis/pairs.csv'), 'processed DAVIS missing'",
+         "print('bundled DAVIS data found')"),
     md("## 3. Install dependencies",
-       "(Colab already ships a CUDA build of PyTorch; we add the rest. `PyTDC==0.4.1` and "
-       "`setuptools<81` are pinned for the same reasons as locally.)"),
-    code("!pip -q install torch-geometric 'PyTDC==0.4.1' 'setuptools<81' rdkit scipy scikit-learn pyyaml",
+       "Colab already ships a CUDA build of PyTorch, plus numpy / pandas / scipy / scikit-learn / "
+       "pyyaml. We only need PyTorch Geometric. (No RDKit or PyTDC: the preprocessed graphs are "
+       "already in the repo, and the training/ablation code imports RDKit lazily.)"),
+    code("!pip -q install torch-geometric",
          "print('deps installed')"),
-    md("## 4. Download + preprocess DAVIS",
-       "Binarizes at Kd <= 30 nM and builds the stratified S1 split (same as locally)."),
-    code("!python scripts/download_data.py --dataset davis",
-         "!python scripts/preprocess.py --dataset davis"),
-    md("## 5. Run the fusion ablation on GPU",
+    md("## 4. Run the fusion ablation on GPU",
        "Full DAVIS, all four fusions, seeds 42/43/44. On a T4 this is the main compute; "
-       "expect roughly tens of minutes. To do a fast dry run first, add "
-       "`--epochs 2 --max-batches 30`."),
+       "expect roughly tens of minutes. For a fast dry run first, add `--epochs 2 --max-batches 30`."),
     code("!python scripts/run_ablation.py --dataset davis --split S1 --device cuda --seeds 42 43 44"),
-    md("## 6. Show + download results"),
+    md("## 5. Show + download results"),
     code("import json",
          "res = json.load(open('experiments/results/ablation_davis_S1.json'))",
          "print(json.dumps(res['summary'], indent=2))",
@@ -66,7 +69,11 @@ cells = [
        "- RQ1 is supported if **gca** beats concat / flat_gate / ungated_xattn on AUPR, and the "
        "paired test `dAUPR` is positive with a small p-value.",
        "- If GCA does *not* beat the simpler fusions, that is a real (publishable) finding too - "
-       "see docs/objective1_analysis.md Risk R1."),
+       "see docs/objective1_analysis.md Risk R1.",
+       "",
+       "To regenerate the preprocessed data from scratch instead of using the bundled copy "
+       "(needs RDKit + PyTDC): `pip install rdkit 'PyTDC==0.4.1' 'setuptools<81'` then "
+       "`python scripts/download_data.py --dataset davis && python scripts/preprocess.py --dataset davis`."),
 ]
 
 nb = {
