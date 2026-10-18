@@ -40,17 +40,23 @@ cells = [
     code("!nvidia-smi -L",
          "import torch; print('torch', torch.__version__, '| CUDA available:', torch.cuda.is_available())"),
     md("## 2. Get the code (+ bundled preprocessed data)",
-       "Re-run safe (wipes any earlier clone) and works for a **private** repo: it tries an "
-       "anonymous clone first, and only if that fails does it prompt for a GitHub token.",
+       "Re-run safe (wipes any earlier clone) and works for a **private** repo. It tries an "
+       "anonymous clone first; if that fails it reads a GitHub token from **Colab Secrets** "
+       "(preferred) and otherwise prompts via `getpass`.",
        "",
-       "**The repo is private**, so you'll be prompted for a token. Create a short-lived one at "
-       "GitHub -> Settings -> Developer settings -> Fine-grained tokens (Repository access: only "
-       "`Modeling-DTI`; Permissions: Contents = Read-only), paste it when asked, and revoke it "
-       "afterwards. The token is read via `getpass` (not echoed, not saved in the notebook)."),
+       "**NEVER paste the token into this notebook** - it would get committed to the repo. "
+       "Instead store it in Colab Secrets so it stays in your account, not in the file:",
+       "",
+       "1. Create a fine-grained token: GitHub -> Settings -> Developer settings -> Fine-grained "
+       "tokens. Repository access: only `Modeling-DTI`. Permissions: **Contents = Read-only**.",
+       "2. In Colab, click the **key icon** (Secrets) in the left sidebar -> **+ Add new secret** "
+       "-> Name = `GH_TOKEN`, Value = the token -> toggle **Notebook access** on.",
+       "3. Run this cell. (If you skip the secret, it will prompt you once via `getpass`.)",
+       "",
+       "Treat the token as disposable: revoke it on GitHub when you're done."),
     code(f"REPO = 'jamcy98/Modeling-DTI'",
          f"BRANCH = '{BRANCH}'",
          "import os, shutil, subprocess",
-         "from getpass import getpass",
          "DEST = '/content/Modeling-DTI'",
          "if os.path.isdir(DEST):",
          "    shutil.rmtree(DEST)  # remove stale clone from an earlier run",
@@ -61,9 +67,17 @@ cells = [
          "",
          "res = _clone(f'https://github.com/{REPO}.git')  # anonymous (works if public)",
          "if res.returncode != 0:",
-         "    print('Private repo - enter a fine-grained GitHub token with Contents:Read on', REPO)",
-         "    token = getpass('GitHub token: ').strip()",
+         "    token = None",
+         "    try:  # preferred: token stored in Colab Secrets (key icon), name GH_TOKEN",
+         "        from google.colab import userdata",
+         "        token = userdata.get('GH_TOKEN')",
+         "    except Exception:",
+         "        token = None",
+         "    if not token:  # fallback: one-time prompt, not saved anywhere",
+         "        from getpass import getpass",
+         "        token = getpass('GitHub token (Contents:Read on Modeling-DTI): ').strip()",
          "    res = _clone(f'https://{token}@github.com/{REPO}.git')",
+         "    del token",
          "    if res.returncode != 0:",
          "        raise RuntimeError('Clone failed:\\n' + res.stderr[-800:])",
          "%cd /content/Modeling-DTI/H-GNN-RNN-DTI",
