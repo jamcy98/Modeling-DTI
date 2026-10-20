@@ -127,12 +127,41 @@ Yamanishi + Luo need an ID→SMILES/FASTA mapping before the model can use them
   private-repo support via **Colab Secrets** (`GH_TOKEN`), never a hardcoded token.
 - Repo visibility: being switched to public (verify with the `info/refs` curl).
 
+**2026-10-20 (session 2, with Claude):**
+- First GPU ablation run on Colab (T4). It did **not** finish a free-tier
+  session: completed `gca` (3 seeds), `ungated_xattn` (3 seeds), `flat_gate`
+  (seeds 42,43), then died mid `flat_gate` seed 44; `concat` never started.
+  ~11 h elapsed; `flat_gate` is the time sink (seed 43 ran 94 epochs / ~3 h
+  because it keeps eking out tiny AUPR gains, so early-stopping patience=15
+  never trips early).
+- **Preliminary result (8/12 runs, concat missing) — note it contradicts RQ1:**
+  mean test AUPR `flat_gate ~0.46` (seeds 42/43) > `gca 0.322±0.020` >
+  `ungated_xattn 0.266±0.014`. Paired t-test (3 seeds): `gca` beats
+  `ungated_xattn` by +0.056 AUPR (all seeds positive) but p≈0.12 (underpowered
+  at 3 seeds); `gca` *loses* to `flat_gate` by ~0.14. i.e. gating helps, but the
+  bidirectional cross-attention in GCA is so far NOT beating plain gating.
+  Confound to weigh before concluding: `flat_gate` trained ~3× longer (94 vs
+  ~28 epochs) under the shared early-stopping rule. See analysis Risk R1.
+- **Hardened the orchestrator** (`run_ablation.py`): writes the results JSON
+  **atomically after every run** and **resumes** on restart (skips completed
+  `(fusion, seed)` pairs). New flags `--out-dir` and `--fresh`. Resume verified
+  by CPU smoke. Colab notebook now **mounts Google Drive** and checkpoints
+  there, so a disconnect loses nothing — Run all again to continue (expect ~2
+  sessions for the full 12-run sweep). Pushed (commit `b0fb099`); reconciled
+  with a remote "Created using Colab" commit.
+
 ## 8. Status & next steps
 
-- **Done:** steps 1–7 built and tested; ablation orchestrator + Colab notebook ready.
-- **Pending (the key deliverable):** run `run_ablation.py` on a GPU (Colab) →
-  the RQ1 fusion-ablation result → interpret (RQ1 supported if `gca` AUPR beats
-  the baselines with a small paired-test p).
+- **Done:** steps 1–7 built and tested; ablation orchestrator now
+  checkpoint/resume-safe; Colab notebook Drive-persisted.
+- **In progress (the key deliverable):** finishing the GPU fusion ablation on
+  Colab — `concat` (3 seeds) + `flat_gate` seed 44 still to run; just Run all
+  again and it resumes from the Drive checkpoint. Then interpret RQ1.
+- **Open question from the preliminary run:** GCA is not (yet) beating
+  `flat_gate`. Before the final verdict, decide whether to equalize training
+  budget across fusions (uniform epoch cap / patience) to remove the
+  early-stopping confound, or report the result as-is (a real finding either
+  way — see Risk R1).
 - **After that:** step 10 — scale to more datasets/splits + external baselines
   (week 2 / Obj2); the Yamanishi/Luo ID→SMILES/FASTA mapping; then Obj2 (feature
   enrichment / cold-start) and Obj3 (interpretability).
