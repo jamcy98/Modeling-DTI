@@ -1,0 +1,10 @@
+# Claude Code local settings — may contain tokens/credentials, never commit
+.claude/settings.local.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Local experiment outputs (results are checkpointed to Drive on Colab)
+H-GNN-RNN-DTI/experiments/results/
