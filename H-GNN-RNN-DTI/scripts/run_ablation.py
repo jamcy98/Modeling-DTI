@@ -86,6 +86,18 @@ def main() -> int:
                          "Drive path on Colab so progress survives a disconnect.")
     args = ap.parse_args()
 
+    # Fail fast if a GPU was requested but isn't available (e.g. a Colab CPU
+    # runtime), instead of crashing deep in model.to(device) after setup.
+    if args.device == "cuda":
+        import torch
+        if not torch.cuda.is_available():
+            raise SystemExit(
+                "ERROR: --device cuda requested but no GPU is available "
+                "(torch.cuda.is_available() is False). On Colab: Runtime > "
+                "Change runtime type > GPU (T4/L4), confirm 'CUDA available: "
+                "True', then Run all."
+            )
+
     base = load_config(args.config)
 
     out_dir = Path(args.out_dir) if args.out_dir else ROOT / "experiments" / "results"
