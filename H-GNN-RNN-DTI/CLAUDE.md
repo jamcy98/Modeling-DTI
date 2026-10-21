@@ -150,6 +150,29 @@ Yamanishi + Luo need an ID→SMILES/FASTA mapping before the model can use them
   sessions for the full 12-run sweep). Pushed (commit `b0fb099`); reconciled
   with a remote "Created using Colab" commit.
 
+**2026-10-21 (session 3, with Claude):**
+- **Security:** found two GitHub PATs committed in `.claude/settings.local.json`
+  on public `main` (tip + 27 commits). User revoked both. Purged the file from
+  all of `objective1-impl` history (git filter-repo) and removed it from the
+  `main` tip in one commit; added `.gitignore` guard on both. `main`'s deep
+  history still holds the dead (revoked) tokens — a full `main` rewrite was
+  skipped because its history carries hundreds of MiB of committed checkpoints.
+- **Repo is now public** (anonymous Colab clone works; token step gone).
+- Fixed Colab notebook bugs: dead-CWD guard on the clone cell (`os.chdir`),
+  a clone-cell `SyntaxError` from the rebuild, guarded `files.download` for
+  unattended runs, and a **fail-fast `torch.cuda.is_available()` check** in
+  `run_ablation.py` (CPU runtime now errors in 1 s, not deep in `model.to`).
+- **Ratified training protocol (put this in the thesis methods):** each fusion
+  is trained to a **maximum of 50 epochs with early stopping (patience 15) on
+  validation AUPR**. The 50-epoch cap bounds `flat_gate`'s runaway (it ran
+  60–94 epochs) while leaving `gca`/`ungated_xattn` unchanged (they stop <50),
+  giving all fusions an equal training budget. Set via `--epochs 50` in the
+  notebook run cell. Expect `flat_gate`'s AUPR to drop vs the uncapped partial
+  run, shrinking (or flipping) its lead over `gca`.
+- Unattended-run plan: **Colab Pro+ background execution** (no GCP/VM needed);
+  authorize Drive before walking away, then Run all. No Colab MCP is installed
+  or needed.
+
 ## 8. Status & next steps
 
 - **Done:** steps 1–7 built and tested; ablation orchestrator now
