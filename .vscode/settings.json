@@ -1,0 +1,13 @@
+{
+  // Keep the vendored RDKit example notebooks out of search / notebook pickers
+  "search.exclude": {
+    "**/.venv/**": true
+  },
+  "files.watcherExclude": {
+    "**/.venv/**": true
+  },
+  // Clear the kernel's outputs before saving is intentionally OFF so ablation
+  // results stay committed with the notebook; flip to true if diffs get noisy.
+  "notebook.diff.ignoreMetadata": true,
+  "notebook.diff.ignoreOutputs": false
+}
