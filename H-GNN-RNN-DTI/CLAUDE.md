@@ -173,21 +173,35 @@ Yamanishi + Luo need an ID→SMILES/FASTA mapping before the model can use them
   authorize Drive before walking away, then Run all. No Colab MCP is installed
   or needed.
 
+**2026-10-22 (session 3 cont.):**
+- **Fusion ablation COMPLETE — all 12 runs (4 fusions × 3 seeds).** Results read
+  from Drive; full write-up in `docs/objective1_ablation_results.md`.
+- **RQ1 NOT supported — contradicted.** Mean test AUPR: `concat 0.460±0.008` ≈
+  `flat_gate 0.460±0.021` ≫ `gca 0.322±0.020` > `ungated_xattn 0.276±0.036`.
+  Paired t-test: gca **significantly worse** than concat (p=0.020) and flat_gate
+  (p=0.040); gca beats only ungated_xattn (p=0.095, n.s.). i.e. bidirectional
+  cross-attention does **not** improve fusion on DAVIS/S1 — the simplest fusion
+  (concat) ties for best and is most stable; attention actively hurts.
+- Caveat: the `--epochs 50` cap landed mid-campaign so the final JSON mixes
+  capped/uncapped runs (ungated s43=73ep, flat_gate s42=58ep). Conclusion is
+  robust (flat_gate still > gca), but for the thesis **re-run all 12 under one
+  uniform 50-epoch cap with `--fresh`** for a clean equal-budget table.
+
 ## 8. Status & next steps
 
-- **Done:** steps 1–7 built and tested; ablation orchestrator now
-  checkpoint/resume-safe; Colab notebook Drive-persisted.
-- **In progress (the key deliverable):** finishing the GPU fusion ablation on
-  Colab — `concat` (3 seeds) + `flat_gate` seed 44 still to run; just Run all
-  again and it resumes from the Drive checkpoint. Then interpret RQ1.
-- **Open question from the preliminary run:** GCA is not (yet) beating
-  `flat_gate`. Before the final verdict, decide whether to equalize training
-  budget across fusions (uniform epoch cap / patience) to remove the
-  early-stopping confound, or report the result as-is (a real finding either
-  way — see Risk R1).
-- **After that:** step 10 — scale to more datasets/splits + external baselines
-  (week 2 / Obj2); the Yamanishi/Luo ID→SMILES/FASTA mapping; then Obj2 (feature
-  enrichment / cold-start) and Obj3 (interpretability).
+- **Done:** steps 1–7 built and tested; ablation orchestrator checkpoint/resume-
+  safe; Colab notebook Drive-persisted; **RQ1 fusion ablation complete + written
+  up (`docs/objective1_ablation_results.md`).**
+- **Immediate cleanup for rigor:** re-run the full 12-run sweep under a uniform
+  50-epoch cap (`--fresh`) to remove the mixed-budget caveat, then lock final
+  numbers.
+- **RQ1 finding to carry forward:** GCA loses to concat/flat_gate — Obj2/Obj3 may
+  be better built on the simpler fusion; investigating *why* cross-attention
+  hurts (over-parameterisation / attention collapse / few positives) is itself a
+  contribution.
+- **After that:** step 10 — scale to KIBA/BindingDB + cold splits (S2/S3) +
+  external baselines (DeepDTA/GraphDTA); Yamanishi/Luo ID→SMILES/FASTA mapping;
+  then Obj2 (feature enrichment / cold-start) and Obj3 (interpretability).
 
 ## 9. Conventions & gotchas
 
